@@ -1,0 +1,66 @@
+volumes:
+  postgres_data:
+    driver: local
+  keycloak_themes:
+    driver: local
+
+services:
+  cli_mate_db:
+    container_name: cli_mate_db
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: CliMatePass
+    networks:
+      - local
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-q', '-d', 'postgres', '-U', 'postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+  keycloak_db:
+    container_name: keycloak_db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: keycloak
+    networks:
+      - local
+    ports:
+      - '5433:5433'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-q', '-d', 'postgres', '-U', 'postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:26.1.0
+    volumes:
+      - ./deployment/keycloak:/opt/keycloak/data/import
+    command: start-dev --import-realm --verbose
+    env_file:
+      - path: ./.env.docker
+        required: false
+    ports:
+      - 8080:8080
+    links:
+      - keycloak_db
+    networks:
+      - local
+    depends_on:
+      keycloak_db:
+        condition: service_healthy
+
+networks:
+  local:
+    name: local
+    driver: bridge
