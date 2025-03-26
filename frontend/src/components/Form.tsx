@@ -27,8 +27,6 @@ export const Form = () => {
 
   return (
     <div>
-      {/* <h1 className="text-2xl font-bold">Create report</h1> */}
-
       <div className="file-upload mt-5">
         <Label htmlFor="picture">Choose or take picture</Label>
         <Input
@@ -55,7 +53,7 @@ export const Form = () => {
           id="description"
           placeholder="Description"
           className="mt-5"
-          rows={4} // Adjust the number of rows as needed
+          rows={3}
         />
 
         <button
