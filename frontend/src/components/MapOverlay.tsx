@@ -27,25 +27,31 @@ export const MapOverlay = ({
     null
   );
   const map = useMap();
+  const [issues, setIssues] = useState<IssueWithImage[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const retrievedIssues = await fetch("/api/issue");
+      console.log(retrievedIssues);
+      const { data } = await retrievedIssues.json();
+      setIssues(data);
+    };
+    fetchData();
+  }, []);
 
   // Get location of user and go there if allowed
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation([longitude, latitude]);
-          if (map.current) {
-            map.current.getMap().flyTo({
-              center: [longitude, latitude],
-              zoom: 12,
-            });
-          }
-        },
-        (error) => {
-          console.error("Error getting location:", error);
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation([longitude, latitude]);
+        if (map.current) {
+          map.current.getMap().flyTo({
+            center: [longitude, latitude],
+            zoom: 12,
+          });
         }
-      );
+      });
     }
   }, []);
 
@@ -114,12 +120,12 @@ export const MapOverlay = ({
           </div>
         </Marker>
       )}
-      {examples.map((example) => {
+      {issues.map((example) => {
         return (
           <Marker
             key={example.issue_uuid}
-            longitude={example.coordinates[0]}
-            latitude={example.coordinates[1]}
+            longitude={example.location.coordinates[0]}
+            latitude={example.location.coordinates[1]}
             onClick={(e) => {
               e.originalEvent.stopPropagation();
               setSelectedExample(example);

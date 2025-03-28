@@ -1,3 +1,4 @@
+import { Category } from "@/types/issue";
 import {
   Select,
   SelectContent,
@@ -8,13 +9,18 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export const CategorySelect = () => {
+interface CategorySelectProps {
+  value: string;
+  onChange: (category: Category) => void;
+}
+
+export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
   const values = [
-    { value: "pollution", title: "Pollution" },
-    { value: "Trash", title: "Trash" },
+    { value: "Garbage", title: "Garbage" },
+    { value: "Chemicals", title: "Chemicals" },
   ];
   return (
-    <Select>
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a category" />
       </SelectTrigger>

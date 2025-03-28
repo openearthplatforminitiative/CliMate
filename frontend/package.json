@@ -24,6 +24,7 @@
     "lucide-react": "^0.477.0",
     "maplibre-gl": "^5.1.1",
     "next": "15.2.0",
+    "openepi-client": "^1.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.2",

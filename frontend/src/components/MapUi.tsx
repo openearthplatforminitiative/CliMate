@@ -12,18 +12,18 @@ import {
 interface MapUiProps {
   sheetOpen: boolean;
   setSheetOpen: (open: boolean) => void;
-  selectedExample: IssueWithImage | null;
-  setSelectedExample: (example: IssueWithImage | null) => void;
+  selectedIssue: IssueWithImage | null;
+  setSelectedIssue: (example: IssueWithImage | null) => void;
 }
 
 export const MapUi = ({
   sheetOpen,
   setSheetOpen,
-  selectedExample,
-  setSelectedExample,
+  selectedIssue,
+  setSelectedIssue,
 }: MapUiProps) => {
   const handleCloseSheet = () => {
-    setSelectedExample(null);
+    setSelectedIssue(null);
     setSheetOpen(false);
   };
 
@@ -39,15 +39,15 @@ export const MapUi = ({
         <SheetContent side="bottom" className="bg-[#F5FFF4]">
           <SheetHeader>
             <SheetTitle>
-              {selectedExample ? selectedExample.title : "Create Report"}
+              {selectedIssue ? selectedIssue.title : "Create Report"}
             </SheetTitle>
             <SheetDescription>
-              {selectedExample ? (
+              {selectedIssue ? (
                 <div>
-                  <p>{selectedExample.description}</p>
+                  <p>{selectedIssue.description}</p>
                   <img
-                    src={selectedExample.image}
-                    alt={selectedExample.title}
+                    src={selectedIssue.image}
+                    alt={selectedIssue.title}
                     className="mt-5"
                   />
                 </div>

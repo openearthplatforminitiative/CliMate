@@ -12,7 +12,7 @@ export const EcoMap = () => {
   );
 
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [selectedExample, setSelectedExample] = useState<IssueWithImage | null>(
+  const [selectedIssue, setSelectedIssue] = useState<IssueWithImage | null>(
     null
   );
 
@@ -40,16 +40,16 @@ export const EcoMap = () => {
             setClickedPoint={setClickedPoint}
             sheetOpen={sheetOpen}
             setSheetOpen={setSheetOpen}
-            selectedExample={selectedExample}
-            setSelectedExample={setSelectedExample}
+            selectedExample={selectedIssue}
+            setSelectedExample={setSelectedIssue}
           />
         </Map>
       </MapProvider>
       <MapUi
         sheetOpen={sheetOpen}
         setSheetOpen={setSheetOpen}
-        selectedExample={selectedExample}
-        setSelectedExample={setSelectedExample}
+        selectedIssue={selectedIssue}
+        setSelectedIssue={setSelectedIssue}
       />
     </div>
   );

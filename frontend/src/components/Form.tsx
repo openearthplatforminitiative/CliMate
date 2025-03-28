@@ -5,11 +5,21 @@ import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import { Category, Issue } from "@/types/issue";
+import { title } from "process";
 
 export const Form = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const { coordinates } = useCoordinates();
+
+  const [issue, setIssue] = useState<Issue>({
+    title: "",
+    description: "",
+    category: "Garbage",
+    location: { type: "Point", coordinates: coordinates || [0, 0] }, // Default to [0, 0] if no coordinates are available
+    active: true,
+  });
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -19,9 +29,48 @@ export const Form = () => {
     }
   };
 
-  const handleUpload = () => {
-    if (file) {
-      console.log("Uploading file:", file.name, "at", coordinates);
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    setIssue((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleCategoryChange = (category: Category) => {
+    setIssue((prev) => ({
+      ...prev,
+      category,
+    }));
+  };
+
+  const handleUpload = async () => {
+    console.log(issue);
+    try {
+      const postData: Issue = {
+        title: issue.title,
+        description: issue.description,
+        category: issue.category,
+        location: issue.location,
+        user_uuid: "",
+        active: true,
+      };
+
+      const response = await fetch("/api/issue", {
+        method: "POST",
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload the issue.");
+      }
+
+      const result = await response.json();
+      console.log("Issue uploaded successfully:", result);
+    } catch (error) {
+      console.error("Error uploading issue:", error);
     }
   };
 
@@ -44,21 +93,33 @@ export const Form = () => {
           />
         )}
 
-        <Input id="title" type="text" placeholder="Title" className="mt-5" />
+        <Input
+          id="title"
+          type="text"
+          placeholder="Title"
+          value={issue.title}
+          onChange={handleInputChange}
+          className="mt-5"
+        />
 
         <div className="mt-5">
-          <CategorySelect />
+          <CategorySelect
+            value={issue.category}
+            onChange={handleCategoryChange}
+          />
         </div>
         <Textarea
           id="description"
           placeholder="Description"
+          value={issue.description}
+          onChange={handleInputChange}
           className="mt-5"
           rows={3}
         />
 
         <button
           onClick={handleUpload}
-          disabled={!file}
+          disabled={!issue.title || !issue.category || !issue.description}
           className="w-full mt-5 mb-10 p-2 bg-[#00391F] text-white rounded"
         >
           Submit report
