@@ -1,9 +1,10 @@
 import { useCoordinates } from "@/lib/CoordinatesContext";
-import { IssueWithImage, examples } from "@/types/issue";
+import { IssueWithImage } from "@/types/issue";
 import RoomIcon from "@mui/icons-material/Room";
-import { useMap, Marker } from "@vis.gl/react-maplibre";
+import { useMap, Marker, Source, Layer } from "@vis.gl/react-maplibre";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { MapMouseEvent } from "maplibre-gl";
 
 interface MapOverlayProps {
   clickedPoint: [number, number] | null;
@@ -28,11 +29,78 @@ export const MapOverlay = ({
   );
   const map = useMap();
   const [issues, setIssues] = useState<IssueWithImage[]>([]);
+  const [geoJsonData, setGeoJsonData] = useState<GeoJSON.FeatureCollection>({
+    type: "FeatureCollection",
+    features: [],
+  });
 
+  useEffect(() => {
+    const handleMapClick = (event: MapMouseEvent) => {
+      // Check if the click is on the "issues-layer"
+      const clickedFeatures = map.current?.queryRenderedFeatures(event.point, {
+        layers: ["issues-layer"],
+      });
+
+      if (clickedFeatures && clickedFeatures.length > 0) {
+        // Handle feature click
+        const clickedFeature = clickedFeatures[0];
+        const { id, title, description, image, category, active } =
+          clickedFeature.properties;
+
+        if (clickedFeature.geometry.type === "Point") {
+          setSelectedExample({
+            id,
+            title,
+            description,
+            image,
+            category,
+            active,
+            location: {
+              type: "Point",
+              coordinates: clickedFeature.geometry.coordinates,
+            },
+          });
+        }
+        setSheetOpen(true); // Open the sheet with the selected issue
+      } else {
+        // If no features are clicked, set the "Add Report" marker
+        const { lng, lat } = event.lngLat;
+        setClickedPoint([lng, lat]);
+      }
+    };
+
+    // Attach the click event listener to the map
+    map.current?.on("click", handleMapClick);
+
+    return () => {
+      // Clean up the event listener when the component unmounts
+      map.current?.off("click", handleMapClick);
+    };
+  }, [map, setClickedPoint, setSelectedExample, setSheetOpen]);
+
+  useEffect(() => {
+    setGeoJsonData({
+      type: "FeatureCollection",
+      features: issues.map((issue) => ({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: issue.location.coordinates,
+        },
+        properties: {
+          id: issue.id,
+          title: issue.title,
+          description: issue.description,
+          image: issue.image,
+        },
+      })),
+    });
+  }, [issues]);
+
+  // Get all issues
   useEffect(() => {
     const fetchData = async () => {
       const retrievedIssues = await fetch("/api/issue");
-      console.log(retrievedIssues);
       const { data } = await retrievedIssues.json();
       setIssues(data);
     };
@@ -55,25 +123,6 @@ export const MapOverlay = ({
     }
   }, []);
 
-  useEffect(() => {
-    map.current?.on("zoom", () => {
-      if (map.current) {
-        // const scalePercent = 1 + (map.current.getZoom() - 8) * 0.4;
-        // const element = document.getElementById("example-marker");
-        // if (element) {
-        //   console.log("transforming to", scalePercent);
-        //   element.style.transform = `scale(${scalePercent})`;
-        //   element.style.transformOrigin = "bottom";
-        // }
-        // const zoom = map.current.getZoom();
-        // const markers = document.querySelectorAll(".example-marker");
-        // markers.forEach((marker) => {
-        //   marker.style.transform = `scale(${1 + zoom / 100})`;
-        // });
-      }
-    });
-  }, []);
-
   const handleAddReport = () => {
     if (clickedPoint) {
       setCoordinates(clickedPoint);
@@ -85,7 +134,6 @@ export const MapOverlay = ({
         const height = map.current.getContainer().clientHeight;
         map.current.flyTo({
           center: clickedPoint,
-          zoom: 12,
           offset: [0, -height / 5],
         });
       }
@@ -120,30 +168,30 @@ export const MapOverlay = ({
           </div>
         </Marker>
       )}
-      {issues.map((example) => {
-        return (
-          <Marker
-            key={example.issue_uuid}
-            longitude={example.location.coordinates[0]}
-            latitude={example.location.coordinates[1]}
-            onClick={(e) => {
-              e.originalEvent.stopPropagation();
-              setSelectedExample(example);
-              setSheetOpen(true);
-            }}
-          >
-            {/* <div className="flex items-center justify-center w-8 h-8 bg-[#00391F] rounded-full">
-                  <RoomIcon className="text-white" />
-                </div> */}
-            <div
-              id="example-marker"
-              className="example-marker flex items-center justify-center w-8 h-8 bg-[#00391F] rounded-full"
-            >
-              <RoomIcon className="text-white" />
-            </div>
-          </Marker>
-        );
-      })}
+      return (
+      <Source id="issues" type="geojson" data={geoJsonData} generateId>
+        <Layer
+          id="issues-layer"
+          type="circle"
+          paint={{
+            "circle-radius": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              4, // At zoom level 0, radius is 4
+              12,
+              8, // At zoom level 12, radius is 8
+              22,
+              16, // At zoom level 22, radius is 16
+            ],
+            "circle-color": "#00391F",
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#FFFFFF",
+          }}
+        />
+      </Source>
+      );
     </>
   );
 };

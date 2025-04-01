@@ -47,7 +47,6 @@ export const Form = () => {
   };
 
   const handleUpload = async () => {
-    console.log(issue);
     try {
       const postData: Issue = {
         title: issue.title,
