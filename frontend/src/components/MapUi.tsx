@@ -8,52 +8,63 @@ import {
   SheetHeader,
   SheetTitle,
 } from "./ui/sheet";
+import { CardSlider } from "./CardSlider";
+import { Card } from "./ui/card";
 
 interface MapUiProps {
-  sheetOpen: boolean;
-  setSheetOpen: (open: boolean) => void;
+  sheetAddOpen: boolean;
+  setSheetAddOpen: (open: boolean) => void;
+  sheetViewOpen: boolean;
+  setSheetViewOpen: (open: boolean) => void;
   selectedIssue: IssueWithImage | null;
   setSelectedIssue: (example: IssueWithImage | null) => void;
 }
 
 export const MapUi = ({
-  sheetOpen,
-  setSheetOpen,
+  sheetAddOpen,
+  setSheetAddOpen,
+  sheetViewOpen,
+  setSheetViewOpen,
   selectedIssue,
   setSelectedIssue,
 }: MapUiProps) => {
   const handleCloseSheet = () => {
     setSelectedIssue(null);
-    setSheetOpen(false);
+    setSheetAddOpen(false);
+    setSheetViewOpen(false);
   };
 
   return (
     <>
       <MenuButton className="absolute bg-[#00391F] text-[#DFF7E3]" />
 
-      <div className="absolute bottom-7 right-4 z-10 flex flex-col gap-4">
-        {/* <CardSlider /> */}
-        {/* <Card>Test</Card> */}
+      <div className="absolute bottom-7 left-0 right-0 z-10 flex flex-col gap-4">
+        <CardSlider />
       </div>
-      <Sheet open={sheetOpen} onOpenChange={handleCloseSheet}>
+      <Sheet open={sheetAddOpen} onOpenChange={handleCloseSheet}>
         <SheetContent side="bottom" className="bg-[#F5FFF4]">
           <SheetHeader>
-            <SheetTitle>
-              {selectedIssue ? selectedIssue.title : "Create Report"}
-            </SheetTitle>
+            <SheetTitle>Create Report</SheetTitle>
             <SheetDescription>
-              {selectedIssue ? (
-                <div>
-                  <p>{selectedIssue.description}</p>
-                  <img
-                    src={selectedIssue.image}
-                    alt={selectedIssue.title}
-                    className="mt-5"
-                  />
-                </div>
-              ) : (
-                <Form />
-              )}
+              <Form />
+            </SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={sheetViewOpen} onOpenChange={handleCloseSheet}>
+        <SheetContent side="bottom" className="bg-[#F5FFF4]">
+          <SheetHeader>
+            <SheetTitle>{selectedIssue?.title}</SheetTitle>
+            <SheetDescription>
+              <div>
+                <p>{selectedIssue?.description}</p>
+                <img
+                  src={selectedIssue?.image}
+                  alt={selectedIssue?.title}
+                  className="mt-5"
+                />
+              </div>
             </SheetDescription>
           </SheetHeader>
         </SheetContent>

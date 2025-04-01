@@ -9,8 +9,10 @@ import { MapMouseEvent } from "maplibre-gl";
 interface MapOverlayProps {
   clickedPoint: [number, number] | null;
   setClickedPoint: (point: [number, number] | null) => void;
-  sheetOpen: boolean;
-  setSheetOpen: (open: boolean) => void;
+  sheetAddOpen: boolean;
+  setSheetAddOpen: (open: boolean) => void;
+  sheetViewOpen: boolean;
+  setSheetViewOpen: (open: boolean) => void;
   selectedExample: IssueWithImage | null;
   setSelectedExample: (example: IssueWithImage | null) => void;
 }
@@ -18,8 +20,10 @@ interface MapOverlayProps {
 export const MapOverlay = ({
   clickedPoint,
   setClickedPoint,
-  sheetOpen,
-  setSheetOpen,
+  sheetAddOpen,
+  setSheetAddOpen,
+  sheetViewOpen,
+  setSheetViewOpen,
   selectedExample,
   setSelectedExample,
 }: MapOverlayProps) => {
@@ -61,7 +65,7 @@ export const MapOverlay = ({
             },
           });
         }
-        setSheetOpen(true); // Open the sheet with the selected issue
+        setSheetViewOpen(true); // Open the sheet with the selected issue
       } else {
         // If no features are clicked, set the "Add Report" marker
         const { lng, lat } = event.lngLat;
@@ -76,7 +80,7 @@ export const MapOverlay = ({
       // Clean up the event listener when the component unmounts
       map.current?.off("click", handleMapClick);
     };
-  }, [map, setClickedPoint, setSelectedExample, setSheetOpen]);
+  }, [map, setClickedPoint, setSelectedExample, setSheetViewOpen]);
 
   useEffect(() => {
     setGeoJsonData({
@@ -126,7 +130,7 @@ export const MapOverlay = ({
   const handleAddReport = () => {
     if (clickedPoint) {
       setCoordinates(clickedPoint);
-      setSheetOpen(true);
+      setSheetAddOpen(true);
 
       // Make the map center on the clicked place.
       // Centers with an offset such that the pointer is on the top half of the screen.

@@ -11,7 +11,8 @@ export const EcoMap = () => {
     null
   );
 
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetAddOpen, setSheetAddOpen] = useState(false);
+  const [sheetViewOpen, setSheetViewOpen] = useState(false);
   const [selectedIssue, setSelectedIssue] = useState<IssueWithImage | null>(
     null
   );
@@ -32,16 +33,20 @@ export const EcoMap = () => {
           <MapOverlay
             clickedPoint={clickedPoint}
             setClickedPoint={setClickedPoint}
-            sheetOpen={sheetOpen}
-            setSheetOpen={setSheetOpen}
+            sheetAddOpen={sheetAddOpen}
+            setSheetAddOpen={setSheetAddOpen}
+            sheetViewOpen={sheetViewOpen}
+            setSheetViewOpen={setSheetViewOpen}
             selectedExample={selectedIssue}
             setSelectedExample={setSelectedIssue}
           />
         </Map>
       </MapProvider>
       <MapUi
-        sheetOpen={sheetOpen}
-        setSheetOpen={setSheetOpen}
+        sheetAddOpen={sheetAddOpen}
+        setSheetAddOpen={setSheetAddOpen}
+        sheetViewOpen={sheetViewOpen}
+        setSheetViewOpen={setSheetViewOpen}
         selectedIssue={selectedIssue}
         setSelectedIssue={setSelectedIssue}
       />
