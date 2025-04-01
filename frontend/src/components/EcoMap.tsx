@@ -16,11 +16,6 @@ export const EcoMap = () => {
     null
   );
 
-  const handleClick = (e: any) => {
-    const coordinates: [number, number] = [e.lngLat.lng, e.lngLat.lat];
-    setClickedPoint(coordinates);
-  };
-
   return (
     <div className="fixed inset-0">
       <MapProvider>
@@ -32,7 +27,6 @@ export const EcoMap = () => {
           }}
           style={{ width: "100%", height: "100%" }}
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
-          onClick={handleClick}
           attributionControl={false}
         >
           <MapOverlay

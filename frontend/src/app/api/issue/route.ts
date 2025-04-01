@@ -7,7 +7,6 @@ export async function POST(req: NextRequest): Promise<Response> {
   // const buffer = Buffer.from(arrayBuffer);
   try {
     const postData = await req.json();
-    console.log(postData);
     const result = await fetch("http://localhost:8080/v1/issues", {
       method: "POST",
       headers: {
