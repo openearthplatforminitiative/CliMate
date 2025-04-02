@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Comic_Neue, Inter } from "next/font/google";
 import "./globals.css";
 import { CoordinatesProvider } from "@/lib/CoordinatesContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <CoordinatesProvider>{children}</CoordinatesProvider>
+        <Toaster />
       </body>
     </html>
   );

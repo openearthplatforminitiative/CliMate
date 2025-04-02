@@ -18,23 +18,35 @@ export const CardSlider = () => {
       ecoMap.flyTo({
         center: [clickedPoint[0], clickedPoint[1]],
         offset: [0, -height / 5],
-        zoom: 12,
+        zoom: 16,
         speed: 2,
       });
     }
   };
 
   return (
-    <div className="flex relative w-full overflow-x-scroll gap-2">
+    <div className="flex relative w-full overflow-x-scroll gap-2 px-2">
       {issues.map((issue) => (
         <Card
           key={issue.id}
-          className="flex-shrink-0 w-[300px] p-4"
+          className="flex-shrink-0 w-[300px] p-4 relative overflow-hidden bg-[#DFF7E3]"
           onClick={() => handleClick(issue)} // Pass the issue to handleClick
         >
-          <h3 className="font-bold">{issue.title}</h3>
-          <p>Category: {issue.category}</p>
-          <p>{issue.description}</p>
+          <div
+            className="absolute top-0 right-0 h-full w-1/3"
+            style={{
+              backgroundImage: `url(https://marylandmatters.org/wp-content/uploads/2022/12/AdobeStock_290929282-scaled.jpeg)`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          ></div>
+
+          {/* Content on the left side */}
+          <div className="relative w-2/3">
+            <h3 className="font-bold text-sm">{issue.title}</h3>
+            <p className="text-xs">Category: {issue.category}</p>
+            <p className="text-xs">{issue.description}</p>
+          </div>
         </Card>
       ))}
     </div>

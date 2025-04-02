@@ -5,19 +5,26 @@ import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-import { Category, Issue } from "@/types/issue";
-import { title } from "process";
+import { Category, Issue, IssueWithImage } from "@/types/issue";
+import { useIssues } from "@/lib/IssuesContext";
+import { toast } from "sonner";
 
-export const Form = () => {
+interface FormProps {
+  setSheetAddOpen: (open: boolean) => void;
+  setClickedPoint: (point: [number, number] | null) => void;
+}
+
+export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const { coordinates } = useCoordinates();
+  const { issues, setIssues } = useIssues();
 
   const [issue, setIssue] = useState<Issue>({
     title: "",
     description: "",
     category: "Garbage",
-    location: { type: "Point", coordinates: coordinates || [0, 0] }, // Default to [0, 0] if no coordinates are available
+    location: { type: "Point", coordinates: coordinates || [0, 0] },
     active: true,
   });
 
@@ -66,8 +73,12 @@ export const Form = () => {
         throw new Error("Failed to upload the issue.");
       }
 
-      const result = await response.json();
-      console.log("Issue uploaded successfully:", result);
+      const { data }: { data: IssueWithImage } = await response.json();
+      console.log("Issue uploaded successfully:", data);
+      setIssues((prevIssues: IssueWithImage[]) => [...prevIssues, data]);
+      setSheetAddOpen(false);
+      toast("Successfully uploaded report");
+      setClickedPoint(null);
     } catch (error) {
       console.error("Error uploading issue:", error);
     }

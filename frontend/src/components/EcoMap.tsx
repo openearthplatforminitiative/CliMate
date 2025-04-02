@@ -19,6 +19,7 @@ export const EcoMap = () => {
   );
 
   const { setIssues } = useIssues();
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   // Get all issues
   useEffect(() => {
@@ -29,7 +30,11 @@ export const EcoMap = () => {
       setIssues(data);
     };
     fetchData();
-  }, []);
+  }, [setIssues]);
+
+  const handleMapLoad = () => {
+    setMapLoaded(true);
+  };
 
   return (
     <div className="fixed inset-0">
@@ -44,6 +49,7 @@ export const EcoMap = () => {
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
           attributionControl={false}
           id="ecoMap"
+          onLoad={handleMapLoad}
         >
           <MapLayers
             clickedPoint={clickedPoint}
@@ -56,14 +62,21 @@ export const EcoMap = () => {
             setSelectedExample={setSelectedIssue}
           />
         </Map>
-        <MapUi
-          sheetAddOpen={sheetAddOpen}
-          setSheetAddOpen={setSheetAddOpen}
-          sheetViewOpen={sheetViewOpen}
-          setSheetViewOpen={setSheetViewOpen}
-          selectedIssue={selectedIssue}
-          setSelectedIssue={setSelectedIssue}
-        />
+        {mapLoaded ? (
+          <MapUi
+            sheetAddOpen={sheetAddOpen}
+            setSheetAddOpen={setSheetAddOpen}
+            sheetViewOpen={sheetViewOpen}
+            setSheetViewOpen={setSheetViewOpen}
+            selectedIssue={selectedIssue}
+            setSelectedIssue={setSelectedIssue}
+            setClickedPoint={setClickedPoint}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-white">
+            <p className="text-gray-500">Loading map...</p>
+          </div>
+        )}
       </MapProvider>
     </div>
   );

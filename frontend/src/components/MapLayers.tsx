@@ -2,7 +2,7 @@ import { useCoordinates } from "@/lib/CoordinatesContext";
 import { IssueWithImage } from "@/types/issue";
 import RoomIcon from "@mui/icons-material/Room";
 import { useMap, Marker, Source, Layer } from "@vis.gl/react-maplibre";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { MapMouseEvent } from "maplibre-gl";
 import { useIssues } from "@/lib/IssuesContext";
@@ -95,6 +95,7 @@ export const MapLayers = ({
         properties: {
           id: issue.id,
           title: issue.title,
+          category: issue.category,
           description: issue.description,
           image: issue.image,
         },
@@ -163,7 +164,14 @@ export const MapLayers = ({
           </div>
         </Marker>
       )}
-      <Source id="issues" type="geojson" data={geoJsonData} generateId>
+      <Source
+        id="issues"
+        type="geojson"
+        data={geoJsonData}
+        generateId
+        cluster={true}
+        clusterMaxZoom={14}
+      >
         <Layer
           id="issues-layer"
           type="circle"
@@ -173,7 +181,7 @@ export const MapLayers = ({
               ["linear"],
               ["zoom"],
               0,
-              4, // At zoom level 0, radius is 4
+              0, // At zoom level 0, radius is 4
               12,
               8, // At zoom level 12, radius is 8
               22,

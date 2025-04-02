@@ -4,7 +4,7 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface IssuesContextProps {
   issues: IssueWithImage[];
-  setIssues: (issues: IssueWithImage[]) => void;
+  setIssues: React.Dispatch<React.SetStateAction<IssueWithImage[]>>;
 }
 
 const IssueContext = createContext<IssuesContextProps | undefined>(undefined);

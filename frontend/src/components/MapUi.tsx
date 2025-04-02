@@ -17,6 +17,7 @@ interface MapUiProps {
   setSheetViewOpen: (open: boolean) => void;
   selectedIssue: IssueWithImage | null;
   setSelectedIssue: (example: IssueWithImage | null) => void;
+  setClickedPoint: (point: [number, number] | null) => void;
 }
 
 export const MapUi = ({
@@ -26,6 +27,7 @@ export const MapUi = ({
   setSheetViewOpen,
   selectedIssue,
   setSelectedIssue,
+  setClickedPoint,
 }: MapUiProps) => {
   const handleCloseSheet = () => {
     setSelectedIssue(null);
@@ -45,7 +47,10 @@ export const MapUi = ({
           <SheetHeader>
             <SheetTitle>Create Report</SheetTitle>
             <SheetDescription>
-              <Form />
+              <Form
+                setSheetAddOpen={setSheetAddOpen}
+                setClickedPoint={setClickedPoint}
+              />
             </SheetDescription>
           </SheetHeader>
         </SheetContent>
