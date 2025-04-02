@@ -5,8 +5,9 @@ import { useMap, Marker, Source, Layer } from "@vis.gl/react-maplibre";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { MapMouseEvent } from "maplibre-gl";
+import { useIssues } from "@/lib/IssuesContext";
 
-interface MapOverlayProps {
+interface MapLayersProps {
   clickedPoint: [number, number] | null;
   setClickedPoint: (point: [number, number] | null) => void;
   sheetAddOpen: boolean;
@@ -17,7 +18,7 @@ interface MapOverlayProps {
   setSelectedExample: (example: IssueWithImage | null) => void;
 }
 
-export const MapOverlay = ({
+export const MapLayers = ({
   clickedPoint,
   setClickedPoint,
   sheetAddOpen,
@@ -26,13 +27,13 @@ export const MapOverlay = ({
   setSheetViewOpen,
   selectedExample,
   setSelectedExample,
-}: MapOverlayProps) => {
+}: MapLayersProps) => {
   const { setCoordinates } = useCoordinates();
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
   );
   const map = useMap();
-  const [issues, setIssues] = useState<IssueWithImage[]>([]);
+  const { issues } = useIssues();
   const [geoJsonData, setGeoJsonData] = useState<GeoJSON.FeatureCollection>({
     type: "FeatureCollection",
     features: [],
@@ -101,16 +102,6 @@ export const MapOverlay = ({
     });
   }, [issues]);
 
-  // Get all issues
-  useEffect(() => {
-    const fetchData = async () => {
-      const retrievedIssues = await fetch("/api/issue");
-      const { data } = await retrievedIssues.json();
-      setIssues(data);
-    };
-    fetchData();
-  }, []);
-
   // Get location of user and go there if allowed
   useEffect(() => {
     if (navigator.geolocation) {
@@ -172,7 +163,6 @@ export const MapOverlay = ({
           </div>
         </Marker>
       )}
-      return (
       <Source id="issues" type="geojson" data={geoJsonData} generateId>
         <Layer
           id="issues-layer"
@@ -195,7 +185,6 @@ export const MapOverlay = ({
           }}
         />
       </Source>
-      );
     </>
   );
 };

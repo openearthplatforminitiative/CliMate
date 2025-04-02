@@ -1,10 +1,11 @@
 "use client";
 import { Map, MapProvider } from "@vis.gl/react-maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { MapOverlay } from "./MapOverlay";
+import { MapLayers } from "./MapLayers";
 import { MapUi } from "./MapUi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IssueWithImage } from "@/types/issue";
+import { useIssues } from "@/lib/IssuesContext";
 
 export const EcoMap = () => {
   const [clickedPoint, setClickedPoint] = useState<[number, number] | null>(
@@ -16,6 +17,19 @@ export const EcoMap = () => {
   const [selectedIssue, setSelectedIssue] = useState<IssueWithImage | null>(
     null
   );
+
+  const { setIssues } = useIssues();
+
+  // Get all issues
+  useEffect(() => {
+    const fetchData = async () => {
+      const retrievedIssues = await fetch("/api/issue");
+      const { data } = await retrievedIssues.json();
+      console.log("setting issues to ", data);
+      setIssues(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="fixed inset-0">
@@ -29,8 +43,9 @@ export const EcoMap = () => {
           style={{ width: "100%", height: "100%" }}
           mapStyle="https://tiles.openfreemap.org/styles/liberty"
           attributionControl={false}
+          id="ecoMap"
         >
-          <MapOverlay
+          <MapLayers
             clickedPoint={clickedPoint}
             setClickedPoint={setClickedPoint}
             sheetAddOpen={sheetAddOpen}
@@ -41,15 +56,15 @@ export const EcoMap = () => {
             setSelectedExample={setSelectedIssue}
           />
         </Map>
+        <MapUi
+          sheetAddOpen={sheetAddOpen}
+          setSheetAddOpen={setSheetAddOpen}
+          sheetViewOpen={sheetViewOpen}
+          setSheetViewOpen={setSheetViewOpen}
+          selectedIssue={selectedIssue}
+          setSelectedIssue={setSelectedIssue}
+        />
       </MapProvider>
-      <MapUi
-        sheetAddOpen={sheetAddOpen}
-        setSheetAddOpen={setSheetAddOpen}
-        sheetViewOpen={sheetViewOpen}
-        setSheetViewOpen={setSheetViewOpen}
-        selectedIssue={selectedIssue}
-        setSelectedIssue={setSelectedIssue}
-      />
     </div>
   );
 };

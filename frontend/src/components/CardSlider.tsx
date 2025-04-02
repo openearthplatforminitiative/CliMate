@@ -1,27 +1,42 @@
-import { useState } from "react";
+import { useMap } from "@vis.gl/react-maplibre";
 import { Card } from "./ui/card";
-
-const mockCards = [
-  { id: 1, title: "Card 1", content: "Content 1" },
-  { id: 2, title: "Card 2", content: "Content 2" },
-  { id: 3, title: "Card 3", content: "Content 3" },
-  { id: 4, title: "Card 4", content: "Content 4" },
-];
+import { useIssues } from "@/lib/IssuesContext";
+import { IssueWithImage } from "@/types/issue";
 
 export const CardSlider = () => {
-  const [cards, setCards] = useState(mockCards);
+  const { issues } = useIssues();
+  const { ecoMap } = useMap();
+
+  if (issues === undefined || issues === null) {
+    return null;
+  }
+
+  const handleClick = (issue: IssueWithImage) => {
+    const clickedPoint = issue.location.coordinates;
+    if (ecoMap) {
+      const height = ecoMap.getContainer().clientHeight;
+      ecoMap.flyTo({
+        center: [clickedPoint[0], clickedPoint[1]],
+        offset: [0, -height / 5],
+        zoom: 12,
+        speed: 2,
+      });
+    }
+  };
+
   return (
-    <div className="relative w-full">
-      <div className="overflow-x-auto">
-        <div className="flex gap-4 pb-4">
-          {cards.map((card) => (
-            <Card key={card.id} className="flex-shrink-0 w-[300px] p-4">
-              <h3 className="font-bold">{card.title}</h3>
-              <p>{card.content}</p>
-            </Card>
-          ))}
-        </div>
-      </div>
+    <div className="flex relative w-full overflow-x-scroll gap-2">
+      {issues.map((issue) => (
+        <Card
+          key={issue.id}
+          className="flex-shrink-0 w-[300px] p-4"
+          onClick={() => handleClick(issue)} // Pass the issue to handleClick
+        >
+          <h3 className="font-bold">{issue.title}</h3>
+          <p>Category: {issue.category}</p>
+          <p>{issue.description}</p>
+        </Card>
+      ))}
     </div>
   );
 };

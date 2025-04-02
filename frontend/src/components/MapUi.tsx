@@ -9,7 +9,6 @@ import {
   SheetTitle,
 } from "./ui/sheet";
 import { CardSlider } from "./CardSlider";
-import { Card } from "./ui/card";
 
 interface MapUiProps {
   sheetAddOpen: boolean;

@@ -1,8 +1,12 @@
-import { Form } from "@/components/Form";
 import { EcoMap } from "@/components/EcoMap";
+import { IssuesProvider } from "@/lib/IssuesContext";
 
 const Report = () => {
-  return <EcoMap />;
+  return (
+    <IssuesProvider>
+      <EcoMap />
+    </IssuesProvider>
+  );
 };
 
 export default Report;
