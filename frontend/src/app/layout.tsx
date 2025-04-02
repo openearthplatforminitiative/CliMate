@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Comic_Neue, Inter } from "next/font/google";
+import { Newsreader, Inter } from "next/font/google";
 import "./globals.css";
 import { CoordinatesProvider } from "@/lib/CoordinatesContext";
 import { Toaster } from "@/components/ui/sonner";
@@ -7,6 +7,11 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({
   subsets: ["latin"],
 });
+
+// ts-ignore
+const newsreader = Newsreader({
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "EcoReport",

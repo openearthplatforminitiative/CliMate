@@ -1,0 +1,177 @@
+import type {Config} from "tailwindcss"
+
+const config: Config = {
+	content: [
+		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
+		"./components/**/*.{js,ts,jsx,tsx,mdx}",
+		"./app/**/*.{js,ts,jsx,tsx,mdx}",
+	],
+	important: true,
+	theme: {
+		screens: {
+			"2xs": "320px",
+
+			xs: "580px",
+
+			sm: "640px",
+			// => @media (min-width: 640px) { ... }
+
+			md: "768px",
+			// => @media (min-width: 768px) { ... }
+
+			lg: "1024px",
+			// => @media (min-width: 1024px) { ... }
+
+			xl: "1280px",
+			// => @media (min-width: 1280px) { ... }
+
+			"2xl": "1536px",
+			// => @media (min-width: 1536px) { ... }
+		},
+		colors: {
+			primary: {
+				main: "#006D41",
+				0: "#000000",
+				5: "#001509",
+				10: "#002110",
+				20: "#00391F",
+				25: "#004528",
+				30: "#005230",
+				35: "#005F38",
+				40: "#006D41",
+				50: "#1C8855",
+				60: "#3EA26D",
+				70: "#5BBE86",
+				80: "#77DAA0",
+				90: "#93F7BB",
+				95: "#C1FFD5",
+				98: "#E9FFED",
+				99: "#F5FFF4",
+				100: "#FFFFFF",
+			},
+			secondary: {
+				main: "#4E6354",
+				0: "#000000",
+				5: "#03140A",
+				10: "#0C1F14",
+				20: "#213528",
+				25: "#2C4033",
+				30: "#374B3E",
+				35: "#435749",
+				40: "#4E6354",
+				50: "#677C6C",
+				60: "#809685",
+				70: "#9AB19F",
+				80: "#B5CCBA",
+				90: "#D1E8D5",
+				95: "#DFF7E3",
+				98: "#E9FFED",
+				99: "#F5FFF4",
+				100: "#FFFFFF",
+			},
+			tertiary: {
+				main: "#3B6471",
+				0: "#000000",
+				5: "#001319",
+				10: "#001F27",
+				20: "#033541",
+				25: "#14414C",
+				30: "#224C58",
+				35: "#2F5864",
+				40: "#3B6471",
+				50: "#547D8A",
+				60: "#6E97A4",
+				70: "#88B2BF",
+				80: "#A3CDDB",
+				90: "#BFE9F8",
+				95: "#DAF5FF",
+				98: "#F1FBFF",
+				99: "#F9FDFF",
+				100: "#FFFFFF",
+			},
+			error: {
+				main: "#BA1A1A",
+				0: "#000000",
+				5: "#2D0001",
+				10: "#410002",
+				20: "#690005",
+				25: "#7E0007",
+				30: "#93000A",
+				35: "#A80710",
+				40: "#BA1A1A",
+				50: "#DE3730",
+				60: "#FF5449",
+				70: "#FF897D",
+				80: "#FFB4AB",
+				90: "#FFDAD6",
+				95: "#FFEDEA",
+				98: "#FFF8F7",
+				99: "#FFFBFF",
+				100: "#FFFFFF",
+			},
+			neutral: {
+				main: "#5C5F5C",
+				0: "#000000",
+				5: "#0F120F",
+				10: "#191C1A",
+				20: "#2E312E",
+				25: "#393C39",
+				30: "#505350",
+				35: "#505350",
+				40: "#5C5F5C",
+				50: "#757874",
+				60: "#8F918D",
+				70: "#AAACA8",
+				80: "#C5C7C3",
+				90: "#E1E3DE",
+				95: "#F0F1ED",
+				98: "#F8FAF5",
+				99: "#F8F9F6",
+				100: "#FFFFFF",
+			},
+			neutralVariant: {
+				main: "#586059",
+				0: "#000000",
+				5: "#0B130D",
+				10: "#161D18",
+				20: "#2A322C",
+				25: "#353D37",
+				30: "#414942",
+				35: "#4C544E",
+				40: "#586059",
+				50: "#717972",
+				60: "#8A938B",
+				70: "#A5ADA5",
+				80: "#C0C9C0",
+				90: "#DCE5DC",
+				95: "#EAF3EA",
+				98: "#F3FCF2",
+				99: "#F6FFF5",
+				100: "#FFFFFF",
+			},
+			card: "#F2F4EF",
+		},
+		extend: {
+			keyframes: {
+				spinFrom90: {
+					"0%": {transform: "rotate(90deg)"},
+					"100%": {transform: "rotate(450deg)"}, // 360 + 90 degrees
+				},
+			},
+			backgroundImage: {
+				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+				"gradient-conic":
+					"conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+			},
+			fontFamily: {
+				sans: ["var(--font-inter)"],
+			},
+			animation: {
+				spin: "spin 40s linear infinite",
+				spinFrom90: "spinFrom90 40s linear infinite",
+			},
+		},
+	},
+	plugins: [],
+}
+export default config
