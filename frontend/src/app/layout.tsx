@@ -1,34 +1,34 @@
-import type { Metadata } from "next";
-import { Newsreader, Inter } from "next/font/google";
-import "./globals.css";
-import { CoordinatesProvider } from "@/lib/CoordinatesContext";
-import { Toaster } from "@/components/ui/sonner";
+import type { Metadata } from "next"
+import { Newsreader, Inter } from "next/font/google"
+import "./globals.css"
+import { CoordinatesProvider } from "@/lib/CoordinatesContext"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({
-  subsets: ["latin"],
-});
+	subsets: ["latin"],
+})
 
 // ts-ignore
 const newsreader = Newsreader({
-  subsets: ["latin"],
+	subsets: ["latin"],
 })
 
 export const metadata: Metadata = {
-  title: "EcoReport",
-  description: "TODO",
-};
+	title: "EcoReport",
+	description: "TODO",
+}
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        <CoordinatesProvider>{children}</CoordinatesProvider>
-        <Toaster />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className={`${inter.className} antialiased`}>
+				<CoordinatesProvider>{children}</CoordinatesProvider>
+				<Toaster />
+			</body>
+		</html>
+	)
 }

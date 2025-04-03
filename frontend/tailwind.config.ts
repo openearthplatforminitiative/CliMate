@@ -1,4 +1,4 @@
-import type {Config} from "tailwindcss"
+import type { Config } from "tailwindcss"
 
 const config: Config = {
 	content: [
@@ -154,8 +154,8 @@ const config: Config = {
 		extend: {
 			keyframes: {
 				spinFrom90: {
-					"0%": {transform: "rotate(90deg)"},
-					"100%": {transform: "rotate(450deg)"}, // 360 + 90 degrees
+					"0%": { transform: "rotate(90deg)" },
+					"100%": { transform: "rotate(450deg)" }, // 360 + 90 degrees
 				},
 			},
 			backgroundImage: {

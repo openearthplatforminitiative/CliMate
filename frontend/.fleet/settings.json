@@ -1,6 +1,6 @@
 {
-  "prettier.mode": "Auto",
-  "nodejs.typescript.rebuildOnChanges": true,
-  "editor.formatOnSave": true,
-  "gradle.autoImportOnSave": true
+	"prettier.mode": "Auto",
+	"nodejs.typescript.rebuildOnChanges": true,
+	"editor.formatOnSave": true,
+	"gradle.autoImportOnSave": true
 }

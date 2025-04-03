@@ -8,7 +8,7 @@ import { NoradLogo, OpenEpiLogo } from "@/components/Logos"
 import { ProjectCard } from "@/components/Card"
 
 export default function Home() {
-  const router = useRouter()
+	const router = useRouter()
 
   return (
     <>
