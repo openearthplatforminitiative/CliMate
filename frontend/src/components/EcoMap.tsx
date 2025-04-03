@@ -25,7 +25,8 @@ export const EcoMap = () => {
   useEffect(() => {
     const fetchData = async () => {
       const retrievedIssues = await fetch("/api/issue");
-      const { data } = await retrievedIssues.json();
+      const { data, error } = await retrievedIssues.json();
+      if (error) throw error;
       console.log("setting issues to ", data);
       setIssues(data);
     };
