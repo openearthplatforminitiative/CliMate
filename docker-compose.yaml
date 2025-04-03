@@ -60,6 +60,15 @@ services:
       keycloak_db:
         condition: service_healthy
 
+  frontend:
+    container_name: climate_frontend
+    build: ./frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - cli_mate_db
+      - keycloak
+
 networks:
   local:
     name: local

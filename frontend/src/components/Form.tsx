@@ -8,6 +8,7 @@ import { Textarea } from "./ui/textarea"
 import { Category, Issue, IssueWithImage } from "@/types/issue"
 import { useIssues } from "@/lib/IssuesContext"
 import { toast } from "sonner"
+import Image from "next/image"
 
 interface FormProps {
 	setSheetAddOpen: (open: boolean) => void
@@ -18,7 +19,7 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
 	const { coordinates } = useCoordinates()
-	const { issues, setIssues } = useIssues()
+	const { setIssues } = useIssues()
 
 	const [issue, setIssue] = useState<Issue>({
 		title: "",
@@ -96,7 +97,7 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 				/>
 				{file && <p>Selected file: {file.name}</p>}
 				{preview && (
-					<img
+					<Image
 						src={preview}
 						alt="Preview"
 						className="w-32 h-32 object-cover mt-2"

@@ -9,6 +9,7 @@ import {
 	SheetTitle,
 } from "./ui/sheet"
 import { CardSlider } from "./CardSlider"
+import Image from "next/image"
 
 interface MapUiProps {
 	sheetAddOpen: boolean
@@ -63,11 +64,13 @@ export const MapUi = ({
 						<SheetDescription>
 							<div>
 								<p>{selectedIssue?.description}</p>
-								<img
-									src={selectedIssue?.image}
-									alt={selectedIssue?.title}
-									className="mt-5"
-								/>
+								{selectedIssue && (
+									<Image
+										src={selectedIssue.image}
+										alt={selectedIssue.title}
+										className="mt-5"
+									/>
+								)}
 							</div>
 						</SheetDescription>
 					</SheetHeader>

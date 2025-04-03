@@ -8,7 +8,7 @@ const inter = Inter({
 	subsets: ["latin"],
 })
 
-// ts-ignore
+// eslint-disable-next-line
 const newsreader = Newsreader({
 	subsets: ["latin"],
 })

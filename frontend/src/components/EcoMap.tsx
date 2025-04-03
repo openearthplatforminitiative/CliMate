@@ -25,8 +25,8 @@ export const EcoMap = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const retrievedIssues = await fetch("/api/issue")
-			const { data, error } = await retrievedIssues.json();
-     		if (error) throw error;
+			const { data, error } = await retrievedIssues.json()
+			if (error) throw error
 			console.log("setting issues to ", data)
 			setIssues(data)
 		}
@@ -55,11 +55,8 @@ export const EcoMap = () => {
 					<MapLayers
 						clickedPoint={clickedPoint}
 						setClickedPoint={setClickedPoint}
-						sheetAddOpen={sheetAddOpen}
 						setSheetAddOpen={setSheetAddOpen}
-						sheetViewOpen={sheetViewOpen}
 						setSheetViewOpen={setSheetViewOpen}
-						selectedExample={selectedIssue}
 						setSelectedExample={setSelectedIssue}
 					/>
 				</Map>

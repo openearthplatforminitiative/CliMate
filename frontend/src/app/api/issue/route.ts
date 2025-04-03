@@ -35,7 +35,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 	}
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
 	try {
 		const result = await fetch("http://localhost:8080/v1/issues")
 

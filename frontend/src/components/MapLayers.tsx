@@ -10,22 +10,16 @@ import { useIssues } from "@/lib/IssuesContext"
 interface MapLayersProps {
 	clickedPoint: [number, number] | null
 	setClickedPoint: (point: [number, number] | null) => void
-	sheetAddOpen: boolean
 	setSheetAddOpen: (open: boolean) => void
-	sheetViewOpen: boolean
 	setSheetViewOpen: (open: boolean) => void
-	selectedExample: IssueWithImage | null
 	setSelectedExample: (example: IssueWithImage | null) => void
 }
 
 export const MapLayers = ({
 	clickedPoint,
 	setClickedPoint,
-	sheetAddOpen,
 	setSheetAddOpen,
-	sheetViewOpen,
 	setSheetViewOpen,
-	selectedExample,
 	setSelectedExample,
 }: MapLayersProps) => {
 	const { setCoordinates } = useCoordinates()
