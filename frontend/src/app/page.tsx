@@ -8,7 +8,7 @@ import { NoradLogo, OpenEpiLogo } from "@/components/Logos"
 import { ProjectCard } from "@/components/Card"
 
 export default function Home() {
-	const router = useRouter()
+  const router = useRouter()
 
   return (
     <>
@@ -67,20 +67,24 @@ export default function Home() {
             <p className="text-xl sm:text-2xl">Projects is science projects that you can support</p>
             <div
               className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-24 px-10 md:px-0">
-              <ProjectCard title="Project" description="Lorem ipsum dolor" />
-              <ProjectCard title="Project" description="Lorem ipsum dolor" />
-              <ProjectCard title="Project" description="Lorem ipsum dolor" />
-              <ProjectCard title="Project" description="Lorem ipsum dolor" />
+              <ProjectCard title="Project" description="Lorem ipsum dolor" href="/map" imageSrc="/river.jpg" />
+              <ProjectCard title="Project" description="Lorem ipsum dolor" href="/map" imageSrc="/river.jpg" />
+              <ProjectCard title="Project" description="Lorem ipsum dolor" href="/map" imageSrc="/river.jpg" />
+              <ProjectCard title="Project" description="Lorem ipsum dolor" href="/map" imageSrc="/river.jpg" />
             </div>
             <h2 className="font-[newsreader] text-5xl mb-5 sm:mb-10">Popular Events</h2>
             <p className="text-xl sm:text-2xl">Events is arranged by organizations or private persons to clean up
               areas</p>
             <div
               className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-10 px-10 md:px-0">
-              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} />
-              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} />
-              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} />
-              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} />
+              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} href="/map"
+                           imageSrc="/river.jpg" />
+              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} href="/map"
+                           imageSrc="/river.jpg" />
+              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} href="/map"
+                           imageSrc="/river.jpg" />
+              <ProjectCard title="Event" description="Lorem ipsum dolor" date={new Date} href="/map"
+                           imageSrc="/river.jpg" />
             </div>
           </div>
         </div>
