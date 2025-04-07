@@ -37,7 +37,7 @@ export const MapLayers = ({
 		const handleMapClick = (event: MapMouseEvent) => {
 			// Check if the click is on the "issues-layer"
 			const clickedFeatures = map.current?.queryRenderedFeatures(event.point, {
-				layers: ["issues-layer"],
+				layers: ["issues-labels"],
 			})
 
 			if (clickedFeatures && clickedFeatures.length > 0) {
@@ -77,6 +77,7 @@ export const MapLayers = ({
 		}
 	}, [map, setClickedPoint, setSelectedExample, setSheetViewOpen])
 
+	// Set create FeatureCollection of issues
 	useEffect(() => {
 		setGeoJsonData({
 			type: "FeatureCollection",
@@ -130,6 +131,31 @@ export const MapLayers = ({
 		}
 	}
 
+	// Add icons
+	useEffect(() => {
+		if (!map.current) return
+		const mapInstance = map.current.getMap()
+
+		// Handler for missing images
+		const handleMissingImage = async (e: any) => {
+			const id = e.id // "trash-icon"
+
+			const image = await mapInstance.loadImage("/trash-alt-solid.png")
+			mapInstance.addImage(id, image.data)
+		}
+
+		// Add event listener for missing images
+		mapInstance.on("styleimagemissing", handleMissingImage)
+
+		return () => {
+			// Clean up
+			mapInstance.off("styleimagemissing", handleMissingImage)
+			// if (mapInstance.hasImage("trash-icon")) {
+			// 	mapInstance.removeImage("trash-icon")
+			// }
+		}
+	}, [map])
+
 	return (
 		<>
 			{userLocation && (
@@ -163,11 +189,12 @@ export const MapLayers = ({
 				type="geojson"
 				data={geoJsonData}
 				generateId
-				cluster={true}
-				clusterMaxZoom={14}
+				// cluster={true}
+				// clusterMaxZoom={14}
 			>
-				<Layer
-					id="issues-layer"
+				{/* Circle layer for points */}
+				{/* <Layer
+					id="issues-circles"
 					type="circle"
 					paint={{
 						"circle-radius": [
@@ -175,15 +202,34 @@ export const MapLayers = ({
 							["linear"],
 							["zoom"],
 							0,
-							0, // At zoom level 0, radius is 4
+							0,
 							12,
-							8, // At zoom level 12, radius is 8
+							8,
 							22,
-							16, // At zoom level 22, radius is 16
+							16,
 						],
 						"circle-color": "#00391F",
 						"circle-stroke-width": 2,
 						"circle-stroke-color": "#FFFFFF",
+					}}
+				/> */}
+
+				<Layer
+					id="issues-labels"
+					type="symbol"
+					layout={{
+						"icon-image": "trash-can",
+						"icon-size": [
+							"interpolate",
+							["linear"],
+							["zoom"],
+							0,
+							0,
+							12,
+							0.25,
+							22,
+							0.5,
+						],
 					}}
 				/>
 			</Source>

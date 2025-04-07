@@ -6,6 +6,7 @@ import { MapUi } from "./MapUi"
 import { useEffect, useState } from "react"
 import { IssueWithImage } from "@/types/issue"
 import { useIssues } from "@/lib/IssuesContext"
+import { mapStyle } from "@/utils/mapStyle"
 
 export const EcoMap = () => {
 	const [clickedPoint, setClickedPoint] = useState<[number, number] | null>(
@@ -27,7 +28,7 @@ export const EcoMap = () => {
 			const retrievedIssues = await fetch("/api/issue")
 			const { data, error } = await retrievedIssues.json()
 			if (error) throw error
-			console.log("setting issues to ", data)
+			// console.log("setting issues to ", data)
 			setIssues(data)
 		}
 		fetchData()
@@ -47,7 +48,7 @@ export const EcoMap = () => {
 						zoom: 8,
 					}}
 					style={{ width: "100%", height: "100%" }}
-					mapStyle="https://tiles.openfreemap.org/styles/liberty"
+					mapStyle={mapStyle}
 					attributionControl={false}
 					id="ecoMap"
 					onLoad={handleMapLoad}
