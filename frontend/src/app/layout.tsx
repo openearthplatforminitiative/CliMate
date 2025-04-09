@@ -3,6 +3,7 @@ import { Newsreader, Inter } from "next/font/google"
 import "./globals.css"
 import { CoordinatesProvider } from "@/lib/CoordinatesContext"
 import { Toaster } from "@/components/ui/sonner"
+import SessionProviderWrapper from "@/lib/SessionsProviderWrapper"
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -26,8 +27,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.className} antialiased`}>
-				<CoordinatesProvider>{children}</CoordinatesProvider>
-				<Toaster />
+				<SessionProviderWrapper>
+					<CoordinatesProvider>{children}</CoordinatesProvider>
+					<Toaster />
+				</SessionProviderWrapper>
 			</body>
 		</html>
 	)

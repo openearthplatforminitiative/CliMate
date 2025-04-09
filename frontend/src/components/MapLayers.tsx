@@ -189,8 +189,8 @@ export const MapLayers = ({
 				type="geojson"
 				data={geoJsonData}
 				generateId
-				// cluster={true}
-				// clusterMaxZoom={14}
+				cluster={false}
+				clusterMaxZoom={14}
 			>
 				{/* Circle layer for points */}
 				{/* <Layer

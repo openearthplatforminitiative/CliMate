@@ -7,7 +7,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 	// const buffer = Buffer.from(arrayBuffer);
 	try {
 		const postData = await req.json()
-		const result = await fetch("http://localhost:8080/v1/issues", {
+		const result = await fetch("http://localhost:8081/v1/issues", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
 export async function GET() {
 	try {
-		const result = await fetch("http://localhost:8080/v1/issues")
+		const result = await fetch("http://localhost:8081/v1/issues")
 
 		if (!result.ok) {
 			const errorText = await result.text()

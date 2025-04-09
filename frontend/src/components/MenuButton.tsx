@@ -9,6 +9,7 @@ import {
 } from "./ui/sheet"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
+import { useSession, signIn, signOut } from "next-auth/react"
 
 interface MenuButtonProps
 	extends DetailedHTMLProps<
@@ -19,6 +20,7 @@ interface MenuButtonProps
 }
 
 export const MenuButton = ({ className }: MenuButtonProps) => {
+	const { data: session } = useSession()
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -27,7 +29,21 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 			<SheetContent side="right" className="bg-secondary-99">
 				<SheetHeader>
 					<SheetTitle>Menu</SheetTitle>
-					<SheetDescription>TODO: User/login, reports/status</SheetDescription>
+					<SheetDescription>
+						{session && session.user && (
+							<>
+								Signed in as {session.user.email} <br />
+								<button onClick={() => signOut()}>Sign out</button>
+							</>
+						)}
+						{!session && (
+							<>
+								Not signed in <br />
+								<button onClick={() => signIn()}>Sign in</button>
+							</>
+						)}
+						TODO: User/login, reports/status
+					</SheetDescription>
 				</SheetHeader>
 			</SheetContent>
 		</Sheet>

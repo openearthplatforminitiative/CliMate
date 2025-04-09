@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: CliMatePass
+      POSTGRES_DB: keycloak
     networks:
       - local
     ports:
@@ -33,7 +33,7 @@ services:
     networks:
       - local
     ports:
-      - '5433:5433'
+      - '5433:5432'
     healthcheck:
       test: ['CMD', 'pg_isready', '-q', '-d', 'postgres', '-U', 'postgres']
       interval: 10s
