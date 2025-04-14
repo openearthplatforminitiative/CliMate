@@ -9,6 +9,8 @@ import { Category, Issue, IssueWithImage } from "@/types/issue"
 import { useIssues } from "@/lib/IssuesContext"
 import { toast } from "sonner"
 import Image from "next/image"
+import { useSession } from "next-auth/react"
+import { Button } from "./ui/button"
 
 interface FormProps {
 	setSheetAddOpen: (open: boolean) => void
@@ -20,6 +22,7 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 	const [preview, setPreview] = useState<string | null>(null)
 	const { coordinates } = useCoordinates()
 	const { setIssues } = useIssues()
+	const { data: session } = useSession()
 
 	const [issue, setIssue] = useState<Issue>({
 		title: "",
@@ -61,7 +64,7 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 				description: issue.description,
 				category: issue.category,
 				location: issue.location,
-				user_uuid: "",
+				user_uuid: session?.user?.id || "",
 				active: true,
 			}
 
@@ -98,6 +101,8 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 				{file && <p>Selected file: {file.name}</p>}
 				{preview && (
 					<Image
+						width={32}
+						height={32}
 						src={preview}
 						alt="Preview"
 						className="w-32 h-32 object-cover mt-2"
@@ -128,13 +133,13 @@ export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
 					rows={3}
 				/>
 
-				<button
+				<Button
 					onClick={handleUpload}
 					disabled={!issue.title || !issue.category || !issue.description}
-					className="w-full mt-5 mb-10 p-2 bg-primary-20 text-white rounded"
+					className="w-full mt-5 mb-10 bg-primary-20"
 				>
 					Submit report
-				</button>
+				</Button>
 			</div>
 		</div>
 	)

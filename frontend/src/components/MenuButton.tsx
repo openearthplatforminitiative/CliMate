@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
 import { useSession, signIn, signOut } from "next-auth/react"
+import Link from "next/link"
 
 interface MenuButtonProps
 	extends DetailedHTMLProps<
@@ -21,6 +22,7 @@ interface MenuButtonProps
 
 export const MenuButton = ({ className }: MenuButtonProps) => {
 	const { data: session } = useSession()
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -29,20 +31,46 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 			<SheetContent side="right" className="bg-secondary-99">
 				<SheetHeader>
 					<SheetTitle>Menu</SheetTitle>
-					<SheetDescription>
+					<SheetDescription className="flex flex-col">
+						<Link href="/">
+							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
+								Home
+							</Button>
+						</Link>
+						<Link href="/map">
+							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
+								Map
+							</Button>
+						</Link>
+						<Link href="/issues">
+							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
+								Issues
+							</Button>
+						</Link>
+
 						{session && session.user && (
 							<>
-								Signed in as {session.user.email} <br />
-								<button onClick={() => signOut()}>Sign out</button>
+								You are signed in as {session.user.name} <br />
+								<Button
+									onClick={() => signOut()}
+									className="bg-primary-20 hover:bg-primary-10 mt-1"
+								>
+									Sign out
+								</Button>
 							</>
 						)}
 						{!session && (
 							<>
 								Not signed in <br />
-								<button onClick={() => signIn()}>Sign in</button>
+								<Button
+									onClick={() => signIn()}
+									className="bg-primary-20 hover:bg-primary-10"
+								>
+									Sign in
+								</Button>
 							</>
 						)}
-						TODO: User/login, reports/status
+						{/* TODO: User/login, your reports/status */}
 					</SheetDescription>
 				</SheetHeader>
 			</SheetContent>

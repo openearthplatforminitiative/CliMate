@@ -3,9 +3,8 @@ import { Map, MapProvider } from "@vis.gl/react-maplibre"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { MapLayers } from "./MapLayers"
 import { MapUi } from "./MapUi"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { IssueWithImage } from "@/types/issue"
-import { useIssues } from "@/lib/IssuesContext"
 import { mapStyle } from "@/utils/mapStyle"
 
 export const EcoMap = () => {
@@ -19,20 +18,7 @@ export const EcoMap = () => {
 		null
 	)
 
-	const { setIssues } = useIssues()
 	const [mapLoaded, setMapLoaded] = useState(false)
-
-	// Get all issues
-	useEffect(() => {
-		const fetchData = async () => {
-			const retrievedIssues = await fetch("/api/issue")
-			const { data, error } = await retrievedIssues.json()
-			if (error) throw error
-			// console.log("setting issues to ", data)
-			setIssues(data)
-		}
-		fetchData()
-	}, [setIssues])
 
 	const handleMapLoad = () => {
 		setMapLoaded(true)

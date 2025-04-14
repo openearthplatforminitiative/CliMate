@@ -10,6 +10,9 @@ import {
 } from "./ui/sheet"
 import { CardSlider } from "./CardSlider"
 import Image from "next/image"
+import { Button } from "./ui/button"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 interface MapUiProps {
 	sheetAddOpen: boolean
@@ -30,6 +33,7 @@ export const MapUi = ({
 	setSelectedIssue,
 	setClickedPoint,
 }: MapUiProps) => {
+	const router = useRouter()
 	const handleCloseSheet = () => {
 		setSelectedIssue(null)
 		setSheetAddOpen(false)
@@ -38,7 +42,7 @@ export const MapUi = ({
 
 	return (
 		<>
-			<MenuButton className="absolute bg-primary-20 text-[#DFF7E3]" />
+			<MenuButton className="absolute bg-primary-20 hover:bg-primary-10 text-[#DFF7E3]" />
 
 			<div className="absolute bottom-7 left-0 right-0 z-10 flex flex-col gap-4">
 				<CardSlider />
@@ -72,6 +76,9 @@ export const MapUi = ({
 									/>
 								)}
 							</div>
+							<Link href={`/issues/${selectedIssue?.id}`}>
+								<Button className="bg-primary-20">View Issue</Button>
+							</Link>
 						</SheetDescription>
 					</SheetHeader>
 				</SheetContent>
