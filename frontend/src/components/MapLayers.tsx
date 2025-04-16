@@ -192,28 +192,6 @@ export const MapLayers = ({
 				cluster={false}
 				clusterMaxZoom={14}
 			>
-				{/* Circle layer for points */}
-				{/* <Layer
-					id="issues-circles"
-					type="circle"
-					paint={{
-						"circle-radius": [
-							"interpolate",
-							["linear"],
-							["zoom"],
-							0,
-							0,
-							12,
-							8,
-							22,
-							16,
-						],
-						"circle-color": "#00391F",
-						"circle-stroke-width": 2,
-						"circle-stroke-color": "#FFFFFF",
-					}}
-				/> */}
-
 				<Layer
 					id="issues-labels"
 					type="symbol"

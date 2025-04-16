@@ -12,12 +12,15 @@ import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { Button } from "./ui/button"
 
-interface FormProps {
+interface IssueFormProps {
 	setSheetAddOpen: (open: boolean) => void
 	setClickedPoint: (point: [number, number] | null) => void
 }
 
-export const Form = ({ setSheetAddOpen, setClickedPoint }: FormProps) => {
+export const IssueForm = ({
+	setSheetAddOpen,
+	setClickedPoint,
+}: IssueFormProps) => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
 	const { coordinates } = useCoordinates()

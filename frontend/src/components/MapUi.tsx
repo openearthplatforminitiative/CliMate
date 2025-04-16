@@ -1,5 +1,5 @@
 import { IssueWithImage } from "@/types/issue"
-import { Form } from "./Form"
+import { IssueForm } from "./IssueForm"
 import { MenuButton } from "./MenuButton"
 import {
 	Sheet,
@@ -11,7 +11,6 @@ import {
 import { CardSlider } from "./CardSlider"
 import Image from "next/image"
 import { Button } from "./ui/button"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 
 interface MapUiProps {
@@ -33,7 +32,6 @@ export const MapUi = ({
 	setSelectedIssue,
 	setClickedPoint,
 }: MapUiProps) => {
-	const router = useRouter()
 	const handleCloseSheet = () => {
 		setSelectedIssue(null)
 		setSheetAddOpen(false)
@@ -52,7 +50,7 @@ export const MapUi = ({
 					<SheetHeader>
 						<SheetTitle>Create Report</SheetTitle>
 						<SheetDescription>
-							<Form
+							<IssueForm
 								setSheetAddOpen={setSheetAddOpen}
 								setClickedPoint={setClickedPoint}
 							/>
