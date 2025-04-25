@@ -43,7 +43,7 @@ export const MapLayers = ({
 			if (clickedFeatures && clickedFeatures.length > 0) {
 				// Handle feature click
 				const clickedFeature = clickedFeatures[0]
-				const { id, title, description, image, category, active } =
+				const { id, title, description, image, category, resolved } =
 					clickedFeature.properties
 
 				if (clickedFeature.geometry.type === "Point") {
@@ -53,7 +53,7 @@ export const MapLayers = ({
 						description,
 						image,
 						category,
-						active,
+						resolved,
 						location: {
 							type: "Point",
 							coordinates: clickedFeature.geometry.coordinates,

@@ -16,8 +16,10 @@ interface CategorySelectProps {
 
 export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
 	const values = [
-		{ value: "Garbage", title: "Garbage" },
-		{ value: "Chemicals", title: "Chemicals" },
+		{ value: "garbage", title: "Garbage" },
+		{ value: "chemicals", title: "Chemicals" },
+		{ value: "deforestation", title: "Deforestation" },
+		{ value: "destruction", title: "Destruction" },
 	]
 	return (
 		<Select value={value} onValueChange={onChange}>

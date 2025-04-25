@@ -17,7 +17,7 @@ const Issues = () => {
 					<CardList />
 				</TabsContent>
 				<TabsContent value="resolved" className="w-full">
-					<CardList active={false} />
+					<CardList resolved={true} />
 				</TabsContent>
 			</Tabs>
 		</div>

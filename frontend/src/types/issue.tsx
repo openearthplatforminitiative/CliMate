@@ -1,4 +1,4 @@
-export type Category = "Garbage" | "Chemicals"
+export type Category = "garbage" | "chemicals" | "deforestation" | "destruction"
 export type Issue = {
 	id?: string
 	title: string
@@ -7,7 +7,7 @@ export type Issue = {
 	location: GeoJSON.Point
 	category: Category
 	user_uuid?: string
-	active: boolean
+	resolved: boolean
 }
 
 export type IssueWithImage = Omit<Issue, "image_url"> & {

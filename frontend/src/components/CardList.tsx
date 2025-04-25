@@ -6,34 +6,38 @@ import { Skeleton } from "./ui/skeleton"
 import { useMemo } from "react"
 
 interface CardListProps {
-	active?: boolean
+	resolved?: boolean
 }
 
-export const CardList = ({ active = true }: CardListProps) => {
+export const CardList = ({ resolved = false }: CardListProps) => {
 	const { issues, loading, error } = useIssues()
 
 	const filteredIssues = useMemo(() => {
-		if (!loading && issues.length > 0 && !active) {
-			issues.forEach((issue) => {
-				console.log(issue.active)
-			})
-			return issues.filter((issue) => !issue.active)
-		} else {
-			return issues
+		if (!loading && issues.length > 0) {
+			return issues.filter((issue) => issue.resolved === resolved)
 		}
 	}, [issues, loading])
 
 	if (error) {
-		return <div>Error: Could not fetch issues</div>
+		return <div className="items-center">Error: Could not fetch issues</div>
+	}
+
+	if (loading) {
+		return (
+			<div className="flex flex-col items-center w-full">
+				<div className="flex flex-col w-3/4">
+					<Skeleton className="w-full h-20" />
+				</div>
+			</div>
+		)
 	}
 
 	if (
-		loading ||
 		filteredIssues === undefined ||
 		filteredIssues === null ||
 		filteredIssues.length <= 0
 	) {
-		return <Skeleton className="w-[100px] h-[20px]" />
+		return <div className="flex flex-col items-center w-full">No issues</div>
 	}
 
 	return (

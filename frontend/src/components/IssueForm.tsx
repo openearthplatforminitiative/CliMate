@@ -30,9 +30,9 @@ export const IssueForm = ({
 	const [issue, setIssue] = useState<Issue>({
 		title: "",
 		description: "",
-		category: "Garbage",
+		category: "garbage",
 		location: { type: "Point", coordinates: coordinates || [0, 0] },
-		active: true,
+		resolved: false,
 	})
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +68,7 @@ export const IssueForm = ({
 				category: issue.category,
 				location: issue.location,
 				user_uuid: session?.user?.id || "",
-				active: true,
+				resolved: false,
 			}
 
 			const response = await fetch("/api/issue", {
@@ -87,6 +87,7 @@ export const IssueForm = ({
 			toast("Successfully uploaded report")
 			setClickedPoint(null)
 		} catch (error) {
+			toast("Could not create issue")
 			console.error("Error uploading issue:", error)
 		}
 	}

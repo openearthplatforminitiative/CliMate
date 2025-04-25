@@ -58,3 +58,37 @@ export async function GET() {
 		)
 	}
 }
+
+export async function PUT(req: NextRequest) {
+	try {
+		const putData = await req.json()
+		const result = await fetch(
+			`http://localhost:8081/v1/issues/${putData.id}`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(putData),
+			}
+		)
+
+		if (!result.ok) {
+			const errorText = await result.text()
+			console.error("Backend error:", errorText)
+			return NextResponse.json(
+				{ error: "Failed to create issue in backend" },
+				{ status: result.status }
+			)
+		}
+
+		const data = await result.json()
+		return NextResponse.json({ data })
+	} catch (error) {
+		console.error("Error:", error)
+		return NextResponse.json(
+			{ error: "Internal server error" },
+			{ status: 500 }
+		)
+	}
+}
