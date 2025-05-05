@@ -29,47 +29,55 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 				<Button className={cn("top-4 right-4 z-10", className)}>Menu</Button>
 			</SheetTrigger>
 			<SheetContent side="right" className="bg-secondary-99">
-				<SheetHeader>
+				<SheetHeader className="h-full">
 					<SheetTitle>Menu</SheetTitle>
-					<SheetDescription className="flex flex-col">
-						<Link href="/">
-							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
-								Home
-							</Button>
-						</Link>
-						<Link href="/map">
-							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
-								Map
-							</Button>
-						</Link>
-						<Link href="/issues">
-							<Button className="bg-primary-20 hover:bg-primary-10 mt-1">
-								Issues
-							</Button>
-						</Link>
+					<SheetDescription className="flex flex-col justify-between h-full">
+						{/* Navigation Links */}
+						<div className="flex flex-col items-center w-full gap-1">
+							<Link href="/" className="w-full">
+								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
+									Home
+								</Button>
+							</Link>
+							<Link href="/map" className="w-full">
+								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
+									Map
+								</Button>
+							</Link>
+							<Link href="/issues" className="w-full">
+								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
+									Issues
+								</Button>
+							</Link>
+						</div>
 
-						{session && session.user && (
-							<>
-								You are signed in as {session.user.name} <br />
-								<Button
-									onClick={() => signOut()}
-									className="bg-primary-20 hover:bg-primary-10 mt-1"
-								>
-									Sign out
-								</Button>
-							</>
-						)}
-						{!session && (
-							<>
-								Not signed in <br />
-								<Button
-									onClick={() => signIn()}
-									className="bg-primary-20 hover:bg-primary-10"
-								>
-									Sign in
-								</Button>
-							</>
-						)}
+						{/* Session Status */}
+						<div className="flex flex-col items-center w-full gap-2">
+							{session && session.user && (
+								<>
+									<span className="text-sm text-gray-500">
+										Signed in as {session.user.name}
+									</span>
+									<Button
+										onClick={() => signOut()}
+										className="bg-primary-20 hover:bg-primary-10 w-full"
+									>
+										Sign out
+									</Button>
+								</>
+							)}
+							{!session && (
+								<>
+									<span className="text-sm text-gray-500">Not signed in</span>
+									<Button
+										onClick={() => signIn()}
+										className="bg-primary-20 hover:bg-primary-10 w-full"
+									>
+										Sign in
+									</Button>
+								</>
+							)}
+						</div>
 						{/* TODO: User/login, your reports/status */}
 					</SheetDescription>
 				</SheetHeader>

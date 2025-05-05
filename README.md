@@ -13,3 +13,7 @@ CLIMATE_FRONTEND_DOMAIN=localhost:8080
 ```
 
 `CLIMATE_FRONTEND_CLIENT_ID` needs to be `web` if using our premade realm.
+
+## Icons
+
+Icons are from [Fontawesome](https://fontawesome.com) and are created by using [https://fa2png.app/](https://fa2png.app/).

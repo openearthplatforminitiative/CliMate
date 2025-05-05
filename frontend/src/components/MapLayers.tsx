@@ -1,5 +1,5 @@
 import { useCoordinates } from "@/lib/CoordinatesContext"
-import { IssueWithImage } from "@/types/issue"
+import { Category, IssueWithImage } from "@/types/issue"
 import RoomIcon from "@mui/icons-material/Room"
 import { useMap, Marker, Source, Layer } from "@vis.gl/react-maplibre"
 import { useEffect, useState } from "react"
@@ -13,6 +13,14 @@ interface MapLayersProps {
 	setSheetAddOpen: (open: boolean) => void
 	setSheetViewOpen: (open: boolean) => void
 	setSelectedExample: (example: IssueWithImage | null) => void
+}
+
+const iconNames: { [K in Category]: string } = {
+	deforestation: "tree-solid",
+	garbage: "trash-solid",
+	chemicals: "flask-solid",
+	destruction: "", //TODO
+	other: "question-circle-solid",
 }
 
 export const MapLayers = ({
@@ -131,6 +139,10 @@ export const MapLayers = ({
 		}
 	}
 
+	const getIconById = (id: Category): string => {
+		return iconNames[id] || iconNames.other
+	}
+
 	// Add icons
 	useEffect(() => {
 		if (!map.current) return
@@ -138,9 +150,14 @@ export const MapLayers = ({
 
 		// Handler for missing images
 		const handleMissingImage = async (e: any) => {
-			const id = e.id // "trash-icon"
+			const id = e.id as string | undefined
+			if (id === undefined) {
+				return
+			}
 
-			const image = await mapInstance.loadImage("/trash-alt-solid.png")
+			const image = await mapInstance.loadImage(
+				`/icons/${getIconById(id as Category)}.png`
+			)
 			mapInstance.addImage(id, image.data)
 		}
 
@@ -150,9 +167,11 @@ export const MapLayers = ({
 		return () => {
 			// Clean up
 			mapInstance.off("styleimagemissing", handleMissingImage)
-			// if (mapInstance.hasImage("trash-icon")) {
-			// 	mapInstance.removeImage("trash-icon")
-			// }
+			Object.keys(iconNames).forEach((key) => {
+				if (mapInstance.hasImage(key)) {
+					mapInstance.removeImage(key)
+				}
+			})
 		}
 	}, [map])
 
@@ -189,14 +208,56 @@ export const MapLayers = ({
 				type="geojson"
 				data={geoJsonData}
 				generateId
-				cluster={false}
-				clusterMaxZoom={14}
+				cluster={true}
+				clusterMaxZoom={15}
+				clusterRadius={20}
 			>
+				<Layer
+					id="clusters"
+					type="circle"
+					filter={["has", "point_count"]}
+					paint={{
+						"circle-color": [
+							"step",
+							["get", "point_count"],
+							"#51bbd6", // 0-4 points
+							5,
+							"#f1f075", // 5-9 points
+							10,
+							"#f28cb1", // 10+ points
+						],
+						"circle-radius": [
+							"step",
+							["get", "point_count"],
+							20, // Default radius
+							5,
+							30, // 5+ points radius
+							10,
+							40, // 10+ points radius
+						],
+					}}
+				/>
+
+				<Layer
+					id="cluster-count"
+					type="symbol"
+					filter={["has", "point_count"]}
+					layout={{
+						"text-field": "{point_count_abbreviated}",
+						"text-font": ["Noto Sans Italic"],
+						"text-size": 12,
+					}}
+					paint={{
+						"text-color": "#ffffff",
+					}}
+				/>
+
 				<Layer
 					id="issues-labels"
 					type="symbol"
+					filter={["!", ["has", "point_count"]]}
 					layout={{
-						"icon-image": "trash-can",
+						"icon-image": ["get", "category"],
 						"icon-size": [
 							"interpolate",
 							["linear"],

@@ -1,4 +1,9 @@
-export type Category = "garbage" | "chemicals" | "deforestation" | "destruction"
+export type Category =
+	| "garbage"
+	| "chemicals"
+	| "deforestation"
+	| "destruction"
+	| "other"
 export type Issue = {
 	id?: string
 	title: string
