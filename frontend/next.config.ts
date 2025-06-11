@@ -5,9 +5,17 @@ const nextConfig: NextConfig = {
 	output: "standalone",
 	images: {
 		remotePatterns: [
-			new URL(
-				"https://marylandmatters.org/wp-content/uploads/2022/12/AdobeStock_290929282-scaled.jpeg"
-			),
+			{
+				protocol: "https",
+				hostname: "marylandmatters.org",
+				pathname: "/wp-content/uploads/**",
+			},
+			{
+				protocol: "http",
+				hostname: "localhost",
+				port: "8080",
+				pathname: "/assets/**",
+			},
 		],
 	},
 }

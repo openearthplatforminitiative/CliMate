@@ -2,8 +2,9 @@ export type Category =
 	| "garbage"
 	| "chemicals"
 	| "deforestation"
-	| "destruction"
+	| "vandalism"
 	| "other"
+
 export type Issue = {
 	id?: string
 	title: string
@@ -15,6 +16,13 @@ export type Issue = {
 	resolved: boolean
 }
 
-export type IssueWithImage = Omit<Issue, "image_url"> & {
-	image: string // Base64 encoded image
+export type Asset = {
+	id: string
+	name: string
+	mimetype: string
+	file_size: number
+	url: string
+	created_at: Date
+	updated_at: Date
+	checksum: string
 }

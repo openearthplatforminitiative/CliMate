@@ -1,5 +1,5 @@
 "use client"
-import { IssueWithImage } from "@/types/issue"
+import { Issue } from "@/types/issue"
 import React, {
 	createContext,
 	ReactNode,
@@ -9,8 +9,8 @@ import React, {
 } from "react"
 
 interface IssuesContextProps {
-	issues: IssueWithImage[]
-	setIssues: React.Dispatch<React.SetStateAction<IssueWithImage[]>>
+	issues: Issue[]
+	setIssues: React.Dispatch<React.SetStateAction<Issue[]>>
 	loading: boolean
 	error: Error | null
 }
@@ -18,7 +18,7 @@ interface IssuesContextProps {
 const IssueContext = createContext<IssuesContextProps | undefined>(undefined)
 
 export const IssuesProvider = ({ children }: { children: ReactNode }) => {
-	const [issues, setIssues] = useState<IssueWithImage[]>([])
+	const [issues, setIssues] = useState<Issue[]>([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<Error | null>(null)
 

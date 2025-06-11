@@ -19,7 +19,8 @@ export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
 		{ value: "garbage", title: "Garbage" },
 		{ value: "chemicals", title: "Chemicals" },
 		{ value: "deforestation", title: "Deforestation" },
-		{ value: "destruction", title: "Destruction" },
+		{ value: "vandalism", title: "Vandalism" },
+		{ value: "other", title: "Other" },
 	]
 	return (
 		<Select value={value} onValueChange={onChange}>

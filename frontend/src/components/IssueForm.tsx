@@ -5,7 +5,7 @@ import { Input } from "./ui/input"
 import { ChangeEvent, useState } from "react"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
-import { Category, Issue, IssueWithImage } from "@/types/issue"
+import { Asset, Category, Issue } from "@/types/issue"
 import { useIssues } from "@/lib/IssuesContext"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -61,6 +61,7 @@ export const IssueForm = ({
 	}
 
 	const handleUpload = async () => {
+		// todo: get id from issue post success, and upload picture
 		try {
 			const postData: Issue = {
 				title: issue.title,
@@ -80,9 +81,36 @@ export const IssueForm = ({
 				throw new Error("Failed to upload the issue.")
 			}
 
-			const { data }: { data: IssueWithImage } = await response.json()
+			const { data }: { data: Issue } = await response.json()
 			console.log("Issue uploaded successfully:", data)
-			setIssues((prevIssues: IssueWithImage[]) => [...prevIssues, data])
+
+			// upload picture
+			if (!data.id || !file) {
+				throw new Error("No file or issue ID provided")
+			}
+			const formData = new FormData()
+			formData.append("issueId", data.id)
+			formData.append("image", file)
+			const imageResponse = await fetch("/api/asset", {
+				method: "POST",
+				body: formData,
+			})
+
+			if (!imageResponse.ok) {
+				throw new Error("Failed to upload the image.")
+			}
+
+			const { data: imageData }: { data: Asset } = await imageResponse.json()
+			console.log(imageData)
+
+			// construct Issue
+			const issueResult: Issue = {
+				...data,
+				image_url: imageData.url,
+			}
+
+			// set local states
+			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
 			setSheetAddOpen(false)
 			toast("Successfully uploaded report")
 			setClickedPoint(null)

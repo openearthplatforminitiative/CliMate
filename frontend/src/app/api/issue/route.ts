@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
+const BACKEND_URL = "http://localhost:8080/v1"
+const PATH = "/issues"
 export async function POST(req: NextRequest): Promise<Response> {
 	// TODO: image
 	// const blob = await req.blob();
@@ -7,7 +9,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 	// const buffer = Buffer.from(arrayBuffer);
 	try {
 		const postData = await req.json()
-		const result = await fetch("http://localhost:8081/v1/issues", {
+		const result = await fetch(`${BACKEND_URL}${PATH}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -37,7 +39,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
 export async function GET() {
 	try {
-		const result = await fetch("http://localhost:8081/v1/issues")
+		const result = await fetch(`${BACKEND_URL}${PATH}`)
 
 		if (!result.ok) {
 			const errorText = await result.text()
@@ -62,16 +64,13 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
 	try {
 		const putData = await req.json()
-		const result = await fetch(
-			`http://localhost:8081/v1/issues/${putData.id}`,
-			{
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(putData),
-			}
-		)
+		const result = await fetch(`${BACKEND_URL}${PATH}/${putData.id}`, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(putData),
+		})
 
 		if (!result.ok) {
 			const errorText = await result.text()

@@ -1,5 +1,5 @@
 import { useCoordinates } from "@/lib/CoordinatesContext"
-import { Category, IssueWithImage } from "@/types/issue"
+import { Category, Issue } from "@/types/issue"
 import RoomIcon from "@mui/icons-material/Room"
 import { useMap, Marker, Source, Layer } from "@vis.gl/react-maplibre"
 import { useEffect, useState } from "react"
@@ -12,14 +12,14 @@ interface MapLayersProps {
 	setClickedPoint: (point: [number, number] | null) => void
 	setSheetAddOpen: (open: boolean) => void
 	setSheetViewOpen: (open: boolean) => void
-	setSelectedExample: (example: IssueWithImage | null) => void
+	setSelectedExample: (example: Issue | null) => void
 }
 
 const iconNames: { [K in Category]: string } = {
 	deforestation: "tree-solid",
 	garbage: "trash-solid",
 	chemicals: "flask-solid",
-	destruction: "", //TODO
+	vandalism: "", //TODO
 	other: "question-circle-solid",
 }
 
@@ -51,7 +51,7 @@ export const MapLayers = ({
 			if (clickedFeatures && clickedFeatures.length > 0) {
 				// Handle feature click
 				const clickedFeature = clickedFeatures[0]
-				const { id, title, description, image, category, resolved } =
+				const { id, title, description, image_url, category, resolved } =
 					clickedFeature.properties
 
 				if (clickedFeature.geometry.type === "Point") {
@@ -59,7 +59,7 @@ export const MapLayers = ({
 						id,
 						title,
 						description,
-						image,
+						image_url,
 						category,
 						resolved,
 						location: {
@@ -100,7 +100,7 @@ export const MapLayers = ({
 					title: issue.title,
 					category: issue.category,
 					description: issue.description,
-					image: issue.image,
+					image: issue.image_url,
 				},
 			})),
 		})

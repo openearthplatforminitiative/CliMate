@@ -1,6 +1,6 @@
 "use client"
+import { use, useMemo, useEffect, useState } from "react"
 import { useIssues } from "@/lib/IssuesContext"
-import { use, useMemo } from "react"
 import Image from "next/image"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import "maplibre-gl/dist/maplibre-gl.css"
 import { mapStyle } from "@/utils/mapStyle"
 import Pin from "@/components/Pin"
 import Link from "next/link"
-import { Issue, IssueWithImage } from "@/types/issue"
+import { Asset, Issue } from "@/types/issue"
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
 
@@ -23,11 +23,30 @@ const IssuePage = ({ params }: IssueProps) => {
 	const { id } = use(params)
 	const { issues } = useIssues()
 	const { data: session } = useSession()
+	const [asset, setAsset] = useState<Asset[]>([])
 	const issue = useMemo(() => {
 		return issues.find((issue) => issue.id === id)
 	}, [issues])
 
-	if (issue === undefined || issue === null) return null
+	useEffect(() => {
+		if (issue === undefined || issue === null || !id) return
+		const fetchAsset = async () => {
+			try {
+				const response = await fetch(`/api/asset/${id}`) // Use issueId in the URL
+				if (!response.ok) {
+					throw new Error("Failed to fetch asset")
+				}
+				const { data }: { data: Asset[] } = await response.json()
+				setAsset(data) // Store asset data in state
+			} catch (error) {
+				console.error("Error fetching asset:", error)
+			}
+		}
+
+		fetchAsset()
+	}, [issue])
+
+	if (issue === undefined || issue === null || asset.length === 0) return null
 
 	const handleClick = async () => {
 		try {
@@ -50,7 +69,7 @@ const IssuePage = ({ params }: IssueProps) => {
 				throw new Error("Failed to upload the issue.")
 			}
 
-			const { data }: { data: IssueWithImage } = await response.json()
+			const { data }: { data: Issue } = await response.json()
 			console.log("Data:", data)
 			// TODO: update issue state
 			toast("Successfully updated report")
@@ -59,6 +78,8 @@ const IssuePage = ({ params }: IssueProps) => {
 			console.error("Error updating issue:", error)
 		}
 	}
+
+	console.log(issue)
 
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-secondary-95 items-center">
@@ -75,7 +96,7 @@ const IssuePage = ({ params }: IssueProps) => {
 					<div>{issue.description}</div>
 					<div>
 						<Image
-							src="https://marylandmatters.org/wp-content/uploads/2022/12/AdobeStock_290929282-scaled.jpeg"
+							src={`${asset[0].url}`}
 							width={200}
 							height={100}
 							alt="Picture of issue"
