@@ -33,7 +33,7 @@ services:
       - path: ./.env.docker
         required: false
     ports:
-      - 8080:8080
+      - 8000:8080
     links:
       - keycloak_db
     networks:
@@ -41,15 +41,14 @@ services:
     depends_on:
       keycloak_db:
         condition: service_healthy
-
-  frontend:
-    container_name: climate_frontend
-    build: ./frontend
-    ports:
-      - 3000:3000
-    depends_on:
-      - cli_mate_db
-      - keycloak
+  # frontend:
+  #   container_name: climate_frontend
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - cli_mate_db
+  #     - keycloak
   eav-db:
     image: postgis/postgis:latest
     container_name: eav-db
@@ -86,7 +85,7 @@ services:
       POSTGRES_HOST: eav-db
       LOG_LEVEL: INFO
     ports:
-      - "8000:8080"
+      - "8080:8080"
     networks:
       - eav-net
     volumes:

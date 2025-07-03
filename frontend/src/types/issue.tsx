@@ -13,7 +13,7 @@ export type Issue = {
 	location: GeoJSON.Point
 	category: Category
 	user_uuid?: string
-	resolved: boolean
+	active: boolean
 }
 
 export type Asset = {

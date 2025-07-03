@@ -1,22 +1,23 @@
 "use client"
-import { Map, MapProvider } from "@vis.gl/react-maplibre"
+
+import { Map } from "react-map-gl/maplibre"
 import "maplibre-gl/dist/maplibre-gl.css"
-import { MapLayers } from "./MapLayers"
-import { MapUi } from "./MapUi"
-import { useState } from "react"
-import { IssueWithImage } from "@/types/issue"
-import { mapStyle } from "@/utils/mapStyle"
+import { IssuesLayer } from "./map/issues-layer"
+import { useEffect, useState } from "react"
+import { Skeleton } from "./ui/skeleton"
+import { usePathname, useSelectedLayoutSegments } from "next/navigation"
+import { MissingImage } from "./map/missing-image"
+import { MapSources } from "./map/map-sources"
+import { ClusterLayer } from "./map/cluster-layer"
+import { CreateIssueLayer } from "./map/create-issue-layer"
 
 export const EcoMap = () => {
-	const [clickedPoint, setClickedPoint] = useState<[number, number] | null>(
-		null
-	)
+	const segments = useSelectedLayoutSegments()
+	const pathname = usePathname()
 
-	const [sheetAddOpen, setSheetAddOpen] = useState(false)
-	const [sheetViewOpen, setSheetViewOpen] = useState(false)
-	const [selectedIssue, setSelectedIssue] = useState<IssueWithImage | null>(
-		null
-	)
+	useEffect(() => {
+		console.log(segments[segments.length - 1])
+	}, [segments])
 
 	const [mapLoaded, setMapLoaded] = useState(false)
 
@@ -25,44 +26,34 @@ export const EcoMap = () => {
 	}
 
 	return (
-		<div className="fixed inset-0">
-			<MapProvider>
-				<Map
-					initialViewState={{
-						longitude: 10.752245,
-						latitude: 59.913868,
-						zoom: 8,
-					}}
-					style={{ width: "100%", height: "100%" }}
-					mapStyle={mapStyle}
-					attributionControl={false}
-					id="ecoMap"
-					onLoad={handleMapLoad}
-				>
-					<MapLayers
-						clickedPoint={clickedPoint}
-						setClickedPoint={setClickedPoint}
-						setSheetAddOpen={setSheetAddOpen}
-						setSheetViewOpen={setSheetViewOpen}
-						setSelectedExample={setSelectedIssue}
-					/>
-				</Map>
-				{mapLoaded ? (
-					<MapUi
-						sheetAddOpen={sheetAddOpen}
-						setSheetAddOpen={setSheetAddOpen}
-						sheetViewOpen={sheetViewOpen}
-						setSheetViewOpen={setSheetViewOpen}
-						selectedIssue={selectedIssue}
-						setSelectedIssue={setSelectedIssue}
-						setClickedPoint={setClickedPoint}
-					/>
-				) : (
-					<div className="absolute inset-0 flex items-center justify-center bg-white">
-						<p className="text-gray-500">Loading map...</p>
-					</div>
+		<div className="sticky top-0 w-full h-screen min-h-screen">
+			<Map
+				initialViewState={{
+					longitude: 10.752245,
+					latitude: 59.913868,
+					zoom: 8,
+				}}
+				style={{ width: "100%", height: "100%" }}
+				mapStyle="https://tiles.openfreemap.org/styles/liberty"
+				attributionControl={false}
+				id="ecoMap"
+				onLoad={handleMapLoad}
+			>
+				<MapSources />
+				{pathname === "/dashboard" && (
+					<>
+						<IssuesLayer />
+						<ClusterLayer />
+					</>
 				)}
-			</MapProvider>
+				{pathname === "/dashboard/issues/create" && <CreateIssueLayer />}
+				<MissingImage />
+			</Map>
+			{!mapLoaded && (
+				<Skeleton className="w-full h-screen min-h-screen flex items-center justify-center">
+					<p className="text-gray-500">Loading map...</p>
+				</Skeleton>
+			)}
 		</div>
 	)
 }

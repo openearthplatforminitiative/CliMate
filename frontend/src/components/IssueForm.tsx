@@ -1,5 +1,5 @@
 "use client"
-import { useCoordinates } from "@/lib/CoordinatesContext"
+
 import { CategorySelect } from "./CatergorySelect"
 import { Input } from "./ui/input"
 import { ChangeEvent, useState } from "react"
@@ -11,28 +11,24 @@ import { toast } from "sonner"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { Button } from "./ui/button"
+import { useAtomValue } from "jotai"
+import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
+import { useRouter } from "next/navigation"
 
-interface IssueFormProps {
-	setSheetAddOpen: (open: boolean) => void
-	setClickedPoint: (point: [number, number] | null) => void
-}
-
-export const IssueForm = ({
-	setSheetAddOpen,
-	setClickedPoint,
-}: IssueFormProps) => {
+export const IssueForm = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
-	const { coordinates } = useCoordinates()
+	const coordinates = useAtomValue(createIssueCoordinatesAtom)
 	const { setIssues } = useIssues()
 	const { data: session } = useSession()
+	const router = useRouter()
 
 	const [issue, setIssue] = useState<Issue>({
 		title: "",
 		description: "",
 		category: "garbage",
-		location: { type: "Point", coordinates: coordinates || [0, 0] },
-		resolved: false,
+		location: { type: "Point", coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0] },
+		active: false,
 	})
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +65,7 @@ export const IssueForm = ({
 				category: issue.category,
 				location: issue.location,
 				user_uuid: session?.user?.id || "",
-				resolved: false,
+				active: false,
 			}
 
 			const response = await fetch("/api/issue", {
@@ -78,11 +74,11 @@ export const IssueForm = ({
 			})
 
 			if (!response.ok) {
-				throw new Error("Failed to upload the issue.")
+				throw new Error("Could not create the issue.")
 			}
 
 			const { data }: { data: Issue } = await response.json()
-			console.log("Issue uploaded successfully:", data)
+			console.log("Issue was successfully created:", data)
 
 			// upload picture
 			if (!data.id || !file) {
@@ -111,9 +107,8 @@ export const IssueForm = ({
 
 			// set local states
 			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
-			setSheetAddOpen(false)
 			toast("Successfully uploaded report")
-			setClickedPoint(null)
+			router.push("/dashboard")
 		} catch (error) {
 			toast("Could not create issue")
 			console.error("Error uploading issue:", error)

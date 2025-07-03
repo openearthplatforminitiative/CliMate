@@ -2,7 +2,6 @@ import { ButtonHTMLAttributes, DetailedHTMLProps } from "react"
 import {
 	Sheet,
 	SheetContent,
-	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
@@ -31,7 +30,7 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 			<SheetContent side="right" className="bg-secondary-99">
 				<SheetHeader className="h-full">
 					<SheetTitle>Menu</SheetTitle>
-					<SheetDescription className="flex flex-col justify-between h-full">
+					<div className="flex flex-col justify-between h-full">
 						{/* Navigation Links */}
 						<div className="flex flex-col items-center w-full gap-1">
 							<Link href="/" className="w-full">
@@ -79,7 +78,7 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 							)}
 						</div>
 						{/* TODO: User/login, your reports/status */}
-					</SheetDescription>
+					</div>
 				</SheetHeader>
 			</SheetContent>
 		</Sheet>

@@ -1,6 +1,6 @@
+import { Asset, Issue } from "@/types/issue"
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = "http://localhost:8080/v1"
 const PATH = "/issues"
 export async function POST(req: NextRequest): Promise<Response> {
 	// TODO: image
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 	// const buffer = Buffer.from(arrayBuffer);
 	try {
 		const postData = await req.json()
-		const result = await fetch(`${BACKEND_URL}${PATH}`, {
+		const result = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -38,8 +38,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 }
 
 export async function GET() {
+	console.log("GET issues")
 	try {
-		const result = await fetch(`${BACKEND_URL}${PATH}`)
+		const result = await fetch(`${process.env.ENTITY_API_URL}${PATH}`)
 
 		if (!result.ok) {
 			const errorText = await result.text()
@@ -50,8 +51,25 @@ export async function GET() {
 			)
 		}
 
-		const data = await result.json()
-		return NextResponse.json({ data })
+		const issues = await result.json()
+
+		const issuesWithAssetsPromise = issues.map(async (issue: Issue) => {
+			const response = await fetch(
+				`${process.env.NEXT_URL}/api/asset/${issue.id}`
+			)
+			if (!response.ok) {
+				console.error("Failed to fetch assets for issue:", issue.id)
+				return issue
+			}
+			const { data } = (await response.json()) as { data: Asset[] }
+			if (data.length === 0) {
+				console.error("No assets found for issue:", issue.id)
+				return issue
+			}
+			return { ...issue, image_url: data[0].url }
+		})
+		const issuesWithAssets = await Promise.all(issuesWithAssetsPromise)
+		return NextResponse.json({ data: issuesWithAssets })
 	} catch (error) {
 		console.error("Error:", error)
 		return NextResponse.json(
@@ -64,13 +82,16 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
 	try {
 		const putData = await req.json()
-		const result = await fetch(`${BACKEND_URL}${PATH}/${putData.id}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(putData),
-		})
+		const result = await fetch(
+			`${process.env.ENTITY_API_URL}${PATH}/${putData.id}`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(putData),
+			}
+		)
 
 		if (!result.ok) {
 			const errorText = await result.text()

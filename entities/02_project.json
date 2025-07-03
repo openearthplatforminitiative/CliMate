@@ -1,0 +1,26 @@
+{
+    "name": "Project",
+    "collection_name": "projects",
+    "apiEndpoints": ["LIST", "GET", "POST", "PUT"],
+    "returnSummaryOnCollection": true,
+    "requiredAttributes": [
+        {
+            "name": "name",
+            "type": "STRING",
+            "includeInSummary": true
+        }
+    ],
+    "optionalAttributes": [
+        {
+            "name": "description",
+            "type": "STRING"
+        }
+    ],
+    "relatedEntities": [
+        {
+            "entity": "Event",
+            "collection_name": "events",
+            "apiEndpoints": ["LIST", "POST", "PUT", "DELETE", "GET"]
+        }
+    ]
+}

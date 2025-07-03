@@ -1,0 +1,25 @@
+{
+  "name": "Event",
+  "collection_name": "events",
+  "apiEndpoints": ["LIST","GET", "POST", "PUT", "DELETE"],
+  "returnSummaryOnCollection": true,
+  "requiredAttributes": [
+    {
+      "name": "name",
+      "type": "STRING",
+      "includeInSummary": true
+    },
+    {
+      "name": "description",
+      "type": "STRING"
+    }
+  ],
+  "optionalAttributes": [],
+  "relatedEntities": [
+    {
+      "entity": "Issue",
+      "collection_name": "issue",
+      "apiEndpoints": ["LIST", "POST", "GET"]
+    }
+  ]
+}

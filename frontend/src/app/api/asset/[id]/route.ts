@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from "next/server"
 
 // /v1/issues/{issue}/assets
-const BACKEND_URL = "http://localhost:8080/v1"
 const PATH = "/issues"
 
 export async function GET(req: NextRequest) {
+	console.log("GET assets")
 	try {
 		const url = new URL(req.url)
 		const issueId = url.pathname.split("/").pop()
-		console.log("fetching: ", `${BACKEND_URL}${PATH}/${issueId}/assets`)
-		const result = await fetch(`${BACKEND_URL}${PATH}/${issueId}/assets`)
+		console.log(
+			"fetching: ",
+			`${process.env.ENTITY_API_URL}${PATH}/${issueId}/assets`
+		)
+		const result = await fetch(
+			`${process.env.ENTITY_API_URL}${PATH}/${issueId}/assets`
+		)
 
 		if (!result.ok) {
 			const errorText = await result.text()

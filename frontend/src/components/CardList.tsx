@@ -12,11 +12,13 @@ interface CardListProps {
 export const CardList = ({ resolved = false }: CardListProps) => {
 	const { issues, loading, error } = useIssues()
 
+	console.log(issues)
+
 	const filteredIssues = useMemo(() => {
 		if (!loading && issues.length > 0) {
-			return issues.filter((issue) => issue.resolved === resolved)
+			return issues.filter((issue) => resolved ? issue.active : !issue.active)
 		}
-	}, [issues, loading])
+	}, [issues, loading, resolved])
 
 	if (error) {
 		return <div className="items-center">Error: Could not fetch issues</div>

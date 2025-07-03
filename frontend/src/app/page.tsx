@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Header } from "@/components/Header"
 import { NoradLogo, OpenEpiLogo } from "@/components/Logos"
-import { ProjectCard } from "@/components/Card"
+import { Card } from "@/components/Card"
 import Link from "next/link"
 
 export default function Home() {
@@ -26,7 +26,7 @@ export default function Home() {
 							</span>
 						</p>
 						<div className="mt-5">
-							<Link href="/map">
+							<Link href="/dashboard">
 								<Button className="bg-secondary-98 rounded-full hover:bg-secondary-80 text-2xl font-normal text-primary-10 p-7">
 									Join our mission
 								</Button>
@@ -75,25 +75,25 @@ export default function Home() {
 							Projects is science projects that you can support
 						</p>
 						<div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-24 px-10 md:px-0">
-							<ProjectCard
+							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
 								href="/map"
@@ -108,28 +108,28 @@ export default function Home() {
 							areas
 						</p>
 						<div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-10 px-10 md:px-0">
-							<ProjectCard
+							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
 								href="/map"
 								imageSrc="/river.jpg"
 							/>
-							<ProjectCard
+							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
