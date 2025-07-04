@@ -15,7 +15,7 @@ export const Card = ({ title, description, date, imageSrc, href }: CardProps) =>
     <Link
       href={href}
       className="flex group flex-col min-w-56 bg-secondary-50 hover:bg-secondary-60 rounded-2xl overflow-hidden cursor-pointer">
-      <div className="relative grow h-full w-full aspect-[13/11] overflow-hidden">
+      <div className="relative grow h-full w-full aspect-[13/11]">
         <Image src={imageSrc || "/image-placeholder.png"} alt={"test"} className="object-cover transition duration-500 group-hover:scale-105" fill />
         {date && (
           <div

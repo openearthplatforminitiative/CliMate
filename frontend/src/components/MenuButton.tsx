@@ -43,7 +43,7 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 									Map
 								</Button>
 							</Link>
-							<Link href="/issues" className="w-full">
+							<Link href="/dashboard/issues" className="w-full">
 								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
 									Issues
 								</Button>

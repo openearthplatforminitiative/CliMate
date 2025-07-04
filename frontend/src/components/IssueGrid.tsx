@@ -9,7 +9,7 @@ export const IssueGrid = () => {
 	}
 
 	return (
-		<div className="grid lg:grid-cols-3 grid-cols-2 w-full gap-4">
+		<div className="grid grid-cols-2 2xl:grid-cols-3 w-full gap-4">
 			{issues.map((issue) => (
 				<Card
 					key={issue.id}

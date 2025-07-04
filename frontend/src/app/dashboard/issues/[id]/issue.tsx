@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { SheetContent, SheetHeader, SheetTitle, SheetClose, Sheet } from "@/components/ui/sheet";
 import { useIsMobile } from "@/lib/utils";
 import { Asset, Issue } from "@/types/issue";
 import { notFound } from "next/navigation";
@@ -11,7 +10,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useMap } from "react-map-gl/maplibre";
 import Link from "next/link";
-import { Check, ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, CircleX } from "lucide-react";
 
 export const IssueComponent = ({ issue }: { issue: Issue }) => {
   const isMobile = useIsMobile();
@@ -106,7 +105,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
         />
       </div>
 
-      <div className="flex flex-col gap-4 p-4 h-full bg-secondary-40 text-secondary-98">
+      <div className="flex flex-col gap-4 p-4 h-full">
         <h1 className="text-3xl">{issue.title}</h1>
         <div>Category: {issue.category}</div>
         <div>{issue.description}</div>
@@ -123,19 +122,20 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 
   if (isMobile) {
     return (
-      <Sheet open={true} modal={false} onOpenChange={handleCloseSheet}>
-        <SheetContent onInteractOutside={e => e.preventDefault()} side="bottom" className="bg-secondary-99">
-          <SheetHeader>
-            <SheetTitle>{issue.title}</SheetTitle>
-            <SheetClose onClick={handleCloseSheet} />
-            <Something />
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+      <div className="p-4">
+        <Button
+          variant="ghost"
+          className="absolute top-2 right-2 z-10"
+          onClick={handleCloseSheet}
+        >
+          <CircleX />
+        </Button>
+        <Something />
+      </div>
     )
   }
   return (
-    <div className="bg-primary-100 h-full w-full">
+    <div className="bg-primary-99 h-full w-full">
       <Something />
     </div>
   )

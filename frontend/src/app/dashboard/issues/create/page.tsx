@@ -1,8 +1,9 @@
 "use client"
 
 import { IssueForm } from "@/components/IssueForm";
-import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/lib/utils";
+import { CircleX } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function CreateIssuePage() {
@@ -15,15 +16,17 @@ export default function CreateIssuePage() {
 
   if (isMobile) {
     return (
-      <Sheet open={true} modal={false} onOpenChange={handleCloseSheet}>
-        <SheetContent onInteractOutside={e => e.preventDefault()} side="bottom" className="bg-secondary-99">
-          <SheetHeader>
-            <SheetTitle>Create Report</SheetTitle>
-            <SheetClose onClick={handleCloseSheet} />
-            <IssueForm />
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+      <div className="p-4">
+        <Button
+          variant="ghost"
+          className="absolute top-2 right-2 z-10"
+          onClick={handleCloseSheet}
+        >
+          <CircleX />
+        </Button>
+        <h1 className="text-2xl">Create Report</h1>
+        <IssueForm />
+      </div>
     )
   }
   return (

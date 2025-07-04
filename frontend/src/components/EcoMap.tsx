@@ -10,6 +10,7 @@ import { MissingImage } from "./map/missing-image"
 import { MapSources } from "./map/map-sources"
 import { ClusterLayer } from "./map/cluster-layer"
 import { CreateIssueLayer } from "./map/create-issue-layer"
+import { IssueLayer } from "./map/issue-layer"
 
 export const EcoMap = () => {
 	const segments = useSelectedLayoutSegments()
@@ -26,14 +27,14 @@ export const EcoMap = () => {
 	}
 
 	return (
-		<div className="sticky top-0 w-full h-screen min-h-screen">
+		<div className="relative w-full flex-1 min-h-0 h-screen">
 			<Map
 				initialViewState={{
 					longitude: 10.752245,
 					latitude: 59.913868,
 					zoom: 8,
 				}}
-				style={{ width: "100%", height: "100%" }}
+				style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
 				mapStyle="https://tiles.openfreemap.org/styles/liberty"
 				attributionControl={false}
 				id="ecoMap"
@@ -47,6 +48,9 @@ export const EcoMap = () => {
 					</>
 				)}
 				{pathname === "/dashboard/issues/create" && <CreateIssueLayer />}
+				{pathname.startsWith("/dashboard/issues/") && (
+					<IssueLayer />
+				)}
 				<MissingImage />
 			</Map>
 			{!mapLoaded && (
