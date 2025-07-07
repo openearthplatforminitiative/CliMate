@@ -1,14 +1,12 @@
 import { Layer } from "react-map-gl/maplibre"
 
-
 export function IssueLayer() {
 	return (
 		<>
 			<Layer
-				id="issues-labels"
+				id="issue-labels"
 				type="symbol"
 				source="issues"
-				filter={["!", ["has", "point_count"]]}
 				layout={{
 					"icon-image": ["get", "category"],
 					"icon-size": [

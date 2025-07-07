@@ -1,3 +1,5 @@
+"use client"
+
 import RoomIcon from "@mui/icons-material/Room"
 import { useCallback, useEffect, useState } from "react"
 import { Button } from "../ui/button"
@@ -89,7 +91,6 @@ export function IssuesLayer() {
 				id="issues-labels"
 				type="symbol"
 				source="issues"
-				filter={["!", ["has", "point_count"]]}
 				layout={{
 					"icon-image": ["get", "category"],
 					"icon-size": [

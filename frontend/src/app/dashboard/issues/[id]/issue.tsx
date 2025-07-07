@@ -11,13 +11,22 @@ import Image from "next/image";
 import { useMap } from "react-map-gl/maplibre";
 import Link from "next/link";
 import { Check, ChevronLeft, CircleX } from "lucide-react";
+import { currentIssueAtom } from "@/atoms/issueAtoms";
+import { useSetAtom } from "jotai";
 
 export const IssueComponent = ({ issue }: { issue: Issue }) => {
+  const setCurrentIssue = useSetAtom(currentIssueAtom);
+
   const isMobile = useIsMobile();
   const navigate = useRouter();
   const map = useMap();
 
   const [asset, setAsset] = useState<Asset[]>([])
+
+  useEffect(() => {
+    if (!issue || !issue.id) return;
+    setCurrentIssue(issue);
+  }, [issue, setCurrentIssue]);
 
   useEffect(() => {
     if (!issue || !issue.id) return
@@ -72,9 +81,6 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
       if (!response.ok) {
         throw new Error("Failed to upload the issue.")
       }
-
-      const { data }: { data: Issue } = await response.json()
-      console.log("Data:", data)
       toast("Successfully updated report")
     } catch (error) {
       toast("Could not update issue")
@@ -86,9 +92,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
     navigate.back();
   };
 
-  console.log(issue)
-
-  const Something = () => (
+  const Content = () => (
     <>
       <div className="relative">
         <Button asChild>
@@ -130,13 +134,13 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
         >
           <CircleX />
         </Button>
-        <Something />
+        <Content />
       </div>
     )
   }
   return (
     <div className="bg-primary-99 h-full w-full">
-      <Something />
+      <Content />
     </div>
   )
 }

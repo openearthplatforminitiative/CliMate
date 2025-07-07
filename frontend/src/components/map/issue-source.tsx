@@ -1,16 +1,17 @@
 "use client"
 
-import { useIssues } from "@/lib/IssuesContext"
+import { currentIssueAtom } from "@/atoms/issueAtoms"
+import { useAtomValue } from "jotai"
 import { useMemo } from "react"
 import { Source } from "react-map-gl/maplibre"
 
-export function MapSources() {
+export function IssueSource() {
 
-  const { issues } = useIssues()
+  const issue = useAtomValue(currentIssueAtom)
 
   const geoJsonData = useMemo<GeoJSON.FeatureCollection>(() => ({
     type: "FeatureCollection",
-    features: issues.map((issue) => ({
+    features: issue ? [{
       type: "Feature",
       geometry: {
         type: "Point",
@@ -23,8 +24,8 @@ export function MapSources() {
         description: issue.description,
         image: issue.image_url,
       },
-    })),
-  }), [issues])
+    }] : [],
+  }), [issue])
 
   return (
     <Source
