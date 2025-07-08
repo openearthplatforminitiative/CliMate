@@ -82,7 +82,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 
   if (isMobile) {
     return (
-      <Sheet ref={sheetRef} isOpen={true} onClose={handleClose} onSnap={handleSnap} snapPoints={SNAP_POINTS} initialSnap={1}>
+      <Sheet ref={sheetRef} isOpen={true} onClose={handleClose} onSnap={handleSnap} snapPoints={SNAP_POINTS} initialSnap={1} className="z-40">
         <Sheet.Container className="rounded-t-4xl bg-primary-99">
           <Sheet.Header />
           <Sheet.Content>

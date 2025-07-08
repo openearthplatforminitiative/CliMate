@@ -22,14 +22,16 @@ export default function MapPage() {
 
 	if (isMobile) {
 		return (
-			<Sheet ref={sheetRef} isOpen={true} onClose={handleClose} snapPoints={SNAP_POINTS} initialSnap={2}>
+			<Sheet ref={sheetRef} isOpen={true} onClose={handleClose} snapPoints={SNAP_POINTS} initialSnap={2} className="z-40">
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
 					<Sheet.Header />
 					<Sheet.Content>
-						<h1 className="text-2xl px-4 py-2">Recent Reports</h1>
-						<IssueSlider />
-						<h1 className="text-2xl px-4 mt-4 mb-2">Events</h1>
-						<IssueSlider />
+						<Sheet.Scroller>
+							<h2 className="text-2xl px-4 py-2">Recent Reports</h2>
+							<IssueSlider />
+							<h2 className="text-2xl px-4 mt-4 mb-2">Events</h2>
+							<IssueSlider />
+						</Sheet.Scroller>
 					</Sheet.Content>
 				</Sheet.Container>
 			</Sheet>
