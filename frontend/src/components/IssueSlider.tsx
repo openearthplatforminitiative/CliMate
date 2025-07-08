@@ -16,7 +16,7 @@ export const IssueSlider = () => {
 					title={issue.title}
 					description={issue.description}
 					href={`/dashboard/issues/${issue.id}`}
-					imageSrc="/river.jpg"
+					imageSrc={issue.image_url ? `${issue.image_url}` : "/image-placeholder.png"}
 				/>
 			))}
 		</div>

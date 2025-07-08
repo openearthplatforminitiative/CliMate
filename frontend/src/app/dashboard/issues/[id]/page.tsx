@@ -17,8 +17,6 @@ export default async function IssuePage({ params }: IssueProps) {
 	}
 
 	return (
-		<div className="w-full">
-			<IssueComponent issue={issue} />
-		</div>
+		<IssueComponent issue={issue} />
 	)
 }

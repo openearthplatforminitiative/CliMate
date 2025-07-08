@@ -1,9 +1,7 @@
 "use client"
 
-import { BottomDrawer } from "@/components/bottom-drawer"
 import { EcoMap } from "@/components/EcoMap"
 import { Header } from "@/components/Header"
-import { MapContainer } from "@/components/map-container"
 import { useIsMobile } from "@/lib/utils"
 
 export function LayoutContainer({
@@ -19,12 +17,10 @@ export function LayoutContainer({
         <div className="fixed top-0 left-0 right-0 z-10">
           <Header />
         </div>
-        <MapContainer>
+        <div className="sticky inset-0 w-full h-screen">
           <EcoMap />
-        </MapContainer>
-        <BottomDrawer>
-          {children}
-        </BottomDrawer>
+        </div>
+        {children}
       </div>
     )
   }
