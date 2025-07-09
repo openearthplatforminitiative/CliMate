@@ -57,7 +57,6 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
         ...issue,
         active: !issue.active,
       }
-
       const response = await fetch("/api/issue", {
         method: "PUT",
         body: JSON.stringify(putData),
@@ -110,7 +109,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
                   onClick={handleClick}
                 >
                   <Check />
-                  Set as {issue.active ? "unresolved" : "resolved"}
+                  Set as {issue.active ? "resolved" : "unresolved"}
                 </Button>
               </div>
             </div>
@@ -145,7 +144,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
           onClick={handleClick}
         >
           <Check />
-          Set as {issue.active ? "unresolved" : "resolved"}
+          Set as {issue.active ? "resolved" : "unresolved"}
         </Button>
       </div>
     </div>

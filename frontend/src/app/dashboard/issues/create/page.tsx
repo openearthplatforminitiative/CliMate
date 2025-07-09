@@ -1,19 +1,25 @@
 "use client"
 
+import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms";
 import { IssueForm } from "@/components/IssueForm";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/lib/utils";
+import { useAtom } from "jotai";
 import { X } from "lucide-react";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useMap } from "react-map-gl/maplibre";
 import { Sheet, SheetRef } from "react-modal-sheet";
 
 const SNAP_POINTS = [-40, 650, 90];
 
 export default function CreateIssuePage() {
   const sheetRef = useRef<SheetRef>(null);
+  const [snapIndex, setSnapIndex] = useState(1);
 
   const isMobile = useIsMobile();
+  const [coordinates, setCoordinates] = useAtom(createIssueCoordinatesAtom)
+  const map = useMap();
 
   const handleClose = () => {
     const sheet = sheetRef.current
@@ -22,9 +28,38 @@ export default function CreateIssuePage() {
     }
   }
 
+  const offsetY = useMemo(() => {
+    if (!isMobile || snapIndex === SNAP_POINTS.length - 1) return 0;
+    const snap = SNAP_POINTS[1] ?? 0;
+    return -snap / 2;
+  }, [isMobile, snapIndex]);
+
+  const handleSnap = (index: number) => {
+    setSnapIndex(index);
+  }
+
+  useEffect(() => {
+    const mapRef = map.ecoMap;
+    if (!mapRef) return;
+
+    if (!coordinates) {
+      const centerLngLat = mapRef.getCenter()
+      setCoordinates({
+        lng: centerLngLat.lng,
+        lat: centerLngLat.lat,
+      });
+    } else {
+      mapRef.flyTo({
+        center: [coordinates.lng, coordinates.lat],
+        offset: [0, isMobile && snapIndex != (SNAP_POINTS.length - 1) ? offsetY : 0],
+        duration: 1000,
+      });
+    }
+  }, [coordinates, isMobile, map, offsetY, setCoordinates, snapIndex]);
+
   if (isMobile) {
     return (
-      <Sheet ref={sheetRef} isOpen={true} onClose={handleClose} snapPoints={SNAP_POINTS} initialSnap={1} className="z-40">
+      <Sheet ref={sheetRef} isOpen={true} onClose={handleClose} onSnap={handleSnap} snapPoints={SNAP_POINTS} initialSnap={1} className="z-40">
         <Sheet.Container className="rounded-t-4xl bg-primary-99">
           <Sheet.Header />
           <Sheet.Content>

@@ -82,6 +82,7 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
 	try {
 		const putData = await req.json()
+		console.log("PUT issue data:", putData)
 		const result = await fetch(
 			`${process.env.ENTITY_API_URL}${PATH}/${putData.id}`,
 			{

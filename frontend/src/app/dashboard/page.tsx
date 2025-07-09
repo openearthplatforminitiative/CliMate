@@ -2,7 +2,9 @@
 
 import { IssueGrid } from "@/components/IssueGrid";
 import { IssueSlider } from "@/components/IssueSlider";
+import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/lib/utils";
+import Link from "next/link";
 import { useRef } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 
@@ -24,6 +26,11 @@ export default function MapPage() {
 		return (
 			<Sheet ref={sheetRef} isOpen={true} onClose={handleClose} snapPoints={SNAP_POINTS} initialSnap={2} className="z-40">
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
+					<Button asChild className="bg-primary-20">
+						<Link href="/dashboard/issues/create" className="absolute -top-12 right-4 z-50">
+							Add Report
+						</Link>
+					</Button>
 					<Sheet.Header />
 					<Sheet.Content>
 						<Sheet.Scroller>
