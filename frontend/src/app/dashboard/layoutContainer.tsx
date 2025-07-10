@@ -25,14 +25,14 @@ export function LayoutContainer({
     )
   }
   return (
-    <div className="h-screen w-full grid grid-cols-2 overflow-hidden">
-      <div className="flex flex-col h-full w-full overflow-y-scroll">
+    <div className="h-screen w-full flex overflow-hidden">
+      <div className="flex flex-col h-full w-1/2 max-w-6xl overflow-y-scroll">
         <div className="sticky top-0 left-0 right-0 z-10">
           <Header />
         </div>
         {children}
       </div>
-      <div className="relative w-full h-full">
+      <div className="relative h-full grow">
         <EcoMap />
       </div>
     </div>
