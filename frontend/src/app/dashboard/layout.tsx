@@ -8,9 +8,7 @@ export default function Layout({
 }>) {
 	return (
 		<DashboardProviders>
-			<LayoutContainer>
-				{children}
-			</LayoutContainer>
-		</DashboardProviders >
+			<LayoutContainer>{children}</LayoutContainer>
+		</DashboardProviders>
 	)
 }

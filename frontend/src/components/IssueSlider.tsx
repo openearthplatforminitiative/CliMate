@@ -9,14 +9,16 @@ export const IssueSlider = () => {
 	}
 
 	return (
-		<div className="flex relative w-full overflow-x-scroll gap-2 px-2">
+		<div className="flex relative w-full overflow-x-scroll gap-4 px-4">
 			{issues.map((issue) => (
 				<Card
 					key={issue.id}
 					title={issue.title}
 					description={issue.description}
 					href={`/dashboard/issues/${issue.id}`}
-					imageSrc="/river.jpg"
+					imageSrc={
+						issue.image_url ? `${issue.image_url}` : "/image-placeholder.png"
+					}
 				/>
 			))}
 		</div>

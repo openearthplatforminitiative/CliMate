@@ -27,7 +27,10 @@ export const IssueForm = () => {
 		title: "",
 		description: "",
 		category: "garbage",
-		location: { type: "Point", coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0] },
+		location: {
+			type: "Point",
+			coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0],
+		},
 		active: false,
 	})
 
@@ -57,7 +60,6 @@ export const IssueForm = () => {
 	}
 
 	const handleUpload = async () => {
-		// todo: get id from issue post success, and upload picture
 		try {
 			const postData: Issue = {
 				title: issue.title,
@@ -99,13 +101,11 @@ export const IssueForm = () => {
 			const { data: imageData }: { data: Asset } = await imageResponse.json()
 			console.log(imageData)
 
-			// construct Issue
 			const issueResult: Issue = {
 				...data,
 				image_url: imageData.url,
 			}
 
-			// set local states
 			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
 			toast("Successfully uploaded report")
 			router.push("/dashboard")

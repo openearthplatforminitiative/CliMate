@@ -1,34 +1,62 @@
-"use client";
+"use client"
 
-import { IssueGrid } from "@/components/IssueGrid";
-import { IssueSlider } from "@/components/IssueSlider";
-import { useIsMobile } from "@/lib/utils";
-import { useEffect } from "react";
-import { useMap } from "react-map-gl/maplibre";
+import { IssueGrid } from "@/components/IssueGrid"
+import { IssueSlider } from "@/components/IssueSlider"
+import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/lib/utils"
+import Link from "next/link"
+import { useRef } from "react"
+import { Sheet, SheetRef } from "react-modal-sheet"
+
+const SNAP_POINTS = [-40, 700, 400, 90]
 
 export default function MapPage() {
-	const isMobile = useIsMobile();
-	const map = useMap();
+	const sheetRef = useRef<SheetRef>(null)
 
-	useEffect(() => {
-		const mapRef = map.ecoMap;
-		if (!mapRef) return;
-		mapRef.flyTo({
-			center: [0, 0],
-			zoom: 0,
-			duration: 1000,
-		});
-	}, [map])
+	const isMobile = useIsMobile()
+
+	const handleClose = () => {
+		const sheet = sheetRef.current
+		if (sheet) {
+			sheet.snapTo(2)
+		}
+	}
 
 	if (isMobile) {
 		return (
-			<div className="absolute bottom-7 left-0 right-0 z-10 flex flex-col gap-4">
-				<IssueSlider />
-			</div>
-		);
+			<Sheet
+				ref={sheetRef}
+				isOpen={true}
+				onClose={handleClose}
+				snapPoints={SNAP_POINTS}
+				initialSnap={2}
+				className="z-40"
+			>
+				<Sheet.Container className="rounded-t-4xl bg-primary-99">
+					<Button asChild className="bg-primary-20">
+						<Link
+							href="/dashboard/issues/create"
+							className="absolute -top-12 right-4 z-50"
+						>
+							Add Report
+						</Link>
+					</Button>
+					<Sheet.Header />
+					<Sheet.Content>
+						<Sheet.Scroller>
+							<h2 className="text-2xl px-4 py-2">Recent Reports</h2>
+							<IssueSlider />
+							<h2 className="text-2xl px-4 mt-4 mb-2">Events</h2>
+							<IssueSlider />
+						</Sheet.Scroller>
+					</Sheet.Content>
+				</Sheet.Container>
+			</Sheet>
+		)
 	}
 	return (
 		<div className="bg-primary-20 h-full px-10 py-5 w-full">
+			<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
 			<IssueGrid />
 		</div>
 	)

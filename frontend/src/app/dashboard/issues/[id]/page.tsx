@@ -11,14 +11,10 @@ interface IssueProps {
 
 export default async function IssuePage({ params }: IssueProps) {
 	const { id } = await params
-	const issue = await fetchIssue(id).catch(() => notFound());
+	const issue = await fetchIssue(id).catch(() => notFound())
 	if (!issue) {
 		return notFound()
 	}
 
-	return (
-		<div className="w-full">
-			<IssueComponent issue={issue} />
-		</div>
-	)
+	return <IssueComponent issue={issue} />
 }

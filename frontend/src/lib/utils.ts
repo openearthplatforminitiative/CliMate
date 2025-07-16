@@ -23,3 +23,13 @@ export function useIsMobile() {
 
 	return !!isMobile
 }
+
+export function calculateOffset(
+	isMobile: boolean,
+	snapIndex: number,
+	snapPoints: number[]
+): number {
+	if (!isMobile || snapIndex === snapPoints.length - 1) return 0
+	const snap = snapPoints[1] ?? 0
+	return -snap / 2
+}
