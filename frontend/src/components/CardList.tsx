@@ -16,7 +16,7 @@ export const CardList = ({ resolved = false }: CardListProps) => {
 
 	const filteredIssues = useMemo(() => {
 		if (!loading && issues.length > 0) {
-			return issues.filter((issue) => resolved ? issue.active : !issue.active)
+			return issues.filter((issue) => (resolved ? issue.active : !issue.active))
 		}
 	}, [issues, loading, resolved])
 

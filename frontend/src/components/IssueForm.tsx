@@ -27,7 +27,10 @@ export const IssueForm = () => {
 		title: "",
 		description: "",
 		category: "garbage",
-		location: { type: "Point", coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0] },
+		location: {
+			type: "Point",
+			coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0],
+		},
 		active: false,
 	})
 

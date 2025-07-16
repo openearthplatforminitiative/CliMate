@@ -21,7 +21,13 @@ export const EcoMap = () => {
 					latitude: 0,
 					zoom: 0,
 				}}
-				style={{ position: "absolute", transition: "linear", inset: 0, width: "100%", height: "100%" }}
+				style={{
+					position: "absolute",
+					transition: "linear",
+					inset: 0,
+					width: "100%",
+					height: "100%",
+				}}
 				mapStyle="https://tiles.openfreemap.org/styles/liberty"
 				attributionControl={false}
 				id="ecoMap"

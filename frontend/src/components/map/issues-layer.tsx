@@ -9,35 +9,35 @@ import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 
-
 export function IssuesLayer() {
 	const [clickedPoint, setClickedPoint] = useState<[number, number] | null>()
-	const [userLocation] = useState<[number, number] | null>(
-		null
-	)
+	const [userLocation] = useState<[number, number] | null>(null)
 
 	const setCreateIssueCoordinates = useSetAtom(createIssueCoordinatesAtom)
 	const map = useMap()
 	const navigate = useRouter()
 
-	const handleIssueLayerClick = useCallback((event: MapMouseEvent) => {
-		const mapRef = map.current
-		if (!mapRef) return
+	const handleIssueLayerClick = useCallback(
+		(event: MapMouseEvent) => {
+			const mapRef = map.current
+			if (!mapRef) return
 
-		const clickedFeatures = mapRef.queryRenderedFeatures(event.point, {
-			layers: ["issues-labels", "clusters"],
-		})
+			const clickedFeatures = mapRef.queryRenderedFeatures(event.point, {
+				layers: ["issues-labels", "clusters"],
+			})
 
-		if (clickedFeatures && clickedFeatures.length > 0) {
-			setClickedPoint(null)
-			if (clickedFeatures[0].properties.id) {
-				navigate.push(`/dashboard/issues/${clickedFeatures[0].properties.id}`)
+			if (clickedFeatures && clickedFeatures.length > 0) {
+				setClickedPoint(null)
+				if (clickedFeatures[0].properties.id) {
+					navigate.push(`/dashboard/issues/${clickedFeatures[0].properties.id}`)
+				}
+			} else {
+				const { lng, lat } = event.lngLat
+				setClickedPoint([lng, lat])
 			}
-		} else {
-			const { lng, lat } = event.lngLat
-			setClickedPoint([lng, lat])
-		}
-	}, [map, navigate, setClickedPoint]);
+		},
+		[map, navigate, setClickedPoint]
+	)
 
 	useEffect(() => {
 		const mapRef = map.current
