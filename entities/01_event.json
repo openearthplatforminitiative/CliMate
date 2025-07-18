@@ -1,7 +1,7 @@
 {
   "name": "Event",
   "collection_name": "events",
-  "apiEndpoints": ["LIST","GET", "POST", "PUT", "DELETE"],
+  "apiEndpoints": ["LIST", "GET", "POST", "PUT", "DELETE"],
   "returnSummaryOnCollection": true,
   "requiredAttributes": [
     {
@@ -12,13 +12,31 @@
     {
       "name": "description",
       "type": "STRING"
+    },
+    {
+      "name": "start_date",
+      "type": "DATETIME"
     }
   ],
-  "optionalAttributes": [],
+  "optionalAttributes": [
+    {
+      "name": "location",
+      "type": "GEOMETRY"
+    },
+    {
+      "name": "user_uuid",
+      "type": "STRING"
+    },
+    {
+      "name": "end_date",
+      "type": "DATETIME"
+    }
+
+  ],
   "relatedEntities": [
     {
       "entity": "Issue",
-      "collection_name": "issue",
+      "collection_name": "issues",
       "apiEndpoints": ["LIST", "POST", "GET"]
     }
   ]

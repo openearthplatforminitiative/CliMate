@@ -8,8 +8,8 @@ import {
 } from "./ui/sheet"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
-import { useSession, signIn, signOut } from "next-auth/react"
-import Link from "next/link"
+
+import { MenuContent } from "./MenuContent"
 
 interface MenuButtonProps
 	extends DetailedHTMLProps<
@@ -20,8 +20,6 @@ interface MenuButtonProps
 }
 
 export const MenuButton = ({ className }: MenuButtonProps) => {
-	const { data: session } = useSession()
-
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -30,54 +28,7 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 			<SheetContent side="right" className="bg-secondary-99 z-50">
 				<SheetHeader className="h-full">
 					<SheetTitle>Menu</SheetTitle>
-					<div className="flex flex-col justify-between h-full">
-						<div className="flex flex-col items-center w-full gap-1">
-							<Link href="/" className="w-full">
-								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
-									Home
-								</Button>
-							</Link>
-							<Link href="/dashboard" className="w-full">
-								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
-									Map
-								</Button>
-							</Link>
-							<Link href="/dashboard/issues" className="w-full">
-								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
-									Issues
-								</Button>
-							</Link>
-						</div>
-
-						{/* Session Status */}
-						<div className="flex flex-col items-center w-full gap-2">
-							{session && session.user && (
-								<>
-									<span className="text-sm text-gray-500">
-										Signed in as {session.user.name}
-									</span>
-									<Button
-										onClick={() => signOut()}
-										className="bg-primary-20 hover:bg-primary-10 w-full"
-									>
-										Sign out
-									</Button>
-								</>
-							)}
-							{!session && (
-								<>
-									<span className="text-sm text-gray-500">Not signed in</span>
-									<Button
-										onClick={() => signIn()}
-										className="bg-primary-20 hover:bg-primary-10 w-full"
-									>
-										Sign in
-									</Button>
-								</>
-							)}
-						</div>
-						{/* TODO: User/login, your reports/status */}
-					</div>
+					<MenuContent />
 				</SheetHeader>
 			</SheetContent>
 		</Sheet>
