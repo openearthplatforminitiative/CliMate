@@ -30,7 +30,6 @@ export default function MapPage() {
 				return
 			}
 
-			// Extract bounds coordinates on client side
 			const bounds = {
 				minLat: mapBounds._sw.lat,
 				minLng: mapBounds._sw.lng,
@@ -43,7 +42,6 @@ export default function MapPage() {
 				setIssuesInBounds(issues)
 			} catch (error) {
 				console.error("Failed to fetch issues:", error)
-				setIssuesInBounds([])
 			}
 		}
 
