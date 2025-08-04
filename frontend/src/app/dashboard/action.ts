@@ -14,7 +14,10 @@ interface BoundsCoordinates {
 async function getIssues(): Promise<Issue[]> {
 	try {
 		const response = await fetch(`http://localhost:3000/api/issue`, {
-			cache: "no-store", // Disable caching for development
+			next: {
+				revalidate: 60 * 60, // cache for 60 minutes
+				tags: ["issues"],
+			},
 		})
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`)
