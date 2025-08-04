@@ -1,13 +1,11 @@
-import { useIssues } from "@/lib/IssuesContext"
+import { Issue } from "@/types/issue";
 import { Card } from "./Card"
 
-export const IssueSlider = () => {
-	const { issues } = useIssues()
+interface IssueSliderProps {
+	issues: Issue[];
+}
 
-	if (issues === undefined || issues === null) {
-		return null
-	}
-
+export const IssueSlider = ({ issues }: IssueSliderProps) => {
 	return (
 		<div className="flex relative w-full overflow-x-scroll gap-4 px-4">
 			{issues.map((issue) => (
