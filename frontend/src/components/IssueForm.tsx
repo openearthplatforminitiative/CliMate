@@ -31,7 +31,7 @@ export const IssueForm = () => {
 			type: "Point",
 			coordinates: coordinates ? [coordinates?.lng, coordinates?.lat] : [0, 0],
 		},
-		active: false,
+		active: true,
 	})
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
