@@ -15,7 +15,7 @@ async function getIssues(): Promise<Issue[]> {
 	try {
 		const response = await fetch(`http://localhost:3000/api/issue`, {
 			next: {
-				revalidate: 60 * 60, // cache for 60 minutes
+				revalidate: 60 * 60,
 				tags: ["issues"],
 			},
 		})
@@ -23,7 +23,7 @@ async function getIssues(): Promise<Issue[]> {
 			throw new Error(`HTTP error! status: ${response.status}`)
 		}
 		const { data: issues } = await response.json()
-		return issues.data as Issue[]
+		return issues as Issue[]
 	} catch (error) {
 		console.error("Error fetching issues:", error)
 		return []
