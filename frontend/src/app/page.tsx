@@ -78,25 +78,25 @@ export default function Home() {
 							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Project"
 								description="Lorem ipsum dolor"
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 						</div>
@@ -112,28 +112,28 @@ export default function Home() {
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 							<Card
 								title="Event"
 								description="Lorem ipsum dolor"
 								date={new Date()}
-								href="/map"
+								href="/dashboard"
 								imageSrc="/river.jpg"
 							/>
 						</div>
