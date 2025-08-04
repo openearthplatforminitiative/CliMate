@@ -31,14 +31,13 @@ export const MenuButton = ({ className }: MenuButtonProps) => {
 				<SheetHeader className="h-full">
 					<SheetTitle>Menu</SheetTitle>
 					<div className="flex flex-col justify-between h-full">
-						{/* Navigation Links */}
 						<div className="flex flex-col items-center w-full gap-1">
 							<Link href="/" className="w-full">
 								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
 									Home
 								</Button>
 							</Link>
-							<Link href="/map" className="w-full">
+							<Link href="/dashboard" className="w-full">
 								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
 									Map
 								</Button>
