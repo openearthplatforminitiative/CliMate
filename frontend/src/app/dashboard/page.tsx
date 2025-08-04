@@ -56,7 +56,7 @@ export default function MapPage() {
 	const handleClose = () => {
 		const sheet = sheetRef.current
 		if (sheet) {
-			sheet.snapTo(2)
+			sheet.snapTo(3)
 		}
 	}
 

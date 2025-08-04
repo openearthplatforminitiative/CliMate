@@ -11,19 +11,25 @@ interface BoundsCoordinates {
 	maxLng: number
 }
 
-export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
+async function getIssues(): Promise<Issue[]> {
 	try {
-		const response = await fetch(`${process.env.NEXT_URL}/api/issue`, {
-			next: {
-				revalidate: 60 * 60, // cache for 60 minutes
-				tags: ["issues"],
-			},
+		const response = await fetch(`http://localhost:3000/api/issue`, {
+			cache: "no-store", // Disable caching for development
 		})
 		if (!response.ok) {
-			console.error("Failed to fetch issues", response.statusText)
-			throw new Error("Failed to fetch issues")
+			throw new Error(`HTTP error! status: ${response.status}`)
 		}
-		const { data: issues } = (await response.json()) as { data: Issue[] }
+		const { data: issues } = await response.json()
+		return issues.data as Issue[]
+	} catch (error) {
+		console.error("Error fetching issues:", error)
+		return []
+	}
+}
+
+export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
+	try {
+		const issues = await getIssues()
 
 		const { minLat, minLng, maxLat, maxLng } = bounds
 
