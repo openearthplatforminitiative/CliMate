@@ -13,7 +13,12 @@ interface BoundsCoordinates {
 
 export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 	try {
-		const response = await fetch(`${process.env.NEXT_URL}/api/issue`)
+		const response = await fetch(`${process.env.NEXT_URL}/api/issue`, {
+			next: {
+				revalidate: 60 * 60, // cache for 60 minutes
+				tags: ["issues"],
+			},
+		})
 		if (!response.ok) {
 			console.error("Failed to fetch issues", response.statusText)
 			throw new Error("Failed to fetch issues")

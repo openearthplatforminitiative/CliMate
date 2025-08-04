@@ -20,7 +20,7 @@ export const Card = ({
 	return (
 		<Link
 			href={href}
-			className="flex group flex-col min-w-56 bg-secondary-50 hover:bg-secondary-60 rounded-2xl overflow-hidden cursor-pointer"
+			className="flex basis-56 shrink-0 group flex-col bg-secondary-50 hover:bg-secondary-60 rounded-2xl overflow-hidden cursor-pointer"
 		>
 			<div className="relative grow h-full w-full">
 				<div className="relative aspect-[13/11] overflow-hidden">

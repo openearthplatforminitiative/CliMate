@@ -2,7 +2,7 @@
 
 import { CategorySelect } from "./CatergorySelect"
 import { Input } from "./ui/input"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
 import { Asset, Category, Issue } from "@/types/issue"
@@ -33,6 +33,18 @@ export const IssueForm = () => {
 		},
 		active: true,
 	})
+
+	useEffect(() => {
+		if (coordinates) {
+			setIssue((prev) => ({
+				...prev,
+				location: {
+					type: "Point",
+					coordinates: [coordinates.lng, coordinates.lat],
+				},
+			}))
+		}
+	}, [coordinates])
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files.length > 0) {
