@@ -93,7 +93,7 @@ export default function MapPage() {
 		)
 	}
 	return (
-		<div className="bg-primary-20 px-10 py-5 w-full">
+		<div className="bg-primary-20 grow px-10 py-5 w-full">
 			<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
 			<IssueGrid issues={issuesInBounds} />
 		</div>
