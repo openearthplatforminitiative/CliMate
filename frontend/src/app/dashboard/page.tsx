@@ -10,15 +10,15 @@ import { Sheet, SheetRef } from "react-modal-sheet"
 import { getIssuesInBounds } from "./action"
 import { useMap } from "react-map-gl/maplibre"
 import { Issue } from "@/types/issue"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const SNAP_POINTS = [-40, 700, 400, 90]
+const SNAP_POINTS = [400, 90]
 
 export default function MapPage() {
 	const sheetRef = useRef<SheetRef>(null)
 	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
 
 	const isMobile = useIsMobile()
-
 	const map = useMap()
 
 	useEffect(() => {
@@ -56,7 +56,7 @@ export default function MapPage() {
 	const handleClose = () => {
 		const sheet = sheetRef.current
 		if (sheet) {
-			sheet.snapTo(3)
+			sheet.snapTo(1)
 		}
 	}
 
@@ -67,7 +67,7 @@ export default function MapPage() {
 				isOpen={true}
 				onClose={handleClose}
 				snapPoints={SNAP_POINTS}
-				initialSnap={2}
+				initialSnap={1}
 				className="z-40"
 			>
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
@@ -82,10 +82,18 @@ export default function MapPage() {
 					<Sheet.Header />
 					<Sheet.Content>
 						<Sheet.Scroller>
-							<h2 className="text-2xl px-4 py-2">Recent Reports</h2>
-							<IssueSlider issues={issuesInBounds} />
-							<h2 className="text-2xl px-4 mt-4 mb-2">Events</h2>
-							<IssueSlider issues={issuesInBounds} />
+							<Tabs defaultValue="reports">
+								<TabsList className="mx-auto">
+									<TabsTrigger value="reports">Reports</TabsTrigger>
+									<TabsTrigger value="events">Events</TabsTrigger>
+								</TabsList>
+								<TabsContent value="reports">
+									<IssueSlider issues={issuesInBounds} />
+								</TabsContent>
+								<TabsContent value="events">
+									<IssueSlider issues={issuesInBounds} />
+								</TabsContent>
+							</Tabs>
 						</Sheet.Scroller>
 					</Sheet.Content>
 				</Sheet.Container>
