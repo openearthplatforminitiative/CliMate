@@ -92,7 +92,6 @@ export const IssueForm = () => {
 			}
 
 			const { data }: { data: Issue } = await response.json()
-			console.log("Issue was successfully created:", data)
 
 			// upload picture
 			if (!data.id || !file) {

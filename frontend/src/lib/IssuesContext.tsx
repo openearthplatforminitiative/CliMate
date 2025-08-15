@@ -26,9 +26,7 @@ export const IssuesProvider = ({ children }: { children: ReactNode }) => {
 		const fetchData = async () => {
 			try {
 				const retrievedIssues = await fetch("/api/issue")
-				console.log("retrievedIssues", retrievedIssues)
 				const { data, error } = await retrievedIssues.json()
-				console.log("data", data)
 				if (error) throw error
 				setIssues(data)
 			} catch (err) {
