@@ -1,13 +1,13 @@
 import { MenuButton } from "@/components/MenuButton"
 import Link from "next/link"
 
-export const Header = () => {
+export const HeaderHero = () => {
 	return (
-		<header className="w-full bg-transparent lg:bg-primary-20">
-			<nav className="mx-auto w-full max-w-[1350px] lg:border-b lg:border-secondary-98 flex justify-between items-center py-5 px-10">
+		<header className="w-full bg-primary-20">
+			<nav className="mx-auto w-full max-w-[1350px] border-b border-secondary-98 flex justify-between items-center py-5 px-10">
 				<Link
 					href="/"
-					className={`text-2xl self-end font-semibold text-secondary-30 hover:text-secondary-20 lg:text-secondary-98 lg:hover:text-secondary-80 font-[Newsreader]`}
+					className={`text-2xl self-end font-semibold text-secondary-98 hover:text-secondary-80 font-[Newsreader]`}
 				>
 					CliMate
 				</Link>

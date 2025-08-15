@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { Header } from "@/components/Header"
+import { HeaderHero } from "@/components/HeaderHero"
 import { NoradLogo, OpenEpiLogo } from "@/components/Logos"
 import { Card } from "@/components/Card"
 import Link from "next/link"
@@ -10,7 +10,7 @@ import Link from "next/link"
 export default function Home() {
 	return (
 		<>
-			<Header />
+			<HeaderHero />
 			<main>
 				<div className="relative flex flex-col lg:h-[80vh] w-full bg-primary-20">
 					<div className="flex flex-col justify-center max-w-[1350px] lg:h-full h-[80vh] px-10 mx-auto w-full">
