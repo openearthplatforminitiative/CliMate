@@ -1,8 +1,8 @@
-import { Issue } from "@/types/issue";
+import { Issue } from "@/types/issue"
 import { Card } from "./Card"
 
 interface IssueSliderProps {
-	issues: Issue[];
+	issues: Issue[]
 }
 
 export const IssueSlider = ({ issues }: IssueSliderProps) => {

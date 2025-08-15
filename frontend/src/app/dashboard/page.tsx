@@ -34,7 +34,7 @@ export default function MapPage() {
 				minLat: mapBounds._sw.lat,
 				minLng: mapBounds._sw.lng,
 				maxLat: mapBounds._ne.lat,
-				maxLng: mapBounds._ne.lng
+				maxLng: mapBounds._ne.lng,
 			}
 
 			try {

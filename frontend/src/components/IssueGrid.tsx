@@ -1,8 +1,8 @@
 import { Card } from "./Card"
-import { Issue } from "@/types/issue";
+import { Issue } from "@/types/issue"
 
 type IssueGridProps = {
-	issues: Issue[];
+	issues: Issue[]
 }
 
 export const IssueGrid = ({ issues }: IssueGridProps) => {
