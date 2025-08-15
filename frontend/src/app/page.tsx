@@ -69,38 +69,6 @@ export default function Home() {
 				<div className="flex bg-secondary-40 py-32 text-secondary-98">
 					<div className="flex flex-col justify-center max-w-[1350px] h-full px-10 mx-auto w-full">
 						<h2 className="font-[newsreader] text-5xl mb-5 sm:mb-10">
-							Popular Projects
-						</h2>
-						<p className="text-xl sm:text-2xl">
-							Projects is science projects that you can support
-						</p>
-						<div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-24 px-10 md:px-0">
-							<Card
-								title="Project"
-								description="Lorem ipsum dolor"
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Project"
-								description="Lorem ipsum dolor"
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Project"
-								description="Lorem ipsum dolor"
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Project"
-								description="Lorem ipsum dolor"
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-						</div>
-						<h2 className="font-[newsreader] text-5xl mb-5 sm:mb-10">
 							Popular Events
 						</h2>
 						<p className="text-xl sm:text-2xl">
