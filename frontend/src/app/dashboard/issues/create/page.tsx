@@ -5,7 +5,7 @@ import { IssueForm } from "@/components/IssueForm"
 import { Button } from "@/components/ui/button"
 import { calculateOffset, useIsMobile } from "@/lib/utils"
 import { useAtom } from "jotai"
-import { X } from "lucide-react"
+import { ChevronLeft, X } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMap } from "react-map-gl/maplibre"
@@ -94,6 +94,18 @@ export default function CreateIssuePage() {
 	}
 	return (
 		<div className="bg-primary-100 h-full p-4 w-full">
+			<div className="grid grid-cols-[1fr_auto_1fr] items-center">
+				<Button
+					className="flex-2 bg-neutral-90 hover:bg-neutral-80 text-neutral-0"
+					size="icon"
+					asChild
+				>
+					<Link href={".."}>
+						<ChevronLeft />
+					</Link>
+				</Button>
+				<h1 className="text-center text-2xl">Create Report</h1>
+			</div>
 			<IssueForm />
 		</div>
 	)
