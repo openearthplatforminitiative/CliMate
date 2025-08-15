@@ -1,10 +1,12 @@
-import { useIssues } from "@/lib/IssuesContext"
 import { Card } from "./Card"
+import { Issue } from "@/types/issue"
 
-export const IssueGrid = () => {
-	const { issues } = useIssues()
+type IssueGridProps = {
+	issues: Issue[]
+}
 
-	if (issues === undefined || issues === null) {
+export const IssueGrid = ({ issues }: IssueGridProps) => {
+	if (!issues || issues.length === 0) {
 		return null
 	}
 

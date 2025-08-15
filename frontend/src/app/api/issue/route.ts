@@ -1,5 +1,5 @@
 import { Asset, Issue } from "@/types/issue"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 const PATH = "/issues"
@@ -28,6 +28,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 		}
 
 		const data = await result.json()
+		revalidateTag("issues")
 		return NextResponse.json({ data })
 	} catch (error) {
 		console.error("Error:", error)
