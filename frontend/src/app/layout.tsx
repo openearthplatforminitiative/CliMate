@@ -14,7 +14,7 @@ const newsreader = Newsreader({
 })
 
 export const metadata: Metadata = {
-	title: "EcoReport",
+	title: "CliMate",
 	description: "TODO",
 }
 
