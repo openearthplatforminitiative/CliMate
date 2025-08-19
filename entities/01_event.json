@@ -15,7 +15,7 @@
     },
     {
       "name": "start_date",
-      "type": "DATETIME"
+      "type": "DATE"
     }
   ],
   "optionalAttributes": [
@@ -29,9 +29,8 @@
     },
     {
       "name": "end_date",
-      "type": "DATETIME"
+      "type": "DATE"
     }
-
   ],
   "relatedEntities": [
     {
