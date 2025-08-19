@@ -1,5 +1,3 @@
-"use client"
-
 import { NextRequest, NextResponse } from "next/server"
 import { CliMateEvent } from "@/types/event"
 import { Asset } from "@/types/asset"
