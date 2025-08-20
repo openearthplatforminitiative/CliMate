@@ -2,7 +2,7 @@
   "name": "Event",
   "collection_name": "events",
   "apiEndpoints": ["LIST", "GET", "POST", "PUT", "DELETE"],
-  "returnSummaryOnCollection": true,
+  "returnSummaryOnCollection": false,
   "requiredAttributes": [
     {
       "name": "name",
@@ -11,17 +11,20 @@
     },
     {
       "name": "description",
-      "type": "STRING"
+      "type": "STRING",
+      "includeInSummary": true
     },
     {
       "name": "start_date",
-      "type": "DATE"
+      "type": "DATE",
+      "includeInSummary": true
     }
   ],
   "optionalAttributes": [
     {
       "name": "location",
-      "type": "GEOMETRY"
+      "type": "GEOMETRY",
+      "includeInSummary": true
     },
     {
       "name": "user_uuid",

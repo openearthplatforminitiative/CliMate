@@ -1,29 +1,14 @@
 "use client"
-import { calculateOffset, useIsMobile } from "@/lib/utils"
-import { Sheet, SheetRef } from "react-modal-sheet"
+import { useIsMobile } from "@/lib/utils"
+import { SheetRef } from "react-modal-sheet"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { X } from "lucide-react"
 import { EventForm } from "@/components/EventForm"
 import { useRef, useState } from "react"
 import { useMap } from "react-map-gl/maplibre"
 
 export default function CreateEventPage() {
 	const sheetRef = useRef<SheetRef>(null)
-	const [snapIndex, setSnapIndex] = useState(1)
-	const map = useMap()
 	const isMobile = useIsMobile()
-
-	const handleClose = () => {
-		const sheet = sheetRef.current
-		if (sheet) {
-			sheet.snapTo(2)
-		}
-	}
-
-	const handleSnap = (index: number) => {
-		setSnapIndex(index)
-	}
 
 	if (isMobile) {
 		return (

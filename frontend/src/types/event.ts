@@ -10,6 +10,6 @@ export type CliMateEvent = {
 	location?: GeoJSON.Point | GeoJSON.Polygon
 	issues?: Issue[]
 	user_uuid?: string
-	start_date: Date
-	end_date?: Date
+	start_date: string // YYYY-MM-DD format
+	end_date?: string // YYYY-MM-DD format
 }

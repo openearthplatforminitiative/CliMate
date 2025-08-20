@@ -2,6 +2,7 @@
 
 import { IssuesProvider } from "@/lib/IssuesContext"
 import { MapProvider } from "react-map-gl/maplibre"
+import { EventsProvider } from "@/lib/EventsContext"
 
 export function DashboardProviders({
 	children,
@@ -10,7 +11,9 @@ export function DashboardProviders({
 }) {
 	return (
 		<IssuesProvider>
-			<MapProvider>{children}</MapProvider>
+			<EventsProvider>
+				<MapProvider>{children}</MapProvider>
+			</EventsProvider>
 		</IssuesProvider>
 	)
 }
