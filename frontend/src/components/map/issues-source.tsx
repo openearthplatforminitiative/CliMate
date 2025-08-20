@@ -1,16 +1,50 @@
 "use client"
 
-import { useIssues } from "@/lib/IssuesContext"
-import { useMemo } from "react"
-import { Source } from "react-map-gl/maplibre"
+import { getIssuesInBounds } from "@/app/dashboard/action"
+import { Issue } from "@/types/issue"
+import { useEffect, useMemo, useState } from "react"
+import { Source, useMap } from "react-map-gl/maplibre"
 
 export function IssuesSource() {
-	const { issues } = useIssues()
+	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
+	const map = useMap()
+
+	useEffect(() => {
+		const mapRef = map.ecoMap
+		const fetchIssues = async () => {
+			const mapBounds = mapRef?.getBounds()
+			if (!mapBounds) {
+				setIssuesInBounds([])
+				return
+			}
+
+			const bounds = {
+				minLat: mapBounds._sw.lat,
+				minLng: mapBounds._sw.lng,
+				maxLat: mapBounds._ne.lat,
+				maxLng: mapBounds._ne.lng,
+			}
+
+			try {
+				const issues = await getIssuesInBounds(bounds)
+				setIssuesInBounds(issues)
+			} catch (error) {
+				console.error("Failed to fetch issues:", error)
+			}
+		}
+
+		fetchIssues()
+
+		mapRef?.on("moveend", fetchIssues)
+		return () => {
+			mapRef?.off("moveend", fetchIssues)
+		}
+	}, [map.ecoMap])
 
 	const geoJsonData = useMemo<GeoJSON.FeatureCollection>(
 		() => ({
 			type: "FeatureCollection",
-			features: issues.map((issue) => ({
+			features: issuesInBounds.map((issue) => ({
 				type: "Feature",
 				geometry: {
 					type: "Point",
@@ -25,7 +59,7 @@ export function IssuesSource() {
 				},
 			})),
 		}),
-		[issues]
+		[issuesInBounds]
 	)
 
 	return (
