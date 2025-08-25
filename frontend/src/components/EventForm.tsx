@@ -151,7 +151,7 @@ export const EventForm = () => {
 					<Button
 						variant="outline"
 						data-empty={!startDate}
-						className="mt-1 data-[empty=true]:text-muted-foreground w-full justify-start text-left"
+						className="mt-1 data-[empty=true]:text-muted-foreground w-full justify-start text-left bg-transparent"
 					>
 						<CalendarIcon />
 						{startDate && format(startDate, "PPP")}
@@ -172,7 +172,7 @@ export const EventForm = () => {
 					<Button
 						variant="outline"
 						data-empty={!endDate}
-						className="mt-1data-[empty=true]:text-muted-foreground w-full justify-start text-left"
+						className="mt-1 data-[empty=true]:text-muted-foreground w-full justify-start text-left bg-transparent"
 					>
 						<CalendarIcon />
 						{endDate && format(endDate, "PPP")}
