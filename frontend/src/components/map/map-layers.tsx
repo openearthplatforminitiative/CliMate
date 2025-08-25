@@ -27,6 +27,7 @@ export const MapLayers = () => {
 					<IssueLayer />
 				</>
 			)}
+			{pathname === "/dashboard/events/create" && <CreateIssueLayer />}
 			<MissingImage />
 		</>
 	)

@@ -5,13 +5,13 @@ type EventGridProps = {
 	events: CliMateEvent[]
 }
 
-export const EventGrid = ({ events }: EventGridProps) => {
+export const EventSlider = ({ events }: EventGridProps) => {
 	if (!events || events.length === 0) {
 		return null
 	}
 
 	return (
-		<div className="grid grid-cols-2 2xl:grid-cols-3 w-full gap-4">
+		<div className="flex relative w-full overflow-x-scroll gap-4 px-4">
 			{events.map((event) => (
 				<Card
 					key={event.id}

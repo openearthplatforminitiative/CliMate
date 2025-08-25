@@ -9,8 +9,8 @@ type MenuItem = {
 const MENU_ITEMS: MenuItem[] = [
 	{ title: "Home", path: "/" },
 	{ title: "Map", path: "/dashboard" },
-	{ title: "Issues", path: "/dashboard/issues" },
-	{ title: "Events", path: "/dashboard/events" },
+	{ title: "Report Issue", path: "/dashboard/issues/create" },
+	{ title: "Create Event", path: "/dashboard/events/create" },
 ]
 
 export const MenuContent = () => {

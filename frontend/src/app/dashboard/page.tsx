@@ -7,16 +7,20 @@ import { useIsMobile } from "@/lib/utils"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Sheet, SheetRef } from "react-modal-sheet"
-import { getIssuesInBounds } from "./action"
+import { getIssuesInBounds, getEventsInBounds } from "./action"
 import { useMap } from "react-map-gl/maplibre"
 import { Issue } from "@/types/issue"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CliMateEvent } from "@/types/event"
+import { EventGrid } from "@/components/EventGrid"
+import { EventSlider } from "@/components/EventSlider"
 
 const SNAP_POINTS = [400, 90]
 
 export default function MapPage() {
 	const sheetRef = useRef<SheetRef>(null)
 	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
+	const [eventsInBounds, setEventsInBounds] = useState<CliMateEvent[]>([])
 
 	const isMobile = useIsMobile()
 	const map = useMap()
@@ -39,7 +43,9 @@ export default function MapPage() {
 
 			try {
 				const issues = await getIssuesInBounds(bounds)
+				const events = await getEventsInBounds(bounds)
 				setIssuesInBounds(issues)
+				setEventsInBounds(events)
 			} catch (error) {
 				console.error("Failed to fetch issues:", error)
 			}
@@ -91,7 +97,7 @@ export default function MapPage() {
 									<IssueSlider issues={issuesInBounds} />
 								</TabsContent>
 								<TabsContent value="events">
-									<IssueSlider issues={issuesInBounds} />
+									<EventSlider events={eventsInBounds} />
 								</TabsContent>
 							</Tabs>
 						</Sheet.Scroller>
@@ -102,8 +108,20 @@ export default function MapPage() {
 	}
 	return (
 		<div className="bg-primary-20 grow px-10 py-5 w-full">
-			<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
-			<IssueGrid issues={issuesInBounds} />
+			<Tabs defaultValue="reports">
+				<TabsList className="mx-auto mb-5">
+					<TabsTrigger value="reports">Reports</TabsTrigger>
+					<TabsTrigger value="events">Events</TabsTrigger>
+				</TabsList>
+				<TabsContent value="reports">
+					<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
+					<IssueGrid issues={issuesInBounds} />
+				</TabsContent>
+				<TabsContent value="events">
+					<h1 className="text-2xl text-neutral-100 mb-4">Recent Events</h1>
+					<EventGrid events={eventsInBounds} />
+				</TabsContent>
+			</Tabs>
 		</div>
 	)
 }

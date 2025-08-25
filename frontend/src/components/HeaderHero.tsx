@@ -1,7 +1,9 @@
 import { MenuButton } from "@/components/MenuButton"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 export const HeaderHero = () => {
+	const session = useSession()
 	return (
 		<header className="w-full bg-primary-20">
 			<nav className="mx-auto w-full max-w-[1350px] border-b border-secondary-98 flex justify-between items-center py-5 px-10">
@@ -24,6 +26,14 @@ export const HeaderHero = () => {
 					>
 						Report Issue
 					</Link>
+					{session && (
+						<Link
+							href="/dashboard/events/create"
+							className="hidden lg:block text-secondary-98 hover:text-secondary-80"
+						>
+							Create Event
+						</Link>
+					)}
 					<MenuButton className="bg-secondary-98 hover:bg-secondary-80 text-primary-10" />
 				</div>
 			</nav>

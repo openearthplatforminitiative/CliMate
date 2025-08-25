@@ -7,9 +7,9 @@ export type CliMateEvent = {
 	name: string
 	description: string
 	image_url?: string
-	location?: GeoJSON.Point | GeoJSON.Polygon
+	location: GeoJSON.Point | GeoJSON.Polygon
 	issues?: Issue[]
 	user_uuid?: string
-	start_date: string // YYYY-MM-DD format
-	end_date?: string // YYYY-MM-DD format
+	start_date: string
+	end_date?: string
 }

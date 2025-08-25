@@ -14,10 +14,8 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
-import { createEventCoordinatesAtom, showMapAtom } from "@/atoms/eventAtoms"
-import { useAtom, useAtomValue } from "jotai"
-import { Map } from "react-map-gl/maplibre"
-import { CreateEventLayer } from "@/components/map/create-event-layer"
+import { createEventCoordinatesAtom } from "@/atoms/eventAtoms"
+import { useAtomValue } from "jotai"
 import { GeocoderClient } from "openepi-client"
 import { useRouter } from "next/navigation"
 
@@ -25,7 +23,6 @@ export const EventForm = () => {
 	const { data: session } = useSession()
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
-	const [showMap, setShowMap] = useAtom(showMapAtom)
 	const createEventCoordinates = useAtomValue(createEventCoordinatesAtom)
 	const [locationString, setLocationString] = useState<string>("")
 	const router = useRouter()
@@ -51,8 +48,7 @@ export const EventForm = () => {
 				},
 			}))
 		}
-		setShowMap(false)
-	}, [createEventCoordinates, setShowMap])
+	}, [createEventCoordinates])
 
 	// Fetches the location string based on coordinates
 	useEffect(() => {
@@ -89,10 +85,6 @@ export const EventForm = () => {
 			...prev,
 			[id]: value,
 		}))
-	}
-
-	const handleCreateLocation = () => {
-		setShowMap(true)
 	}
 
 	const handleUpload = async () => {
@@ -134,31 +126,6 @@ export const EventForm = () => {
 
 	if (!session) {
 		return <div>You have to be logged in to create an event.</div>
-	}
-	if (showMap) {
-		return (
-			<div>
-				<Map
-					initialViewState={{
-						longitude: 0,
-						latitude: 0,
-						zoom: 0,
-					}}
-					style={{
-						position: "absolute",
-						transition: "linear",
-						inset: 0,
-						width: "100%",
-						height: "100%",
-					}}
-					mapStyle="https://tiles.openfreemap.org/styles/liberty"
-					attributionControl={false}
-					id="placeMap"
-				>
-					<CreateEventLayer />
-				</Map>
-			</div>
-		)
 	}
 	return (
 		<div>
@@ -218,9 +185,6 @@ export const EventForm = () => {
 			</Popover>
 
 			<Label className="mt-5">Location</Label>
-			<Button onClick={() => handleCreateLocation()} className="mt-1 w-full">
-				{createEventCoordinates ? "Change Location" : "Set Location"}
-			</Button>
 			{createEventCoordinates && locationString.length !== 0 && (
 				<div>Current location set to: {locationString}</div>
 			)}

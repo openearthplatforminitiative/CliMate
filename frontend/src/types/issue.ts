@@ -15,4 +15,3 @@ export type Issue = {
 	user_uuid?: string
 	active: boolean
 }
-
