@@ -1,4 +1,3 @@
-import "maplibre-gl/dist/maplibre-gl.css"
 import { notFound } from "next/navigation"
 import { EventComponent } from "./event"
 import { fetchEvent } from "@/actions/eventActions"
