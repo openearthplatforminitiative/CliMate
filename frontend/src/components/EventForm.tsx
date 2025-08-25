@@ -12,7 +12,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, MapPin } from "lucide-react"
 import { format } from "date-fns"
 import { useAtomValue } from "jotai"
 import { GeocoderClient } from "openepi-client"
@@ -24,7 +24,7 @@ export const EventForm = () => {
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
 	const coordinates = useAtomValue(createIssueCoordinatesAtom)
-	const [locationString, setLocationString] = useState<string>("")
+	const [locationString, setLocationString] = useState<string>("Unknown")
 	const router = useRouter()
 
 	const [event, setEvent] = useState({
@@ -67,11 +67,12 @@ export const EventForm = () => {
 					} else {
 						if (data.features && data.features[0]) {
 							const locationProperties = data.features[0].properties
-							setLocationString(
+							return setLocationString(
 								`${locationProperties.city}, ${locationProperties.country}`
 							)
 						}
 					}
+					setLocationString("Unknown")
 				})
 		}
 	}, [coordinates])
@@ -184,9 +185,16 @@ export const EventForm = () => {
 			</Popover>
 
 			<Label className="mt-5">Location</Label>
-			{coordinates && locationString.length !== 0 && (
-				<div>Current location set to: {locationString}</div>
-			)}
+
+			<div className="flex items-center gap-2 mt-2">
+				<MapPin />
+				<div className="flex flex-col">
+					Current location set to: {locationString}
+					<div className="text-sm text-muted-foreground">
+						Drag the pin on the map to change the location
+					</div>
+				</div>
+			</div>
 
 			<Button
 				onClick={handleUpload}

@@ -15,10 +15,13 @@ import { Button } from "./ui/button"
 import { useAtomValue } from "jotai"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 import { useRouter } from "next/navigation"
+import { MapPin } from "lucide-react"
+import { GeocoderClient } from "openepi-client"
 
 export const IssueForm = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
+	const [locationString, setLocationString] = useState<string>("Unknown")
 	const coordinates = useAtomValue(createIssueCoordinatesAtom)
 	const { setIssues } = useIssues()
 	const { data: session } = useSession()
@@ -44,6 +47,32 @@ export const IssueForm = () => {
 					coordinates: [coordinates.lng, coordinates.lat],
 				},
 			}))
+		}
+	}, [coordinates])
+
+	useEffect(() => {
+		if (coordinates) {
+			const client = new GeocoderClient()
+			client
+				.getReverseGeocoding({
+					lon: coordinates.lng,
+					lat: coordinates.lat,
+				})
+				.then((result) => {
+					const { data, error } = result
+
+					if (error) {
+						console.error(error)
+					} else {
+						if (data.features && data.features[0]) {
+							const locationProperties = data.features[0].properties
+							return setLocationString(
+								`${locationProperties.city}, ${locationProperties.country}`
+							)
+						}
+					}
+					setLocationString("Unknown")
+				})
 		}
 	}, [coordinates])
 
@@ -171,6 +200,16 @@ export const IssueForm = () => {
 					className="mt-5"
 					rows={3}
 				/>
+
+				<div className="flex items-center gap-2 mt-2">
+					<MapPin />
+					<div className="flex flex-col">
+						Current location set to: {locationString}
+						<div className="text-sm text-muted-foreground">
+							Drag the pin on the map to change the location
+						</div>
+					</div>
+				</div>
 
 				<Button
 					onClick={handleUpload}
