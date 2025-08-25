@@ -14,16 +14,16 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
-import { createEventCoordinatesAtom } from "@/atoms/eventAtoms"
 import { useAtomValue } from "jotai"
 import { GeocoderClient } from "openepi-client"
 import { useRouter } from "next/navigation"
+import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 
 export const EventForm = () => {
 	const { data: session } = useSession()
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
-	const createEventCoordinates = useAtomValue(createEventCoordinatesAtom)
+	const coordinates = useAtomValue(createIssueCoordinatesAtom)
 	const [locationString, setLocationString] = useState<string>("")
 	const router = useRouter()
 
@@ -39,25 +39,25 @@ export const EventForm = () => {
 
 	// Sets coordinates on the state when user sets location
 	useEffect(() => {
-		if (createEventCoordinates) {
+		if (coordinates) {
 			setEvent((prev) => ({
 				...prev,
 				location: {
 					type: "Point",
-					coordinates: [createEventCoordinates.lng, createEventCoordinates.lat],
+					coordinates: [coordinates.lng, coordinates.lat],
 				},
 			}))
 		}
-	}, [createEventCoordinates])
+	}, [coordinates])
 
 	// Fetches the location string based on coordinates
 	useEffect(() => {
-		if (createEventCoordinates) {
+		if (coordinates) {
 			const client = new GeocoderClient()
 			client
 				.getReverseGeocoding({
-					lon: createEventCoordinates.lng,
-					lat: createEventCoordinates.lat,
+					lon: coordinates.lng,
+					lat: coordinates.lat,
 				})
 				.then((result) => {
 					const { data, error } = result
@@ -74,7 +74,7 @@ export const EventForm = () => {
 					}
 				})
 		}
-	}, [createEventCoordinates])
+	}, [coordinates])
 
 	// Set state when use writes
 	const handleInputChange = (
@@ -97,7 +97,6 @@ export const EventForm = () => {
 				description: event.description,
 				location: event.location,
 				start_date: startDateString,
-				location: event.location,
 				user_uuid: session?.user?.id || "",
 				end_date: endDateString,
 			}
@@ -185,12 +184,9 @@ export const EventForm = () => {
 			</Popover>
 
 			<Label className="mt-5">Location</Label>
-			{createEventCoordinates && locationString.length !== 0 && (
+			{coordinates && locationString.length !== 0 && (
 				<div>Current location set to: {locationString}</div>
 			)}
-
-			{/*TODO: bruk geocoding apiet til å si hvor vi har satt marker?*/}
-			{/*bytt knapp til å si "bytt lokasjon" istedet*/}
 
 			<Button
 				onClick={handleUpload}
