@@ -117,7 +117,7 @@ export const EventForm = () => {
 
 			const data = await response.json()
 			console.log("Successfully created event", data)
-			router.push("/dashboard")
+			router.push("/dashboard?type=events")
 		} catch (error) {
 			console.error("Error creating event:", error)
 			// Handle UI to display error

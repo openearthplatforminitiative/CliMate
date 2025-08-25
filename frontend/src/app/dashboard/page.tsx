@@ -16,6 +16,8 @@ import { CliMateEvent } from "@/types/event"
 import { EventGrid } from "@/components/EventGrid"
 import { EventSlider } from "@/components/EventSlider"
 import { getEvents } from "@/actions/eventActions"
+import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 const SNAP_POINTS = [400, 90]
 
@@ -26,8 +28,20 @@ export default function MapPage() {
 	const [eventsInBounds, setEventsInBounds] = useState<CliMateEvent[]>([])
 	const [numberOfEvents, setNumberOfEvents] = useState<number>()
 
+	const searchParams = useSearchParams()
+	const type = searchParams.get("type")
 	const isMobile = useIsMobile()
 	const map = useMap()
+	const router = useRouter()
+
+	useEffect(() => {
+		if (type !== "reports" && type !== "events")
+			router.push(`/dashboard?type=reports`)
+	}, [router, type])
+
+	const handleTabChange = (value: string) => {
+		router.push(`/dashboard?type=${value}`)
+	}
 
 	useEffect(() => {
 		async function getNumbers() {
@@ -102,7 +116,7 @@ export default function MapPage() {
 					<Sheet.Header />
 					<Sheet.Content>
 						<Sheet.Scroller>
-							<Tabs defaultValue="reports">
+							<Tabs value={type ?? "reports"} onValueChange={handleTabChange}>
 								<TabsList className="mx-auto">
 									<TabsTrigger value="reports">Reports</TabsTrigger>
 									<TabsTrigger value="events">Events</TabsTrigger>
@@ -138,7 +152,7 @@ export default function MapPage() {
 	}
 	return (
 		<div className="bg-primary-20 grow px-10 py-5 w-full">
-			<Tabs defaultValue="reports">
+			<Tabs value={type ?? "reports"} onValueChange={handleTabChange}>
 				<TabsList className="mx-auto mb-5">
 					<TabsTrigger value="reports">Reports</TabsTrigger>
 					<TabsTrigger value="events">Events</TabsTrigger>

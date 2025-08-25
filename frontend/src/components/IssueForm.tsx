@@ -149,7 +149,7 @@ export const IssueForm = () => {
 
 			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
 			toast("Successfully uploaded report")
-			router.push("/dashboard")
+			router.push("/dashboard?type=reports")
 		} catch (error) {
 			toast("Could not create issue")
 			console.error("Error uploading issue:", error)
