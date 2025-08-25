@@ -1,8 +1,8 @@
 "use server"
 
+import { Asset } from "@/types/asset"
 import { CliMateEvent } from "@/types/event"
-import { Issue } from "@/types/issue"
-import { booleanContains } from "@turf/boolean-contains"
+import booleanContains from "@turf/boolean-contains"
 import { Feature } from "geojson"
 
 interface BoundsCoordinates {
@@ -12,7 +12,7 @@ interface BoundsCoordinates {
 	maxLng: number
 }
 
-async function getEvents(): Promise<CliMateEvent[]> {
+export async function getEvents(): Promise<CliMateEvent[]> {
 	try {
 		const response = await fetch(`${process.env.NEXT_URL}/api/event`)
 		if (!response.ok) {
@@ -31,7 +31,6 @@ export async function getEventsInBounds(
 ): Promise<CliMateEvent[]> {
 	try {
 		const events = await getEvents()
-		console.log(events)
 
 		const { minLat, minLng, maxLat, maxLng } = bounds
 
@@ -67,60 +66,39 @@ export async function getEventsInBounds(
 	}
 }
 
-async function getIssues(): Promise<Issue[]> {
+export const fetchEvent = async (id: string) => {
 	try {
-		const response = await fetch(`${process.env.NEXT_URL}/api/issue`, {
-			next: {
-				revalidate: 60 * 60,
-				tags: ["issues"],
-			},
+		const response = await fetch(`${process.env.ENTITY_API_URL}/events/${id}`, {
+			next: { revalidate: 60 },
 		})
+
 		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`)
+			throw new Error(`Failed to fetch event with id ${id}`)
 		}
-		const { data: issues } = await response.json()
-		return issues as Issue[]
+		const event = (await response.json()) as CliMateEvent
+
+		const eventAssets = await fetch(
+			`${process.env.NEXT_URL}/api/asset/${event.id}`
+		)
+			.then(async (response) => {
+				if (!response.ok) {
+					console.error("Failed to fetch assets for event:", event.id)
+					return []
+				}
+				const { data } = (await response.json()) as { data: Asset[] }
+				return data
+			})
+			.catch((error) => {
+				console.error("Error fetching assets for event:", event.id, error)
+				return []
+			})
+
+		return {
+			...event,
+			image_url: eventAssets.length > 0 ? eventAssets[0].url : undefined,
+		}
 	} catch (error) {
-		console.error("Error fetching issues:", error)
-		return []
-	}
-}
-
-export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
-	try {
-		const issues = await getIssues()
-		console.log(issues)
-
-		const { minLat, minLng, maxLat, maxLng } = bounds
-
-		const filteredIssues = issues.filter((issue) => {
-			const boundsFeature: Feature = {
-				type: "Feature",
-				geometry: {
-					type: "Polygon",
-					coordinates: [
-						[
-							[minLng, minLat],
-							[maxLng, minLat],
-							[maxLng, maxLat],
-							[minLng, maxLat],
-							[minLng, minLat],
-						],
-					],
-				},
-				properties: {},
-			}
-			const issueFeature: Feature = {
-				type: "Feature",
-				geometry: issue.location,
-				properties: {},
-			}
-			return booleanContains(boundsFeature, issueFeature)
-		})
-
-		return filteredIssues
-	} catch (error) {
-		console.error("Error fetching issues in bounds:", error)
+		console.error("Error fetching event:", error)
 		throw error
 	}
 }

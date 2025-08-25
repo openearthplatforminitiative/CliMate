@@ -1,7 +1,7 @@
 import "maplibre-gl/dist/maplibre-gl.css"
 import { notFound } from "next/navigation"
 import { IssueComponent } from "./issue"
-import { fetchIssue } from "./action"
+import { fetchIssue } from "@/actions/issueActions"
 
 interface IssueProps {
 	params: Promise<{

@@ -1,13 +1,10 @@
-import { Asset, Issue } from "@/types/issue"
+import { Asset } from "@/types/asset"
+import { Issue } from "@/types/issue"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 const PATH = "/issues"
 export async function POST(req: NextRequest): Promise<Response> {
-	// TODO: image
-	// const blob = await req.blob();
-	// const arrayBuffer = await blob.arrayBuffer();
-	// const buffer = Buffer.from(arrayBuffer);
 	try {
 		const postData = await req.json()
 		const result = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
