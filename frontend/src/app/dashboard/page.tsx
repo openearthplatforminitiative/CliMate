@@ -108,9 +108,25 @@ export default function MapPage() {
 									<TabsTrigger value="events">Events</TabsTrigger>
 								</TabsList>
 								<TabsContent value="reports">
+									{issuesInBounds.length == 0 &&
+										(numberOfIssues == 0 ? (
+											<p className="mx-4">There is no reports present</p>
+										) : (
+											<p className="mx-4">
+												There is no reports on the current map. Please zoom out
+											</p>
+										))}
 									<IssueSlider issues={issuesInBounds} />
 								</TabsContent>
 								<TabsContent value="events">
+									{eventsInBounds.length == 0 &&
+										(numberOfEvents == 0 ? (
+											<p className="mx-4">There is no events present</p>
+										) : (
+											<p className="mx-4">
+												There is no events on the current map. Please zoom out
+											</p>
+										))}
 									<EventSlider events={eventsInBounds} />
 								</TabsContent>
 							</Tabs>
