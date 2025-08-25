@@ -8,23 +8,36 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Sheet, SheetRef } from "react-modal-sheet"
 import { getEventsInBounds } from "@/actions/eventActions"
-import { getIssuesInBounds } from "@/actions/issueActions"
+import { getIssues, getIssuesInBounds } from "@/actions/issueActions"
 import { useMap } from "react-map-gl/maplibre"
 import { Issue } from "@/types/issue"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CliMateEvent } from "@/types/event"
 import { EventGrid } from "@/components/EventGrid"
 import { EventSlider } from "@/components/EventSlider"
+import { getEvents } from "@/actions/eventActions"
 
 const SNAP_POINTS = [400, 90]
 
 export default function MapPage() {
 	const sheetRef = useRef<SheetRef>(null)
 	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
+	const [numberOfIssues, setNumberOfIssues] = useState<number>()
 	const [eventsInBounds, setEventsInBounds] = useState<CliMateEvent[]>([])
+	const [numberOfEvents, setNumberOfEvents] = useState<number>()
 
 	const isMobile = useIsMobile()
 	const map = useMap()
+
+	useEffect(() => {
+		async function getNumbers() {
+			const issues = await getIssues()
+			setNumberOfIssues(issues.length)
+			const events = await getEvents()
+			setNumberOfEvents(events.length)
+		}
+		getNumbers()
+	})
 
 	useEffect(() => {
 		const mapRef = map.ecoMap
@@ -116,10 +129,24 @@ export default function MapPage() {
 				</TabsList>
 				<TabsContent value="reports">
 					<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
+					{issuesInBounds.length == 0 && (
+						numberOfIssues == 0 ? (
+							<p className="text-neutral-100">There is no reports present</p>
+						) : (
+							<p className="text-neutral-100">There is no reports on the current map. Please zoom out</p>
+						)
+					)}
 					<IssueGrid issues={issuesInBounds} />
 				</TabsContent>
 				<TabsContent value="events">
 					<h1 className="text-2xl text-neutral-100 mb-4">Recent Events</h1>
+					{eventsInBounds.length == 0 && (
+						numberOfEvents == 0 ? (
+							<p className="text-neutral-100">There is no events present</p>
+						) : (
+							<p className="text-neutral-100">There is no events on the current map. Please zoom out</p>
+						)
+					)}
 					<EventGrid events={eventsInBounds} />
 				</TabsContent>
 			</Tabs>
