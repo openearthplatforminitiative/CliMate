@@ -129,24 +129,26 @@ export default function MapPage() {
 				</TabsList>
 				<TabsContent value="reports">
 					<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
-					{issuesInBounds.length == 0 && (
-						numberOfIssues == 0 ? (
+					{issuesInBounds.length == 0 &&
+						(numberOfIssues == 0 ? (
 							<p className="text-neutral-100">There is no reports present</p>
 						) : (
-							<p className="text-neutral-100">There is no reports on the current map. Please zoom out</p>
-						)
-					)}
+							<p className="text-neutral-100">
+								There is no reports on the current map. Please zoom out
+							</p>
+						))}
 					<IssueGrid issues={issuesInBounds} />
 				</TabsContent>
 				<TabsContent value="events">
 					<h1 className="text-2xl text-neutral-100 mb-4">Recent Events</h1>
-					{eventsInBounds.length == 0 && (
-						numberOfEvents == 0 ? (
+					{eventsInBounds.length == 0 &&
+						(numberOfEvents == 0 ? (
 							<p className="text-neutral-100">There is no events present</p>
 						) : (
-							<p className="text-neutral-100">There is no events on the current map. Please zoom out</p>
-						)
-					)}
+							<p className="text-neutral-100">
+								There is no events on the current map. Please zoom out
+							</p>
+						))}
 					<EventGrid events={eventsInBounds} />
 				</TabsContent>
 			</Tabs>
