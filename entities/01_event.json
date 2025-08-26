@@ -9,6 +9,7 @@
     "DELETE"
   ],
   "returnSummaryOnCollection": false,
+  "supportsAssets": true,
   "requiredAttributes": [
     {
       "name": "name",
@@ -41,15 +42,5 @@
       "type": "DATE"
     }
   ],
-  "relatedEntities": [
-    {
-      "entity": "Issue",
-      "collection_name": "issues",
-      "apiEndpoints": [
-        "LIST",
-        "POST",
-        "GET"
-      ]
-    }
-  ]
+  "relatedEntities": []
 }

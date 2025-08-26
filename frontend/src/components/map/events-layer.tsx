@@ -8,28 +8,30 @@ import { Layer, Marker, useMap } from "react-map-gl/maplibre"
 import { useRouter } from "next/navigation"
 import { useSetAtom } from "jotai"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
+import { useSession } from "next-auth/react"
 
-export function IssuesLayer() {
+export function EventsLayer() {
 	const [clickedPoint, setClickedPoint] = useState<[number, number] | null>()
 	const [userLocation] = useState<[number, number] | null>(null)
 
 	const setCreateIssueCoordinates = useSetAtom(createIssueCoordinatesAtom)
 	const map = useMap()
 	const navigate = useRouter()
+	const { data: session } = useSession()
 
-	const handleIssueLayerClick = useCallback(
+	const handleEventLayerClick = useCallback(
 		(event: MapMouseEvent) => {
 			const mapRef = map.current
 			if (!mapRef) return
 
 			const clickedFeatures = mapRef.queryRenderedFeatures(event.point, {
-				layers: ["issues-labels", "clusters"],
+				layers: ["events-layer"],
 			})
 
 			if (clickedFeatures && clickedFeatures.length > 0) {
 				setClickedPoint(null)
 				if (clickedFeatures[0].properties.id) {
-					navigate.push(`/dashboard/issues/${clickedFeatures[0].properties.id}`)
+					navigate.push(`/dashboard/events/${clickedFeatures[0].properties.id}`)
 				}
 			} else {
 				const { lng, lat } = event.lngLat
@@ -44,7 +46,7 @@ export function IssuesLayer() {
 		if (!mapRef) return
 
 		const handleMapClick = (event: MapMouseEvent) => {
-			handleIssueLayerClick(event)
+			handleEventLayerClick(event)
 		}
 
 		mapRef.on("click", handleMapClick)
@@ -52,15 +54,16 @@ export function IssuesLayer() {
 		return () => {
 			mapRef.off("click", handleMapClick)
 		}
-	}, [handleIssueLayerClick, map, setClickedPoint])
+	}, [handleEventLayerClick, map, setClickedPoint])
 
 	const handleCreateIssueClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+		if (!session) return
 		setCreateIssueCoordinates({
 			lat: clickedPoint![1],
 			lng: clickedPoint![0],
 		})
-		navigate.push("/dashboard/issues/create")
+		navigate.push("/dashboard/events/create")
 	}
 
 	return (
@@ -82,29 +85,44 @@ export function IssuesLayer() {
 							className="bg-primary-20 whitespace-nowrap"
 							onClick={handleCreateIssueClick}
 						>
-							Add Report Here
+							Add Event Here
 						</Button>
 						<RoomIcon />
 					</div>
 				</Marker>
 			)}
 			<Layer
-				id="issues-labels"
-				type="symbol"
-				source="issues"
-				layout={{
-					"icon-image": ["get", "category"],
-					"icon-size": [
+				id="events-layer"
+				type="circle"
+				source="events"
+				paint={{
+					"circle-color": "#677c6c",
+					"circle-radius": [
 						"interpolate",
 						["linear"],
 						["zoom"],
 						0,
-						0.1,
+						15,
 						12,
-						0.25,
+						10,
 						22,
-						0.5,
+						5,
 					],
+				}}
+			/>
+			<Layer
+				id="events-label-layer"
+				type="symbol"
+				source="events"
+				layout={{
+					"text-field": ["get", "label"],
+					"text-font": ["Noto Sans Regular"],
+					"text-size": 10,
+					"text-anchor": "bottom",
+					"text-offset": [0, 0.6],
+				}}
+				paint={{
+					"text-color": "#ffffff",
 				}}
 			/>
 		</>

@@ -34,6 +34,7 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 	useEffect(() => {
 		const mapRef = map.ecoMap
 		if (!event || !mapRef) return
+		console.log(event)
 		const eventCenter = center(event.location).geometry.coordinates
 		mapRef.flyTo({
 			center: [eventCenter[0], eventCenter[1]],

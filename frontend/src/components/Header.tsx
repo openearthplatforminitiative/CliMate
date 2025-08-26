@@ -28,7 +28,7 @@ export const Header = () => {
 					>
 						Report Issue
 					</Link>
-					{session && (
+					{session.status == "authenticated" && (
 						<Link
 							href="/dashboard/events/create"
 							className="hidden lg:block text-secondary-98 hover:text-secondary-80"

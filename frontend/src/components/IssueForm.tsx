@@ -6,8 +6,6 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
 import { Category, Issue } from "@/types/issue"
-import { Asset } from "@/types/asset"
-import { useIssues } from "@/lib/IssuesContext"
 import { toast } from "sonner"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
@@ -23,7 +21,6 @@ export const IssueForm = () => {
 	const [preview, setPreview] = useState<string | null>(null)
 	const [locationString, setLocationString] = useState<string>("Unknown")
 	const coordinates = useAtomValue(createIssueCoordinatesAtom)
-	const { setIssues } = useIssues()
 	const { data: session } = useSession()
 	const router = useRouter()
 
@@ -103,7 +100,10 @@ export const IssueForm = () => {
 
 	const handleUpload = async () => {
 		try {
-			const postData: Issue = {
+			if (!file) {
+				throw new Error("Missing image file")
+			}
+			const issueData: Issue = {
 				title: issue.title,
 				description: issue.description,
 				category: issue.category,
@@ -112,42 +112,19 @@ export const IssueForm = () => {
 				active: false,
 			}
 
-			const response = await fetch("/api/issue", {
+			const formData = new FormData()
+			formData.append("issue", JSON.stringify(issueData))
+			formData.append("image", file)
+
+			const response = await fetch("/api/issues", {
 				method: "POST",
-				body: JSON.stringify(postData),
+				body: formData,
 			})
 
 			if (!response.ok) {
 				throw new Error("Could not create the issue.")
 			}
 
-			const { data }: { data: Issue } = await response.json()
-
-			// upload picture
-			if (!data.id || !file) {
-				throw new Error("No file or issue ID provided")
-			}
-			const formData = new FormData()
-			formData.append("issueId", data.id)
-			formData.append("image", file)
-			const imageResponse = await fetch("/api/asset", {
-				method: "POST",
-				body: formData,
-			})
-
-			if (!imageResponse.ok) {
-				throw new Error("Failed to upload the image.")
-			}
-
-			const { data: imageData }: { data: Asset } = await imageResponse.json()
-			console.log(imageData)
-
-			const issueResult: Issue = {
-				...data,
-				image_url: imageData.url,
-			}
-
-			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
 			toast("Successfully uploaded report")
 			router.push("/dashboard?type=reports")
 		} catch (error) {
@@ -213,7 +190,7 @@ export const IssueForm = () => {
 
 				<Button
 					onClick={handleUpload}
-					disabled={!issue.title || !issue.category || !issue.description}
+					disabled={!issue.title || !issue.category || !issue.description || !file}
 					className="w-full mt-5 mb-10 bg-primary-20"
 				>
 					Submit report

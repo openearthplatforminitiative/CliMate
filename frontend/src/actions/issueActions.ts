@@ -1,6 +1,5 @@
 "use server"
 
-import { Asset } from "@/types/asset"
 import { Issue } from "@/types/issue"
 import { booleanContains } from "@turf/boolean-contains"
 import { Feature } from "geojson"
@@ -14,7 +13,7 @@ interface BoundsCoordinates {
 
 export async function getIssues(): Promise<Issue[]> {
 	try {
-		const response = await fetch(`${process.env.NEXT_URL}/api/issue`, {
+		const response = await fetch(`${process.env.NEXT_URL}/api/issues`, {
 			next: {
 				revalidate: 60 * 60,
 				tags: ["issues"],
@@ -34,7 +33,6 @@ export async function getIssues(): Promise<Issue[]> {
 export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 	try {
 		const issues = await getIssues()
-
 		const { minLat, minLng, maxLat, maxLng } = bounds
 
 		const filteredIssues = issues.filter((issue) => {
@@ -69,37 +67,17 @@ export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 	}
 }
 
-export const fetchIssue = async (id: string) => {
+export const getIssue = async (id: string) => {
 	try {
-		const response = await fetch(`${process.env.ENTITY_API_URL}/issues/${id}`, {
+		const response = await fetch(`${process.env.NEXT_URL}/api/issues/${id}`, {
 			next: { revalidate: 60 },
 		})
 
 		if (!response.ok) {
+			console.error("Failed to fetch issue:", await response.text())
 			throw new Error(`Failed to fetch issue with id ${id}`)
 		}
-		const issue = (await response.json()) as Issue
-
-		const issueAssets = await fetch(
-			`${process.env.NEXT_URL}/api/asset/${issue.id}`
-		)
-			.then(async (response) => {
-				if (!response.ok) {
-					console.error("Failed to fetch assets for issue:", issue.id)
-					return []
-				}
-				const { data } = (await response.json()) as { data: Asset[] }
-				return data
-			})
-			.catch((error) => {
-				console.error("Error fetching assets for issue:", issue.id, error)
-				return []
-			})
-
-		return {
-			...issue,
-			image_url: issueAssets.length > 0 ? issueAssets[0].url : undefined,
-		}
+		return await response.json()
 	} catch (error) {
 		console.error("Error fetching issue:", error)
 		throw error

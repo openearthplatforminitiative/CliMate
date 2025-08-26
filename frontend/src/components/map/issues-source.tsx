@@ -1,11 +1,20 @@
 "use client"
 
-import { useIssues } from "@/lib/IssuesContext"
-import { useMemo } from "react"
+import { getIssues } from "@/actions/issueActions"
+import { Issue } from "@/types/issue"
+import { useEffect, useMemo, useState } from "react"
 import { Source } from "react-map-gl/maplibre"
 
 export function IssuesSource() {
-	const { issues } = useIssues()
+	const [issues, setIssues] = useState<Issue[]>([])
+
+	useEffect(() => {
+		async function fetchIssues() {
+			const issues = await getIssues()
+			setIssues(issues)
+		}
+		fetchIssues()
+	}, [])
 
 	const geoJsonData = useMemo<GeoJSON.FeatureCollection>(
 		() => ({
@@ -21,7 +30,7 @@ export function IssuesSource() {
 					title: issue.title,
 					category: issue.category,
 					description: issue.description,
-					image: issue.image_url,
+					image: issue.image_url
 				},
 			})),
 		}),

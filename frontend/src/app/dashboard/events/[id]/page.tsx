@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { EventComponent } from "./event"
-import { fetchEvent } from "@/actions/eventActions"
+import { getEvent } from "@/actions/eventActions"
 
 interface IssueProps {
 	params: Promise<{
@@ -8,9 +8,9 @@ interface IssueProps {
 	}>
 }
 
-export default async function IssuePage({ params }: IssueProps) {
+export default async function EventPage({ params }: IssueProps) {
 	const { id } = await params
-	const event = await fetchEvent(id).catch(() => notFound())
+	const event = await getEvent(id).catch(() => notFound())
 	if (!event) {
 		return notFound()
 	}

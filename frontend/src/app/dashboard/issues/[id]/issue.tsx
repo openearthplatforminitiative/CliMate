@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { calculateOffset, useIsMobile } from "@/lib/utils"
 import { Issue } from "@/types/issue"
-import { notFound } from "next/navigation"
+import { notFound, useRouter } from "next/navigation"
 import { useState, useEffect, useMemo, useRef } from "react"
 import { toast } from "sonner"
 import Image from "next/image"
@@ -25,6 +25,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 
 	const isMobile = useIsMobile()
 	const map = useMap()
+	const router = useRouter()
 
 	const handleSnap = (index: number) => {
 		setSnapIndex(index)
@@ -58,7 +59,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 				...issue,
 				active: !issue.active,
 			}
-			const response = await fetch("/api/issue", {
+			const response = await fetch("/api/issues", {
 				method: "PUT",
 				body: JSON.stringify(putData),
 			})
@@ -66,7 +67,8 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 			if (!response.ok) {
 				throw new Error("Failed to upload the issue.")
 			}
-			toast("Successfully updated report")
+			toast(`Successfully updated ${issue.title}`)
+			router.refresh()
 		} catch (error) {
 			toast("Could not update issue")
 			console.error("Error updating issue:", error)

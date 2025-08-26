@@ -1,30 +1,62 @@
 import { NextRequest, NextResponse } from "next/server"
 import { CliMateEvent } from "@/types/event"
 import { Asset } from "@/types/asset"
+import { revalidateTag } from "next/cache"
 
 const PATH = "/events"
 
 export async function POST(req: NextRequest): Promise<Response> {
 	try {
-		const postData = await req.json()
-		const result = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
+		const formData = await req.formData()
+
+		const image = formData.get("image") as File
+		const eventData = JSON.parse(formData.get("event") as string)
+
+		const eventResponse = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(postData),
+			body: JSON.stringify(eventData),
 		})
 
-		if (!result.ok) {
-			const errorText = await result.text()
+		if (!eventResponse.ok) {
+			const errorText = await eventResponse.text()
 			console.error("Backend error:", errorText)
 			return NextResponse.json(
 				{ error: "Failed to create event in backend" },
-				{ status: result.status }
+				{ status: eventResponse.status }
 			)
+		} else {
+			const event = await eventResponse.json()
+			revalidateTag("events")
+
+			const formData = new FormData()
+			formData.append("image", image)
+
+			const assetResponse = await fetch(
+				`${process.env.NEXT_URL}/api${PATH}/${event.id}/assets`,
+				{
+					method: "POST",
+					body: formData,
+				}
+			)
+
+			if (!assetResponse.ok) {
+				const errorText = await assetResponse.text()
+				console.error("Backend error:", errorText)
+
+				await fetch(`${process.env.NEXT_URL}/api${PATH}/${event.id}`, {
+					method: "DELETE",
+				})
+				return NextResponse.json(
+					{ error: "Failed to create asset in backend" },
+					{ status: assetResponse.status }
+				)
+			}
+			const asset = await assetResponse.json()
+			return NextResponse.json({ data: { ...event, image_url: asset.url } })
 		}
-		const data = await result.json()
-		return NextResponse.json({ data })
 	} catch (error) {
 		console.error("Error:", error)
 		return NextResponse.json(
@@ -51,7 +83,7 @@ export async function GET() {
 
 		const eventsWithAssetsPromise = events.map(async (event: CliMateEvent) => {
 			const response = await fetch(
-				`${process.env.NEXT_URL}/api/asset/${event.id}`
+				`${process.env.NEXT_URL}/api/events/${event.id}/assets`
 			)
 			if (!response.ok) {
 				console.error("Failed to fetch assets for event:", event.id)

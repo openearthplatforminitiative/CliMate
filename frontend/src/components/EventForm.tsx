@@ -18,9 +18,13 @@ import { useAtomValue } from "jotai"
 import { GeocoderClient } from "openepi-client"
 import { useRouter } from "next/navigation"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
+import Image from "next/image"
+import { toast } from "sonner"
 
 export const EventForm = () => {
 	const { data: session } = useSession()
+	const [file, setFile] = useState<File | null>(null)
+	const [preview, setPreview] = useState<string | null>(null)
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
 	const coordinates = useAtomValue(createIssueCoordinatesAtom)
@@ -88,39 +92,51 @@ export const EventForm = () => {
 		}))
 	}
 
+	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const selectedFile = event.target.files[0]
+			setFile(selectedFile)
+			setPreview(URL.createObjectURL(selectedFile))
+		}
+	}
+
 	const handleUpload = async () => {
 		try {
-			const startDateString = startDate?.toISOString().split("T")[0] // Extract only the date
-			const endDateString = endDate?.toISOString().split("T")[0] //
+			if (!file) {
+				throw new Error("Missing image file")
+			}
 
-			const postData = {
+			const startDateString = startDate?.toISOString().split("T")[0]
+			const endDateString = endDate?.toISOString().split("T")[0]
+
+			const eventData = {
 				name: event.name,
 				description: event.description,
 				location: event.location,
 				start_date: startDateString,
-				user_uuid: session?.user?.id || "",
 				end_date: endDateString,
+				user_uuid: session?.user?.id || "",
+				active: false,
 			}
 
-			console.log("postData", postData)
-			const response = await fetch("/api/event", {
+			const formData = new FormData()
+			formData.append("event", JSON.stringify(eventData))
+			formData.append("image", file)
+
+			const response = await fetch("/api/events", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(postData),
+				body: formData,
 			})
 
 			if (!response.ok) {
-				throw new Error("Failed to create event")
+				throw new Error("Could not create the event.")
 			}
 
-			const data = await response.json()
-			console.log("Successfully created event", data)
+			toast("Successfully uploaded event")
 			router.push("/dashboard?type=events")
 		} catch (error) {
-			console.error("Error creating event:", error)
-			// Handle UI to display error
+			toast("Could not create event")
+			console.error("Error uploading event:", error)
 		}
 	}
 
@@ -129,6 +145,23 @@ export const EventForm = () => {
 	}
 	return (
 		<div>
+			<Label htmlFor="picture">Choose or take picture</Label>
+			<Input
+				id="picture"
+				type="file"
+				onChange={handleFileChange}
+				className="mt-2"
+			/>
+			{file && <p>Selected file: {file.name}</p>}
+			{preview && (
+				<Image
+					width={32}
+					height={32}
+					src={preview}
+					alt="Preview"
+					className="w-32 h-32 object-cover mt-2"
+				/>
+			)}
 			<Input
 				id="name"
 				type="text"
@@ -198,7 +231,7 @@ export const EventForm = () => {
 
 			<Button
 				onClick={handleUpload}
-				disabled={!event.name || !event.description || !startDate}
+				disabled={!event.name || !event.description || !startDate || !file}
 				className="w-full mt-10 mb-10 bg-primary-20"
 			>
 				Create Event
