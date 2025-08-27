@@ -44,7 +44,6 @@ export function IssuesSource() {
 			data={geoJsonData}
 			generateId
 			cluster={true}
-			clusterMaxZoom={15}
 			clusterRadius={20}
 		/>
 	)
