@@ -7,7 +7,7 @@ import { useState, useEffect, useMemo, useRef } from "react"
 import Image from "next/image"
 import { useMap } from "react-map-gl/maplibre"
 import Link from "next/link"
-import { ChevronLeft, X } from "lucide-react"
+import { ArrowRight, ChevronLeft, X } from "lucide-react"
 import { Sheet, SheetRef } from "react-modal-sheet"
 import { CliMateEvent } from "@/types/event"
 import { center } from "@turf/center"
@@ -92,8 +92,31 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 								className="aspect-video w-full object-cover"
 								alt="Picture of issue"
 							/>
+							{event.start_date && (
+								<div className="relative flex self-center -top-5 bg-secondary-95 rounded-xl text-primary-30">
+									<div className="flex flex-col size-16 items-center justify-center p-2">
+										<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+										<span className="text-xs">
+											{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+										</span>
+									</div>
+									{event.end_date && (
+										<>
+											<div className="h-full flex justify-center items-center px-2">
+												<ArrowRight />
+											</div>
+											<div className="flex flex-col size-16 items-center justify-center p-2">
+												<span className="text-3xl">{new Date(event.end_date).getDate()}</span>
+												<span className="text-xs">
+													{new Date(event.end_date).toLocaleString("en-US", { month: "short" })}
+												</span>
+											</div>
+										</>
+									)}
+								</div>
+							)}
 							<div className="flex flex-col gap-4 mt-4 h-full">
-								<div>{event.description}</div>
+								<p>{event.description}</p>
 							</div>
 						</div>
 					</Sheet.Content>
@@ -102,7 +125,7 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 		)
 	}
 	return (
-		<div className="bg-primary-99 h-full w-full">
+		<div className="flex flex-col bg-primary-99 h-full w-full">
 			<div className="relative">
 				<Button asChild>
 					<Link href={"/dashboard/events"} className="absolute left-2 top-2">
@@ -119,10 +142,38 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 					alt="Picture of issue"
 				/>
 			</div>
-
+			<div className="relative flex self-center -top-5 bg-secondary-95 rounded-xl text-primary-30">
+				<div className="flex flex-col size-16 items-center justify-center p-2">
+					<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+					<span className="text-xs">
+						{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+					</span>
+				</div>
+				{event.end_date && (
+					<>
+						<div className="h-full flex justify-center items-center px-2">
+							<ArrowRight />
+						</div>
+						<div className="flex flex-col size-16 items-center justify-center p-2">
+							<span className="text-3xl">{new Date(event.end_date).getDate()}</span>
+							<span className="text-xs">
+								{new Date(event.end_date).toLocaleString("en-US", { month: "short" })}
+							</span>
+						</div>
+					</>
+				)}
+			</div>
 			<div className="flex flex-col gap-4 p-4 h-full">
 				<h1 className="text-3xl">{event.name}</h1>
-				<div>{event.description}</div>
+				{event.start_date && (
+					<div className="absolute flex flex-col size-16 items-center justify-center p-2 bg-secondary-95 rounded-xl text-primary-30 -bottom-2 right-2">
+						<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+						<span className="text-xs">
+							{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+						</span>
+					</div>
+				)}
+				<p>{event.description}</p>
 			</div>
 		</div>
 	)
