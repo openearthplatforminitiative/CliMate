@@ -23,6 +23,7 @@ export function HeroEvents() {
 					description={event.description}
 					date={new Date(event.start_date)}
 					href={`/dashboard/events/${event.id}`}
+					imageSrc={event.image_url}
 				/>
 			))}
 		</div>
