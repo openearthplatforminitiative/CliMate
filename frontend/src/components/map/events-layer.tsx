@@ -96,33 +96,42 @@ export function EventsLayer() {
 				type="circle"
 				source="events"
 				paint={{
-					"circle-color": "#677c6c",
-					"circle-radius": [
-						"interpolate",
-						["linear"],
-						["zoom"],
-						0,
-						15,
-						12,
-						10,
-						22,
-						5,
-					],
+					"circle-color": "#DFF7E3",
+					"circle-radius": 20,
 				}}
 			/>
 			<Layer
-				id="events-label-layer"
+				id="events-date-layer"
 				type="symbol"
 				source="events"
 				layout={{
-					"text-field": ["get", "label"],
+					"text-field": ["get", "date"],
 					"text-font": ["Noto Sans Regular"],
-					"text-size": 10,
+					"text-size": 16,
 					"text-anchor": "bottom",
-					"text-offset": [0, 0.6],
+					"text-offset": [0, 0.3],
+					"text-allow-overlap": true, // Allow text to overlap other text
+					"text-ignore-placement": true, // Don't hide text due to collisions
 				}}
 				paint={{
-					"text-color": "#ffffff",
+					"text-color": "#005230",
+				}}
+			/>
+			<Layer
+				id="events-month-layer"
+				type="symbol"
+				source="events"
+				layout={{
+					"text-field": ["get", "month"],
+					"text-font": ["Noto Sans Regular"],
+					"text-size": 9,
+					"text-offset": [0, 0.3],
+					"text-anchor": "top",
+					"text-allow-overlap": true,
+					"text-ignore-placement": true,
+				}}
+				paint={{
+					"text-color": "#005230",
 				}}
 			/>
 		</>

@@ -19,19 +19,24 @@ export function EventsSource() {
 	const geoJsonData = useMemo<GeoJSON.FeatureCollection>(
 		() => ({
 			type: "FeatureCollection",
-			features: events.map((event) => ({
-				type: "Feature",
-				geometry: event.location,
-				properties: {
-					id: event.id,
-					name: event.name,
-					description: event.description,
-					image: event.image_url,
-					label: new Date(event.start_date).getDate(),
-					startDate: event.start_date,
-					endDate: event.end_date,
-				},
-			})),
+			features: events.map((event) => {
+				const startDateObj = new Date(event.start_date)
+				const monthName = startDateObj.toLocaleString("en-US", { month: "long" }).slice(0, 3)
+				return {
+					type: "Feature",
+					geometry: event.location,
+					properties: {
+						id: event.id,
+						name: event.name,
+						description: event.description,
+						image: event.image_url,
+						date: startDateObj.getDate(),
+						month: monthName,
+						startDate: event.start_date,
+						endDate: event.end_date,
+					},
+				}
+			}),
 		}),
 		[events]
 	)
@@ -43,7 +48,6 @@ export function EventsSource() {
 			data={geoJsonData}
 			generateId
 			cluster={true}
-			clusterMaxZoom={15}
 			clusterRadius={20}
 		/>
 	)
