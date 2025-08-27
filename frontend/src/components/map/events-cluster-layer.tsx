@@ -7,7 +7,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Issue } from "@/types/issue"
+import { CliMateEvent } from "@/types/event"
 import { ChevronDown } from "lucide-react"
 import { GeoJSONSource, LngLat } from "maplibre-gl"
 import Link from "next/link"
@@ -16,10 +16,10 @@ import { Layer, MapMouseEvent, Marker, useMap } from "react-map-gl/maplibre"
 
 type Cluster = {
 	point: LngLat
-	issues: Issue[]
+	events: CliMateEvent[]
 }
 
-export function ClusterLayer() {
+export function EventsClusterLayer() {
 	const map = useMap()
 	const [clickedCluster, setClickedCluster] = useState<Cluster | null>(null)
 
@@ -28,7 +28,7 @@ export function ClusterLayer() {
 			const mapRef = map.current
 			if (!mapRef) return
 			const features = mapRef.queryRenderedFeatures(e.point, {
-				layers: ["clusters"],
+				layers: ["event-clusters"],
 			})
 
 			if (!features || features.length == 0) return setClickedCluster(null)
@@ -37,7 +37,7 @@ export function ClusterLayer() {
 			const clusterId = cluster.properties.cluster_id
 			const pointCount = cluster.properties.point_count
 
-			const clusterSource = mapRef.getSource("issues")
+			const clusterSource = mapRef.getSource("events")
 			if (clusterSource && clusterSource.type === "geojson") {
 				const source = clusterSource as GeoJSONSource
 				const clusterGeometry = cluster.geometry as GeoJSON.Point
@@ -50,14 +50,15 @@ export function ClusterLayer() {
 								clusterGeometry.coordinates[0],
 								clusterGeometry.coordinates[1]
 							),
-							issues: leaves.map((leaf) => ({
+							events: leaves.map((leaf) => ({
 								id: leaf.properties?.id,
-								title: leaf.properties?.title,
+								name: leaf.properties?.name,
 								category: leaf.properties?.category,
+								location: leaf.properties?.location,
 								description: leaf.properties?.description,
 								image_url: leaf.properties?.image,
-								location: leaf.properties?.location,
-								active: leaf.properties?.active,
+								start_date: leaf.properties?.startDate,
+								end_date: leaf.properties?.endDate,
 							})),
 						})
 					})
@@ -88,9 +89,9 @@ export function ClusterLayer() {
 	return (
 		<>
 			<Layer
-				id="clusters"
+				id="event-clusters"
 				type="circle"
-				source="issues"
+				source="events"
 				filter={["has", "point_count"]}
 				paint={{
 					"circle-color": "#677c6c",
@@ -98,9 +99,9 @@ export function ClusterLayer() {
 				}}
 			/>
 			<Layer
-				id="cluster-count"
+				id="event-cluster-count"
 				type="symbol"
-				source="issues"
+				source="events"
 				filter={["has", "point_count"]}
 				layout={{
 					"text-field": "{point_count_abbreviated}",
@@ -111,7 +112,7 @@ export function ClusterLayer() {
 					"text-color": "#dff7e3",
 				}}
 			/>
-			{clickedCluster && clickedCluster.issues.length > 1 && (
+			{clickedCluster && clickedCluster.events.length > 1 && (
 				<Marker
 					longitude={clickedCluster.point.lng}
 					latitude={clickedCluster.point.lat}
@@ -121,15 +122,15 @@ export function ClusterLayer() {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="outline">
-								Issues
+								Events
 								<ChevronDown />
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent side="bottom" align="start">
-							{clickedCluster.issues.map((issue) => (
-								<DropdownMenuItem key={issue.id} asChild>
-									<Link key={issue.id} href={`/dashboard/issues/${issue.id}`}>
-										{issue.title}
+							{clickedCluster.events.map((event) => (
+								<DropdownMenuItem key={event.id} asChild>
+									<Link key={event.id} href={`/dashboard/events/${event.id}`}>
+										{event.name}
 									</Link>
 								</DropdownMenuItem>
 							))}

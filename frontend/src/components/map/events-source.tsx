@@ -24,7 +24,7 @@ export function EventsSource() {
 				geometry: event.location,
 				properties: {
 					id: event.id,
-					title: event.name,
+					name: event.name,
 					description: event.description,
 					image: event.image_url,
 					label: new Date(event.start_date).getDate(),

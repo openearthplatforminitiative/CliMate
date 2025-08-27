@@ -39,8 +39,8 @@ export async function GET(
 				console.error("Backend error:", errorText)
 				return NextResponse.json(issue)
 			}
-			const { data } = (await assetResponse.json()) as { data: Asset[] }
-			if (!data[0]) {
+			const data = (await assetResponse.json()) as Asset[]
+			if (!data) {
 				console.error("No assets found for issue")
 				return NextResponse.json(issue)
 			}

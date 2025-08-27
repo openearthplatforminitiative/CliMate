@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useSearchParams } from "next/navigation"
-import { ClusterLayer } from "./cluster-layer"
+import { IssuesClusterLayer } from "./issues-cluster-layer"
 import { CreateIssueLayer } from "./create-issue-layer"
 import { IssueLayer } from "./issue-layer"
 import { IssueSource } from "./issue-source"
@@ -10,6 +10,7 @@ import { IssuesSource } from "./issues-source"
 import { MissingImage } from "./missing-image"
 import { EventsSource } from "./events-source"
 import { EventsLayer } from "./events-layer"
+import { EventsClusterLayer } from "./events-cluster-layer"
 
 export const MapLayers = () => {
 	const pathname = usePathname()
@@ -21,14 +22,7 @@ export const MapLayers = () => {
 				<>
 					<IssuesSource />
 					<IssuesLayer />
-					<ClusterLayer />
-				</>
-			)}
-			{pathname === "/dashboard" && type === "events" && (
-				<>
-					<EventsSource />
-					<EventsLayer />
-					<ClusterLayer />
+					<IssuesClusterLayer />
 				</>
 			)}
 			{pathname === "/dashboard/issues/create" && <CreateIssueLayer />}
@@ -38,7 +32,20 @@ export const MapLayers = () => {
 					<IssueLayer />
 				</>
 			)}
+			{pathname === "/dashboard" && type === "events" && (
+				<>
+					<EventsSource />
+					<EventsLayer />
+					<EventsClusterLayer />
+				</>
+			)}
 			{pathname === "/dashboard/events/create" && <CreateIssueLayer />}
+			{pathname.startsWith("/dashboard/events/") && (
+				<>
+					<EventsSource />
+					<EventsLayer />
+				</>
+			)}
 			<MissingImage />
 		</>
 	)

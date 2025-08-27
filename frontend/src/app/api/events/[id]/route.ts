@@ -39,8 +39,9 @@ export async function GET(
 				console.error("Backend error:", errorText)
 				return NextResponse.json(event)
 			}
-			const { data } = (await assetResponse.json()) as { data: Asset[] }
-			if (!data[0]) {
+			const data = (await assetResponse.json()) as Asset[]
+			console.log(data)
+			if (!data || data.length === 0) {
 				console.error("No assets found for event")
 				return NextResponse.json(event)
 			}
