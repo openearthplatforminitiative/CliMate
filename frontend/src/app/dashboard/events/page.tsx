@@ -68,6 +68,10 @@ export default function EventsPage() {
 		}
 	}
 
+	const zoomOut = () => {
+		map.ecoMap?.zoomTo(0)
+	}
+
 	if (isMobile) {
 		return (
 			<Sheet
@@ -75,7 +79,7 @@ export default function EventsPage() {
 				isOpen={true}
 				onClose={handleClose}
 				snapPoints={SNAP_POINTS}
-				initialSnap={1}
+				initialSnap={0}
 				className="z-40"
 			>
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
@@ -100,9 +104,14 @@ export default function EventsPage() {
 								(numberOfEvents == 0 ? (
 									<p className="mx-4">There is no events present</p>
 								) : (
-									<p className="mx-4">
-										There is no events on the current map. Please zoom out
-									</p>
+									<div className="flex flex-col mx-4 gap-2">
+										<p>
+											There is no events on the current map. Please zoom out
+										</p>
+										<Button onClick={zoomOut}>
+											Zoom Out
+										</Button>
+									</div>
 								))}
 							<EventSlider events={eventsInBounds} />
 						</Sheet.Scroller>
@@ -124,9 +133,14 @@ export default function EventsPage() {
 				(numberOfEvents == 0 ? (
 					<p className="text-neutral-100">There is no events present</p>
 				) : (
-					<p className="text-neutral-100">
-						There is no events on the current map. Please zoom out
-					</p>
+					<div className="flex flex-col gap-2">
+						<p className="text-neutral-100">
+							There is no events on the current map. Please zoom out
+						</p>
+						<Button variant="outline" className="self-start" onClick={zoomOut}>
+							Zoom Out
+						</Button>
+					</div>
 				))}
 			<EventGrid events={eventsInBounds} />
 		</div>

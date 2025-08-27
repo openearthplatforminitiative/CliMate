@@ -16,7 +16,7 @@ export const MapLayers = () => {
 	const pathname = usePathname()
 	return (
 		<>
-			{pathname === "/dashboard/reports" && (
+			{pathname === "/dashboard/issues" && (
 				<>
 					<IssuesSource />
 					<IssuesLayer />

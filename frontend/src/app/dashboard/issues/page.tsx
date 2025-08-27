@@ -70,6 +70,10 @@ export default function IssuesPage() {
 		}
 	}
 
+	const zoomOut = () => {
+		map.ecoMap?.zoomTo(0)
+	}
+
 	if (isMobile) {
 		return (
 			<Sheet
@@ -77,7 +81,7 @@ export default function IssuesPage() {
 				isOpen={true}
 				onClose={handleClose}
 				snapPoints={SNAP_POINTS}
-				initialSnap={1}
+				initialSnap={0}
 				className="z-40"
 			>
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
@@ -102,9 +106,14 @@ export default function IssuesPage() {
 								(numberOfIssues == 0 ? (
 									<p className="mx-4">There is no reports present</p>
 								) : (
-									<p className="mx-4">
-										There is no reports on the current map. Please zoom out
-									</p>
+									<div className="flex flex-col mx-4 gap-2">
+										<p>
+											There is no issues on the current map. Please zoom out
+										</p>
+										<Button onClick={zoomOut}>
+											Zoom Out
+										</Button>
+									</div>
 								))}
 							<IssueSlider issues={issuesInBounds} />
 						</Sheet.Scroller>
@@ -126,9 +135,14 @@ export default function IssuesPage() {
 				(numberOfIssues == 0 ? (
 					<p className="text-neutral-100">There is no issues present</p>
 				) : (
-					<p className="text-neutral-100">
-						There is no issues on the current map. Please zoom out
-					</p>
+					<div className="flex flex-col gap-2">
+						<p className="text-neutral-100">
+							There is no issues on the current map. Please zoom out
+						</p>
+						<Button variant="outline" className="self-start" onClick={zoomOut}>
+							Zoom Out
+						</Button>
+					</div>
 				))}
 			<IssueGrid issues={issuesInBounds} />
 		</div>
