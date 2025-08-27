@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { IssuesClusterLayer } from "./issues-cluster-layer"
 import { CreateIssueLayer } from "./create-issue-layer"
 import { IssueLayer } from "./issue-layer"
@@ -14,11 +14,9 @@ import { EventsClusterLayer } from "./events-cluster-layer"
 
 export const MapLayers = () => {
 	const pathname = usePathname()
-	const params = useSearchParams()
-	const type = params.get("type")
 	return (
 		<>
-			{pathname === "/dashboard" && type === "reports" && (
+			{pathname === "/dashboard/reports" && (
 				<>
 					<IssuesSource />
 					<IssuesLayer />
@@ -32,7 +30,7 @@ export const MapLayers = () => {
 					<IssueLayer />
 				</>
 			)}
-			{pathname === "/dashboard" && type === "events" && (
+			{pathname === "/dashboard/events" && (
 				<>
 					<EventsSource />
 					<EventsLayer />

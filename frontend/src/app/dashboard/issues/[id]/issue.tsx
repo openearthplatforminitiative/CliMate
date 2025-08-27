@@ -104,7 +104,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 									size="icon"
 									asChild
 								>
-									<Link href={".."}>
+									<Link href={"/dashboard/issues"}>
 										<X />
 									</Link>
 								</Button>
@@ -141,7 +141,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 		<div className="bg-primary-99 h-full w-full">
 			<div className="relative">
 				<Button asChild>
-					<Link href={".."} className="absolute left-2 top-2">
+					<Link href={"/dashboard/issues"} className="absolute left-2 top-2">
 						<ChevronLeft />
 					</Link>
 				</Button>

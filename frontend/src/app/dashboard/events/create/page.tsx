@@ -80,7 +80,7 @@ export default function CreateEventPage() {
 									size="icon"
 									asChild
 								>
-									<Link href={".."}>
+									<Link href={"/dashboard/events"}>
 										<X />
 									</Link>
 								</Button>
@@ -100,7 +100,7 @@ export default function CreateEventPage() {
 					size="icon"
 					asChild
 				>
-					<Link href={".."}>
+					<Link href={"/dashboard/events"}>
 						<ChevronLeft />
 					</Link>
 				</Button>

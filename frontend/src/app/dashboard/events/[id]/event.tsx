@@ -76,7 +76,7 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 									size="icon"
 									asChild
 								>
-									<Link href={".."}>
+									<Link href={"/dashboard/events"}>
 										<X />
 									</Link>
 								</Button>
@@ -105,7 +105,7 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 		<div className="bg-primary-99 h-full w-full">
 			<div className="relative">
 				<Button asChild>
-					<Link href={".."} className="absolute left-2 top-2">
+					<Link href={"/dashboard/events"} className="absolute left-2 top-2">
 						<ChevronLeft />
 					</Link>
 				</Button>

@@ -133,7 +133,7 @@ export const EventForm = () => {
 			}
 
 			toast("Successfully uploaded event")
-			router.push("/dashboard?type=events")
+			router.push("/dashboard/events")
 		} catch (error) {
 			toast("Could not create event")
 			console.error("Error uploading event:", error)

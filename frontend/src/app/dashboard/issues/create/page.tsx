@@ -80,7 +80,7 @@ export default function CreateIssuePage() {
 									size="icon"
 									asChild
 								>
-									<Link href={".."}>
+									<Link href={"/dashboard/issues"}>
 										<X />
 									</Link>
 								</Button>
@@ -100,7 +100,7 @@ export default function CreateIssuePage() {
 					size="icon"
 					asChild
 				>
-					<Link href={".."}>
+					<Link href={"/dashboard/issues"}>
 						<ChevronLeft />
 					</Link>
 				</Button>

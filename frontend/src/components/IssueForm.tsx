@@ -125,8 +125,8 @@ export const IssueForm = () => {
 				throw new Error("Could not create the issue.")
 			}
 
-			toast("Successfully uploaded report")
-			router.push("/dashboard?type=reports")
+			toast("Successfully uploaded issue")
+			router.push("/dashboard/issues")
 		} catch (error) {
 			toast("Could not create issue")
 			console.error("Error uploading issue:", error)
