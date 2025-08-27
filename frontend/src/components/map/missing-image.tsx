@@ -9,7 +9,7 @@ const iconNames: { [K in Category]: string } = {
 	deforestation: "tree-solid",
 	garbage: "trash-solid",
 	chemicals: "flask-solid",
-	vandalism: "", //TODO
+	vandalism: "hammer-solid",
 	other: "question-circle-solid",
 }
 
