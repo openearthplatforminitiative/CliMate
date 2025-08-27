@@ -21,7 +21,9 @@ export function EventsSource() {
 			type: "FeatureCollection",
 			features: events.map((event) => {
 				const startDateObj = new Date(event.start_date)
-				const monthName = startDateObj.toLocaleString("en-US", { month: "long" }).slice(0, 3)
+				const monthName = startDateObj
+					.toLocaleString("en-US", { month: "long" })
+					.slice(0, 3)
 				return {
 					type: "Feature",
 					geometry: event.location,

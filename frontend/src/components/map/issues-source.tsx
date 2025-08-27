@@ -30,7 +30,7 @@ export function IssuesSource() {
 					title: issue.title,
 					category: issue.category,
 					description: issue.description,
-					image: issue.image_url
+					image: issue.image_url,
 				},
 			})),
 		}),

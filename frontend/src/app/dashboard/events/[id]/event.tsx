@@ -95,9 +95,13 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 							{event.start_date && (
 								<div className="relative flex self-center -top-5 bg-secondary-95 rounded-xl text-primary-30">
 									<div className="flex flex-col size-16 items-center justify-center p-2">
-										<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+										<span className="text-3xl">
+											{new Date(event.start_date).getDate()}
+										</span>
 										<span className="text-xs">
-											{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+											{new Date(event.start_date).toLocaleString("en-US", {
+												month: "short",
+											})}
 										</span>
 									</div>
 									{event.end_date && (
@@ -106,9 +110,13 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 												<ArrowRight />
 											</div>
 											<div className="flex flex-col size-16 items-center justify-center p-2">
-												<span className="text-3xl">{new Date(event.end_date).getDate()}</span>
+												<span className="text-3xl">
+													{new Date(event.end_date).getDate()}
+												</span>
 												<span className="text-xs">
-													{new Date(event.end_date).toLocaleString("en-US", { month: "short" })}
+													{new Date(event.end_date).toLocaleString("en-US", {
+														month: "short",
+													})}
 												</span>
 											</div>
 										</>
@@ -144,9 +152,13 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 			</div>
 			<div className="relative flex self-center -top-5 bg-secondary-95 rounded-xl text-primary-30">
 				<div className="flex flex-col size-16 items-center justify-center p-2">
-					<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+					<span className="text-3xl">
+						{new Date(event.start_date).getDate()}
+					</span>
 					<span className="text-xs">
-						{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+						{new Date(event.start_date).toLocaleString("en-US", {
+							month: "short",
+						})}
 					</span>
 				</div>
 				{event.end_date && (
@@ -155,9 +167,13 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 							<ArrowRight />
 						</div>
 						<div className="flex flex-col size-16 items-center justify-center p-2">
-							<span className="text-3xl">{new Date(event.end_date).getDate()}</span>
+							<span className="text-3xl">
+								{new Date(event.end_date).getDate()}
+							</span>
 							<span className="text-xs">
-								{new Date(event.end_date).toLocaleString("en-US", { month: "short" })}
+								{new Date(event.end_date).toLocaleString("en-US", {
+									month: "short",
+								})}
 							</span>
 						</div>
 					</>
@@ -167,9 +183,13 @@ export const EventComponent = ({ event }: { event: CliMateEvent }) => {
 				<h1 className="text-3xl">{event.name}</h1>
 				{event.start_date && (
 					<div className="absolute flex flex-col size-16 items-center justify-center p-2 bg-secondary-95 rounded-xl text-primary-30 -bottom-2 right-2">
-						<span className="text-3xl">{new Date(event.start_date).getDate()}</span>
+						<span className="text-3xl">
+							{new Date(event.start_date).getDate()}
+						</span>
 						<span className="text-xs">
-							{new Date(event.start_date).toLocaleString("en-US", { month: "short" })}
+							{new Date(event.start_date).toLocaleString("en-US", {
+								month: "short",
+							})}
 						</span>
 					</div>
 				)}

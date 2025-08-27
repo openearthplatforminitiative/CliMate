@@ -9,7 +9,7 @@ import { useIsMobile } from "@/lib/utils"
 import { Issue } from "@/types/issue"
 import Link from "next/link"
 import { useRef, useState, useEffect } from "react"
-import { } from "react-day-picker"
+import {} from "react-day-picker"
 import { useMap } from "react-map-gl/maplibre"
 import { Sheet, SheetRef } from "react-modal-sheet"
 
@@ -98,8 +98,12 @@ export default function IssuesPage() {
 						<Sheet.Scroller>
 							<Tabs value={"issues"}>
 								<TabsList className="mx-auto mb-5">
-									<TabsTrigger value="issues" asChild><Link href="/dashboard/issues">Issues</Link></TabsTrigger>
-									<TabsTrigger value="events" asChild><Link href="/dashboard/events">Events</Link></TabsTrigger>
+									<TabsTrigger value="issues" asChild>
+										<Link href="/dashboard/issues">Issues</Link>
+									</TabsTrigger>
+									<TabsTrigger value="events" asChild>
+										<Link href="/dashboard/events">Events</Link>
+									</TabsTrigger>
 								</TabsList>
 							</Tabs>
 							{issuesInBounds.length == 0 &&
@@ -110,9 +114,7 @@ export default function IssuesPage() {
 										<p>
 											There is no issues on the current map. Please zoom out
 										</p>
-										<Button onClick={zoomOut}>
-											Zoom Out
-										</Button>
+										<Button onClick={zoomOut}>Zoom Out</Button>
 									</div>
 								))}
 							<IssueSlider issues={issuesInBounds} />
@@ -126,8 +128,12 @@ export default function IssuesPage() {
 		<div className="bg-primary-20 grow px-10 py-5 w-full">
 			<Tabs value={"issues"}>
 				<TabsList className="mx-auto mb-5">
-					<TabsTrigger value="issues" asChild><Link href="/dashboard/issues">Issues</Link></TabsTrigger>
-					<TabsTrigger value="events" asChild><Link href="/dashboard/events">Events</Link></TabsTrigger>
+					<TabsTrigger value="issues" asChild>
+						<Link href="/dashboard/issues">Issues</Link>
+					</TabsTrigger>
+					<TabsTrigger value="events" asChild>
+						<Link href="/dashboard/events">Events</Link>
+					</TabsTrigger>
 				</TabsList>
 			</Tabs>
 			<h1 className="text-2xl text-neutral-100 mb-4">Recent Issues</h1>

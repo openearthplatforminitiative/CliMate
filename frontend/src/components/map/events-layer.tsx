@@ -56,7 +56,9 @@ export function EventsLayer() {
 		}
 	}, [handleEventLayerClick, map, setClickedPoint])
 
-	const handleCreateIssueClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleCreateIssueClick = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
 		event.preventDefault()
 		if (!session) return
 		setCreateIssueCoordinates({

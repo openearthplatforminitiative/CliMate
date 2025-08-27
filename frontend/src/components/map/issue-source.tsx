@@ -13,21 +13,21 @@ export function IssueSource() {
 			type: "FeatureCollection",
 			features: issue
 				? [
-					{
-						type: "Feature",
-						geometry: {
-							type: "Point",
-							coordinates: issue.location.coordinates,
+						{
+							type: "Feature",
+							geometry: {
+								type: "Point",
+								coordinates: issue.location.coordinates,
+							},
+							properties: {
+								id: issue.id,
+								title: issue.title,
+								category: issue.category,
+								description: issue.description,
+								image: issue.image_url,
+							},
 						},
-						properties: {
-							id: issue.id,
-							title: issue.title,
-							category: issue.category,
-							description: issue.description,
-							image: issue.image_url,
-						},
-					},
-				]
+					]
 				: [],
 		}),
 		[issue]

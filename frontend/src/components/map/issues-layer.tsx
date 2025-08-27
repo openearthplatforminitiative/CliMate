@@ -54,7 +54,9 @@ export function IssuesLayer() {
 		}
 	}, [handleIssueLayerClick, map, setClickedPoint])
 
-	const handleCreateIssueClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleCreateIssueClick = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
 		event.preventDefault()
 		setCreateIssueCoordinates({
 			lat: clickedPoint![1],

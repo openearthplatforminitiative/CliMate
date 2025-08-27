@@ -190,7 +190,9 @@ export const IssueForm = () => {
 
 				<Button
 					onClick={handleUpload}
-					disabled={!issue.title || !issue.category || !issue.description || !file}
+					disabled={
+						!issue.title || !issue.category || !issue.description || !file
+					}
 					className="w-full mt-5 mb-10 bg-primary-20"
 				>
 					Submit report

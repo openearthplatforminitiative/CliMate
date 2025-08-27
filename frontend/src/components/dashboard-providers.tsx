@@ -7,7 +7,5 @@ export function DashboardProviders({
 }: {
 	children: React.ReactNode
 }) {
-	return (
-		<MapProvider>{children}</MapProvider>
-	)
+	return <MapProvider>{children}</MapProvider>
 }

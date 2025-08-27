@@ -96,8 +96,12 @@ export default function EventsPage() {
 						<Sheet.Scroller>
 							<Tabs value={"events"}>
 								<TabsList className="mx-auto mb-5">
-									<TabsTrigger value="issues"><Link href="/dashboard/issues">Issues</Link></TabsTrigger>
-									<TabsTrigger value="events"><Link href="/dashboard/events">Events</Link></TabsTrigger>
+									<TabsTrigger value="issues">
+										<Link href="/dashboard/issues">Issues</Link>
+									</TabsTrigger>
+									<TabsTrigger value="events">
+										<Link href="/dashboard/events">Events</Link>
+									</TabsTrigger>
 								</TabsList>
 							</Tabs>
 							{eventsInBounds.length == 0 &&
@@ -108,9 +112,7 @@ export default function EventsPage() {
 										<p>
 											There is no events on the current map. Please zoom out
 										</p>
-										<Button onClick={zoomOut}>
-											Zoom Out
-										</Button>
+										<Button onClick={zoomOut}>Zoom Out</Button>
 									</div>
 								))}
 							<EventSlider events={eventsInBounds} />
@@ -124,8 +126,12 @@ export default function EventsPage() {
 		<div className="bg-primary-20 grow px-10 py-5 w-full">
 			<Tabs value={"events"}>
 				<TabsList className="mx-auto mb-5">
-					<TabsTrigger value="issues"><Link href="/dashboard/issues">Issues</Link></TabsTrigger>
-					<TabsTrigger value="events"><Link href="/dashboard/events">Events</Link></TabsTrigger>
+					<TabsTrigger value="issues">
+						<Link href="/dashboard/issues">Issues</Link>
+					</TabsTrigger>
+					<TabsTrigger value="events">
+						<Link href="/dashboard/events">Events</Link>
+					</TabsTrigger>
 				</TabsList>
 			</Tabs>
 			<h1 className="text-2xl text-neutral-100 mb-4">Recent Events</h1>
