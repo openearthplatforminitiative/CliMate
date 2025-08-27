@@ -1,0 +1,99 @@
+volumes:
+  postgres_data:
+    driver: local
+  keycloak_themes:
+    driver: local
+
+services:
+  keycloak_db:
+    container_name: keycloak_db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: keycloak
+    networks:
+      - local
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:26.1.0
+    volumes:
+      - ./deployment/keycloak:/opt/keycloak/data/import
+    command: start-dev --import-realm --verbose
+    env_file:
+      - path: ./.env.docker
+        required: false
+    ports:
+      - 8000:8080
+    links:
+      - keycloak_db
+    networks:
+      - local
+    depends_on:
+      keycloak_db:
+        condition: service_healthy
+  # frontend:
+  #   container_name: climate_frontend
+  #   build: ./frontend
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - cli_mate_db
+  #     - keycloak
+  eav-db:
+    image: postgis/postgis:latest
+    container_name: eav-db
+    environment:
+      POSTGRES_DB: eav
+      POSTGRES_USER: eav_user
+      POSTGRES_PASSWORD: eav_pass
+    ports:
+      - "5432:5432"
+    networks:
+      - eav-net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "eav_user", "-d", "eav"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  eav-backend:
+    image: ghcr.io/openearthplatforminitiative/entity-attribute-backend:latest
+    container_name: eav-backend
+    depends_on:
+      eav-db:
+        condition: service_healthy
+    environment:
+      IMPORT_ENTITIES: true
+      UPDATE_ENTITIES: true
+      IMPORT_CONFIG: "/entities"
+      ENABLE_ASSETS: true
+      ENABLE_ADMIN_API: true
+      ENABLE_METRICS: false
+      POSTGRES_USER: eav_user
+      POSTGRES_PASSWORD: eav_pass
+      POSTGRES_DB: eav
+      POSTGRES_HOST: eav-db
+      LOG_LEVEL: INFO
+    ports:
+      - "8080:8080"
+    networks:
+      - eav-net
+    volumes:
+      - ./entities:/entities
+
+networks:
+  eav-net:
+    driver: bridge
+  local:
+    name: local
+    driver: bridge

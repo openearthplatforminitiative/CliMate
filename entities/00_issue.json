@@ -1,0 +1,37 @@
+{
+  "name": "Issue",
+  "collection_name": "issues",
+  "apiEndpoints": ["GET", "PUT", "POST", "DELETE", "LIST"],
+  "returnSummaryOnCollection": false,
+  "supportsAssets": true,
+  "requiredAttributes": [
+    {
+      "name": "title",
+      "type": "STRING"
+    },
+    {
+      "name": "description",
+      "type": "STRING"
+    },
+    {
+      "name": "location",
+      "type": "GEOMETRY"
+    },
+    {
+      "name": "category",
+      "type": "ENUM",
+      "allowedValues": ["Garbage", "Chemicals", "Deforestation", "Vandalism", "Other"]
+    }
+  ],
+  "optionalAttributes": [
+    {
+      "name": "active",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "user_uuid",
+      "type": "STRING"
+    }
+  ],
+  "relatedEntities": []
+}

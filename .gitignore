@@ -4,3 +4,7 @@
 
 # MacOS
 .DS_Store
+
+
+# Docker
+.env.docker
