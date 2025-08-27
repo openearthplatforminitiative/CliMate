@@ -11,9 +11,9 @@ interface BoundsCoordinates {
 	maxLng: number
 }
 
-async function getIssues(): Promise<Issue[]> {
+export async function getIssues(): Promise<Issue[]> {
 	try {
-		const response = await fetch(`http://localhost:3000/api/issue`, {
+		const response = await fetch(`${process.env.NEXT_URL}/api/issues`, {
 			next: {
 				revalidate: 60 * 60,
 				tags: ["issues"],
@@ -33,7 +33,6 @@ async function getIssues(): Promise<Issue[]> {
 export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 	try {
 		const issues = await getIssues()
-
 		const { minLat, minLng, maxLat, maxLng } = bounds
 
 		const filteredIssues = issues.filter((issue) => {
@@ -53,13 +52,9 @@ export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 				},
 				properties: {},
 			}
-			const [lng, lat] = issue.location.coordinates
 			const issueFeature: Feature = {
 				type: "Feature",
-				geometry: {
-					type: "Point",
-					coordinates: [lng, lat],
-				},
+				geometry: issue.location,
 				properties: {},
 			}
 			return booleanContains(boundsFeature, issueFeature)
@@ -68,6 +63,23 @@ export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 		return filteredIssues
 	} catch (error) {
 		console.error("Error fetching issues in bounds:", error)
+		throw error
+	}
+}
+
+export const getIssue = async (id: string) => {
+	try {
+		const response = await fetch(`${process.env.NEXT_URL}/api/issues/${id}`, {
+			next: { revalidate: 60 },
+		})
+
+		if (!response.ok) {
+			console.error("Failed to fetch issue:", await response.text())
+			throw new Error(`Failed to fetch issue with id ${id}`)
+		}
+		return await response.json()
+	} catch (error) {
+		console.error("Error fetching issue:", error)
 		throw error
 	}
 }

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { HeaderHero } from "@/components/HeaderHero"
 import { NoradLogo, OpenEpiLogo } from "@/components/Logos"
-import { Card } from "@/components/Card"
 import Link from "next/link"
+import { HeroEvents } from "@/components/HeroEvents"
 
 export default function Home() {
 	return (
@@ -75,36 +75,7 @@ export default function Home() {
 							Events is arranged by organizations or private persons to clean up
 							areas
 						</p>
-						<div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-5 -mx-10 md:mx-0 overflow-x-auto mt-5 mb-10 px-10 md:px-0">
-							<Card
-								title="Event"
-								description="Lorem ipsum dolor"
-								date={new Date()}
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Event"
-								description="Lorem ipsum dolor"
-								date={new Date()}
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Event"
-								description="Lorem ipsum dolor"
-								date={new Date()}
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-							<Card
-								title="Event"
-								description="Lorem ipsum dolor"
-								date={new Date()}
-								href="/dashboard"
-								imageSrc="/river.jpg"
-							/>
-						</div>
+						<HeroEvents />
 					</div>
 				</div>
 				<div className="flex bg-primary-20 py-16 text-secondary-98">

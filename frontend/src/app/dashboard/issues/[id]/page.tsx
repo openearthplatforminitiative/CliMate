@@ -1,7 +1,6 @@
-import "maplibre-gl/dist/maplibre-gl.css"
 import { notFound } from "next/navigation"
 import { IssueComponent } from "./issue"
-import { fetchIssue } from "./action"
+import { getIssue } from "@/actions/issueActions"
 
 interface IssueProps {
 	params: Promise<{
@@ -11,7 +10,7 @@ interface IssueProps {
 
 export default async function IssuePage({ params }: IssueProps) {
 	const { id } = await params
-	const issue = await fetchIssue(id).catch(() => notFound())
+	const issue = await getIssue(id).catch(() => notFound())
 	if (!issue) {
 		return notFound()
 	}

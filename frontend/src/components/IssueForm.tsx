@@ -5,8 +5,7 @@ import { Input } from "./ui/input"
 import { ChangeEvent, useEffect, useState } from "react"
 import { Label } from "./ui/label"
 import { Textarea } from "./ui/textarea"
-import { Asset, Category, Issue } from "@/types/issue"
-import { useIssues } from "@/lib/IssuesContext"
+import { Category, Issue } from "@/types/issue"
 import { toast } from "sonner"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
@@ -14,12 +13,14 @@ import { Button } from "./ui/button"
 import { useAtomValue } from "jotai"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 import { useRouter } from "next/navigation"
+import { MapPin } from "lucide-react"
+import { GeocoderClient } from "openepi-client"
 
 export const IssueForm = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
+	const [locationString, setLocationString] = useState<string>("Unknown")
 	const coordinates = useAtomValue(createIssueCoordinatesAtom)
-	const { setIssues } = useIssues()
 	const { data: session } = useSession()
 	const router = useRouter()
 
@@ -43,6 +44,32 @@ export const IssueForm = () => {
 					coordinates: [coordinates.lng, coordinates.lat],
 				},
 			}))
+		}
+	}, [coordinates])
+
+	useEffect(() => {
+		if (coordinates) {
+			const client = new GeocoderClient()
+			client
+				.getReverseGeocoding({
+					lon: coordinates.lng,
+					lat: coordinates.lat,
+				})
+				.then((result) => {
+					const { data, error } = result
+
+					if (error) {
+						console.error(error)
+					} else {
+						if (data.features && data.features[0]) {
+							const locationProperties = data.features[0].properties
+							return setLocationString(
+								`${locationProperties.city}, ${locationProperties.country}`
+							)
+						}
+					}
+					setLocationString("Unknown")
+				})
 		}
 	}, [coordinates])
 
@@ -73,7 +100,10 @@ export const IssueForm = () => {
 
 	const handleUpload = async () => {
 		try {
-			const postData: Issue = {
+			if (!file) {
+				throw new Error("Missing image file")
+			}
+			const issueData: Issue = {
 				title: issue.title,
 				description: issue.description,
 				category: issue.category,
@@ -82,44 +112,21 @@ export const IssueForm = () => {
 				active: false,
 			}
 
-			const response = await fetch("/api/issue", {
+			const formData = new FormData()
+			formData.append("issue", JSON.stringify(issueData))
+			formData.append("image", file)
+
+			const response = await fetch("/api/issues", {
 				method: "POST",
-				body: JSON.stringify(postData),
+				body: formData,
 			})
 
 			if (!response.ok) {
 				throw new Error("Could not create the issue.")
 			}
 
-			const { data }: { data: Issue } = await response.json()
-
-			// upload picture
-			if (!data.id || !file) {
-				throw new Error("No file or issue ID provided")
-			}
-			const formData = new FormData()
-			formData.append("issueId", data.id)
-			formData.append("image", file)
-			const imageResponse = await fetch("/api/asset", {
-				method: "POST",
-				body: formData,
-			})
-
-			if (!imageResponse.ok) {
-				throw new Error("Failed to upload the image.")
-			}
-
-			const { data: imageData }: { data: Asset } = await imageResponse.json()
-			console.log(imageData)
-
-			const issueResult: Issue = {
-				...data,
-				image_url: imageData.url,
-			}
-
-			setIssues((prevIssues: Issue[]) => [...prevIssues, issueResult])
-			toast("Successfully uploaded report")
-			router.push("/dashboard")
+			toast("Successfully uploaded issue")
+			router.push("/dashboard/issues")
 		} catch (error) {
 			toast("Could not create issue")
 			console.error("Error uploading issue:", error)
@@ -171,9 +178,19 @@ export const IssueForm = () => {
 					rows={3}
 				/>
 
+				<div className="flex items-center gap-2 mt-2">
+					<MapPin />
+					<div className="flex flex-col">
+						Current location set to: {locationString}
+						<div className="text-sm text-muted-foreground">
+							Drag the pin on the map to change the location
+						</div>
+					</div>
+				</div>
+
 				<Button
 					onClick={handleUpload}
-					disabled={!issue.title || !issue.category || !issue.description}
+					disabled={!issue.title || !issue.category || !issue.description || !file}
 					className="w-full mt-5 mb-10 bg-primary-20"
 				>
 					Submit report

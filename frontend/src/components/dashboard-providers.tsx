@@ -1,6 +1,5 @@
 "use client"
 
-import { IssuesProvider } from "@/lib/IssuesContext"
 import { MapProvider } from "react-map-gl/maplibre"
 
 export function DashboardProviders({
@@ -9,8 +8,6 @@ export function DashboardProviders({
 	children: React.ReactNode
 }) {
 	return (
-		<IssuesProvider>
-			<MapProvider>{children}</MapProvider>
-		</IssuesProvider>
+		<MapProvider>{children}</MapProvider>
 	)
 }

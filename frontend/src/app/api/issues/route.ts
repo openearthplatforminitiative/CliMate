@@ -1,35 +1,66 @@
-import { Asset, Issue } from "@/types/issue"
+import { Asset } from "@/types/asset"
+import { Issue } from "@/types/issue"
 import { revalidatePath, revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 const PATH = "/issues"
 export async function POST(req: NextRequest): Promise<Response> {
-	// TODO: image
-	// const blob = await req.blob();
-	// const arrayBuffer = await blob.arrayBuffer();
-	// const buffer = Buffer.from(arrayBuffer);
 	try {
-		const postData = await req.json()
-		const result = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
+		const formData = await req.formData()
+
+		const image = formData.get("image") as File
+		const issueData = JSON.parse(formData.get("issue") as string)
+
+		if (!image) {
+			console.error("No image provided")
+			return NextResponse.json({ error: "No image provided" }, { status: 400 })
+		}
+
+		const issueResponse = await fetch(`${process.env.ENTITY_API_URL}${PATH}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(postData),
+			body: JSON.stringify(issueData),
 		})
 
-		if (!result.ok) {
-			const errorText = await result.text()
+		if (!issueResponse.ok) {
+			const errorText = await issueResponse.text()
 			console.error("Backend error:", errorText)
 			return NextResponse.json(
 				{ error: "Failed to create issue in backend" },
-				{ status: result.status }
+				{ status: issueResponse.status }
 			)
-		}
+		} else {
+			const issue = await issueResponse.json()
+			revalidateTag("issues")
 
-		const data = await result.json()
-		revalidateTag("issues")
-		return NextResponse.json({ data })
+			const formData = new FormData()
+			formData.append("image", image)
+
+			const assetResponse = await fetch(
+				`${process.env.NEXT_URL}/api${PATH}/${issue.id}/assets`,
+				{
+					method: "POST",
+					body: formData,
+				}
+			)
+
+			if (!assetResponse.ok) {
+				const errorText = await assetResponse.text()
+				console.error("Backend error:", errorText)
+
+				await fetch(`${process.env.NEXT_URL}/api${PATH}/${issue.id}`, {
+					method: "DELETE",
+				})
+				return NextResponse.json(
+					{ error: "Failed to create assets in backend" },
+					{ status: assetResponse.status }
+				)
+			}
+			const asset = await assetResponse.json()
+			return NextResponse.json({ data: { ...issue, image_url: asset.url } })
+		}
 	} catch (error) {
 		console.error("Error:", error)
 		return NextResponse.json(
@@ -57,7 +88,7 @@ export async function GET() {
 
 		const issuesWithAssetsPromise = issues.map(async (issue: Issue) => {
 			const response = await fetch(
-				`${process.env.NEXT_URL}/api/asset/${issue.id}`
+				`${process.env.NEXT_URL}/api/issues/${issue.id}/assets`
 			)
 			if (!response.ok) {
 				console.error("Failed to fetch assets for issue:", issue.id)
@@ -104,7 +135,9 @@ export async function PUT(req: NextRequest) {
 				{ status: result.status }
 			)
 		}
+
 		revalidatePath(`/dashboard/issues/${putData.id}`)
+
 		const data = await result.json()
 		return NextResponse.json({ data })
 	} catch (error) {

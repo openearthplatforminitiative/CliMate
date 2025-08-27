@@ -59,7 +59,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 				...issue,
 				active: !issue.active,
 			}
-			const response = await fetch("/api/issue", {
+			const response = await fetch("/api/issues", {
 				method: "PUT",
 				body: JSON.stringify(putData),
 			})
@@ -67,8 +67,8 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 			if (!response.ok) {
 				throw new Error("Failed to upload the issue.")
 			}
-			toast("Successfully updated report")
-			router.push("/dashboard")
+			toast(`Successfully updated ${issue.title}`)
+			router.refresh()
 		} catch (error) {
 			toast("Could not update issue")
 			console.error("Error updating issue:", error)
@@ -104,7 +104,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 									size="icon"
 									asChild
 								>
-									<Link href={".."}>
+									<Link href={"/dashboard/issues"}>
 										<X />
 									</Link>
 								</Button>
@@ -141,7 +141,7 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 		<div className="bg-primary-99 h-full w-full">
 			<div className="relative">
 				<Button asChild>
-					<Link href={".."} className="absolute left-2 top-2">
+					<Link href={"/dashboard/issues"} className="absolute left-2 top-2">
 						<ChevronLeft />
 					</Link>
 				</Button>

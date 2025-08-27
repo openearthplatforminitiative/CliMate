@@ -1,109 +1,12 @@
 "use client"
 
-import { IssueGrid } from "@/components/IssueGrid"
-import { IssueSlider } from "@/components/IssueSlider"
-import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/lib/utils"
-import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
-import { Sheet, SheetRef } from "react-modal-sheet"
-import { getIssuesInBounds } from "./action"
-import { useMap } from "react-map-gl/maplibre"
-import { Issue } from "@/types/issue"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-const SNAP_POINTS = [400, 90]
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function MapPage() {
-	const sheetRef = useRef<SheetRef>(null)
-	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
-
-	const isMobile = useIsMobile()
-	const map = useMap()
+	const router = useRouter()
 
 	useEffect(() => {
-		const mapRef = map.ecoMap
-		const fetchIssues = async () => {
-			const mapBounds = mapRef?.getBounds()
-			if (!mapBounds) {
-				setIssuesInBounds([])
-				return
-			}
-
-			const bounds = {
-				minLat: mapBounds._sw.lat,
-				minLng: mapBounds._sw.lng,
-				maxLat: mapBounds._ne.lat,
-				maxLng: mapBounds._ne.lng,
-			}
-
-			try {
-				const issues = await getIssuesInBounds(bounds)
-				setIssuesInBounds(issues)
-			} catch (error) {
-				console.error("Failed to fetch issues:", error)
-			}
-		}
-
-		fetchIssues()
-
-		mapRef?.on("moveend", fetchIssues)
-		return () => {
-			mapRef?.off("moveend", fetchIssues)
-		}
-	}, [map.ecoMap])
-
-	const handleClose = () => {
-		const sheet = sheetRef.current
-		if (sheet) {
-			sheet.snapTo(1)
-		}
-	}
-
-	if (isMobile) {
-		return (
-			<Sheet
-				ref={sheetRef}
-				isOpen={true}
-				onClose={handleClose}
-				snapPoints={SNAP_POINTS}
-				initialSnap={1}
-				className="z-40"
-			>
-				<Sheet.Container className="rounded-t-4xl bg-primary-99">
-					<Button asChild className="bg-primary-20">
-						<Link
-							href="/dashboard/issues/create"
-							className="absolute -top-12 right-4 z-50"
-						>
-							Add Report
-						</Link>
-					</Button>
-					<Sheet.Header />
-					<Sheet.Content>
-						<Sheet.Scroller>
-							<Tabs defaultValue="reports">
-								<TabsList className="mx-auto">
-									<TabsTrigger value="reports">Reports</TabsTrigger>
-									<TabsTrigger value="events">Events</TabsTrigger>
-								</TabsList>
-								<TabsContent value="reports">
-									<IssueSlider issues={issuesInBounds} />
-								</TabsContent>
-								<TabsContent value="events">
-									<IssueSlider issues={issuesInBounds} />
-								</TabsContent>
-							</Tabs>
-						</Sheet.Scroller>
-					</Sheet.Content>
-				</Sheet.Container>
-			</Sheet>
-		)
-	}
-	return (
-		<div className="bg-primary-20 grow px-10 py-5 w-full">
-			<h1 className="text-2xl text-neutral-100 mb-4">Recent Reports</h1>
-			<IssueGrid issues={issuesInBounds} />
-		</div>
-	)
+		router.push("/dashboard/issues")
+	})
 }

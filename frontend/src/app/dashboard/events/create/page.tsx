@@ -1,25 +1,25 @@
 "use client"
-
-import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
-import { IssueForm } from "@/components/IssueForm"
-import { Button } from "@/components/ui/button"
 import { calculateOffset, useIsMobile } from "@/lib/utils"
-import { useAtom } from "jotai"
-import { ChevronLeft, X } from "lucide-react"
-import Link from "next/link"
+import { Sheet, SheetRef } from "react-modal-sheet"
+import { Button } from "@/components/ui/button"
+import { EventForm } from "@/components/EventForm"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useMap } from "react-map-gl/maplibre"
-import { Sheet, SheetRef } from "react-modal-sheet"
+import Link from "next/link"
+import { ChevronLeft, X } from "lucide-react"
+import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
+import { useAtom } from "jotai"
 
 const SNAP_POINTS = [-40, 650, 90]
 
-export default function CreateIssuePage() {
+export default function CreateEventPage() {
 	const sheetRef = useRef<SheetRef>(null)
 	const [snapIndex, setSnapIndex] = useState(1)
 
-	const isMobile = useIsMobile()
 	const [coordinates, setCoordinates] = useAtom(createIssueCoordinatesAtom)
 	const map = useMap()
+
+	const isMobile = useIsMobile()
 
 	const handleClose = () => {
 		const sheet = sheetRef.current
@@ -80,12 +80,12 @@ export default function CreateIssuePage() {
 									size="icon"
 									asChild
 								>
-									<Link href={"/dashboard/issues"}>
+									<Link href={"/dashboard/events"}>
 										<X />
 									</Link>
 								</Button>
 							</div>
-							<IssueForm />
+							<EventForm />
 						</div>
 					</Sheet.Content>
 				</Sheet.Container>
@@ -100,13 +100,13 @@ export default function CreateIssuePage() {
 					size="icon"
 					asChild
 				>
-					<Link href={"/dashboard/issues"}>
+					<Link href={"/dashboard/events"}>
 						<ChevronLeft />
 					</Link>
 				</Button>
-				<h1 className="text-center text-2xl">Create Report</h1>
+				<h1 className="text-center text-2xl">Create Event</h1>
 			</div>
-			<IssueForm />
+			<EventForm />
 		</div>
 	)
 }

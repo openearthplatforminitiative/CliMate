@@ -1,50 +1,25 @@
 "use client"
 
-import { getIssuesInBounds } from "@/app/dashboard/action"
+import { getIssues } from "@/actions/issueActions"
 import { Issue } from "@/types/issue"
 import { useEffect, useMemo, useState } from "react"
-import { Source, useMap } from "react-map-gl/maplibre"
+import { Source } from "react-map-gl/maplibre"
 
 export function IssuesSource() {
-	const [issuesInBounds, setIssuesInBounds] = useState<Issue[]>([])
-	const map = useMap()
+	const [issues, setIssues] = useState<Issue[]>([])
 
 	useEffect(() => {
-		const mapRef = map.ecoMap
-		const fetchIssues = async () => {
-			const mapBounds = mapRef?.getBounds()
-			if (!mapBounds) {
-				setIssuesInBounds([])
-				return
-			}
-
-			const bounds = {
-				minLat: mapBounds._sw.lat,
-				minLng: mapBounds._sw.lng,
-				maxLat: mapBounds._ne.lat,
-				maxLng: mapBounds._ne.lng,
-			}
-
-			try {
-				const issues = await getIssuesInBounds(bounds)
-				setIssuesInBounds(issues)
-			} catch (error) {
-				console.error("Failed to fetch issues:", error)
-			}
+		async function fetchIssues() {
+			const issues = await getIssues()
+			setIssues(issues)
 		}
-
 		fetchIssues()
-
-		mapRef?.on("moveend", fetchIssues)
-		return () => {
-			mapRef?.off("moveend", fetchIssues)
-		}
-	}, [map.ecoMap])
+	}, [])
 
 	const geoJsonData = useMemo<GeoJSON.FeatureCollection>(
 		() => ({
 			type: "FeatureCollection",
-			features: issuesInBounds.map((issue) => ({
+			features: issues.map((issue) => ({
 				type: "Feature",
 				geometry: {
 					type: "Point",
@@ -55,11 +30,11 @@ export function IssuesSource() {
 					title: issue.title,
 					category: issue.category,
 					description: issue.description,
-					image: issue.image_url,
+					image: issue.image_url
 				},
 			})),
 		}),
-		[issuesInBounds]
+		[issues]
 	)
 
 	return (
@@ -69,7 +44,6 @@ export function IssuesSource() {
 			data={geoJsonData}
 			generateId
 			cluster={true}
-			clusterMaxZoom={15}
 			clusterRadius={20}
 		/>
 	)

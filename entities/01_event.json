@@ -1,8 +1,15 @@
 {
   "name": "Event",
   "collection_name": "events",
-  "apiEndpoints": ["LIST","GET", "POST", "PUT", "DELETE"],
-  "returnSummaryOnCollection": true,
+  "apiEndpoints": [
+    "LIST",
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE"
+  ],
+  "returnSummaryOnCollection": false,
+  "supportsAssets": true,
   "requiredAttributes": [
     {
       "name": "name",
@@ -11,15 +18,29 @@
     },
     {
       "name": "description",
-      "type": "STRING"
+      "type": "STRING",
+      "includeInSummary": true
+    },
+    {
+      "name": "start_date",
+      "type": "DATE",
+      "includeInSummary": true
     }
   ],
-  "optionalAttributes": [],
-  "relatedEntities": [
+  "optionalAttributes": [
     {
-      "entity": "Issue",
-      "collection_name": "issue",
-      "apiEndpoints": ["LIST", "POST", "GET"]
+      "name": "location",
+      "type": "GEOMETRY",
+      "includeInSummary": true
+    },
+    {
+      "name": "user_uuid",
+      "type": "STRING"
+    },
+    {
+      "name": "end_date",
+      "type": "DATE"
     }
-  ]
+  ],
+  "relatedEntities": []
 }
