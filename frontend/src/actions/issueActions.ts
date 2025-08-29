@@ -70,7 +70,7 @@ export const getIssuesInBounds = async (bounds: BoundsCoordinates) => {
 export const getIssue = async (id: string) => {
 	try {
 		const response = await fetch(`${process.env.NEXT_URL}/api/issues/${id}`, {
-			next: { revalidate: 60 },
+			next: { revalidate: 60 * 60, tags: ["issue", id] },
 		})
 
 		if (!response.ok) {

@@ -63,16 +63,7 @@ export function EventSource() {
 				},
 			],
 		} as GeoJSON.FeatureCollection
-	},
-		[event]
-	)
+	}, [event])
 
-	return (
-		<Source
-			id="event"
-			type="geojson"
-			data={geoJsonData}
-			generateId
-		/>
-	)
+	return <Source id="event" type="geojson" data={geoJsonData} generateId />
 }

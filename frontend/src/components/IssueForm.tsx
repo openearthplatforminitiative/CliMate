@@ -135,12 +135,15 @@ export const IssueForm = () => {
 
 	const handleCurrentLocation = () => {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				const { latitude, longitude } = position.coords
-				setCoordinates({ lat: latitude, lng: longitude })
-			}, () => {
-				toast("Could not get your location")
-			})
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const { latitude, longitude } = position.coords
+					setCoordinates({ lat: latitude, lng: longitude })
+				},
+				() => {
+					toast("Could not get your location")
+				}
+			)
 		}
 	}
 
@@ -198,7 +201,10 @@ export const IssueForm = () => {
 						</div>
 					</div>
 				</div>
-				<Button variant="outline" onClick={handleCurrentLocation}><User />Use current location</Button>
+				<Button variant="outline" onClick={handleCurrentLocation}>
+					<User />
+					Use current location
+				</Button>
 
 				<Button
 					onClick={handleUpload}

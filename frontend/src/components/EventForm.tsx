@@ -142,12 +142,15 @@ export const EventForm = () => {
 
 	const handleCurrentLocation = () => {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				const { latitude, longitude } = position.coords
-				setCoordinates({ lat: latitude, lng: longitude })
-			}, () => {
-				toast("Could not get your location")
-			})
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const { latitude, longitude } = position.coords
+					setCoordinates({ lat: latitude, lng: longitude })
+				},
+				() => {
+					toast("Could not get your location")
+				}
+			)
 		}
 	}
 
@@ -239,7 +242,10 @@ export const EventForm = () => {
 					</div>
 				</div>
 			</div>
-			<Button variant="outline" onClick={handleCurrentLocation}><User />Use current location</Button>
+			<Button variant="outline" onClick={handleCurrentLocation}>
+				<User />
+				Use current location
+			</Button>
 
 			<Button
 				onClick={handleUpload}
@@ -248,6 +254,6 @@ export const EventForm = () => {
 			>
 				Create Event
 			</Button>
-		</div >
+		</div>
 	)
 }

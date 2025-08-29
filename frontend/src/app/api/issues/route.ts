@@ -1,6 +1,6 @@
 import { Asset } from "@/types/asset"
 import { Issue } from "@/types/issue"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache"
 import { NextRequest, NextResponse } from "next/server"
 
 const PATH = "/issues"
@@ -136,7 +136,7 @@ export async function PUT(req: NextRequest) {
 			)
 		}
 
-		revalidatePath(`/dashboard/issues/${putData.id}`)
+		revalidateTag(putData.id)
 
 		const data = await result.json()
 		return NextResponse.json({ data })

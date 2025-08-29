@@ -132,6 +132,7 @@ export async function PUT(req: NextRequest) {
 		}
 
 		const data = await result.json()
+		revalidateTag(putData.id)
 		return NextResponse.json({ data })
 	} catch (error) {
 		console.error("Error:", error)

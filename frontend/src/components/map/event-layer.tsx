@@ -6,7 +6,7 @@ export function EventLayer() {
 			<Layer
 				id="events-layer"
 				type="circle"
-				source="events"
+				source="event"
 				paint={{
 					"circle-color": "#DFF7E3",
 					"circle-radius": 20,
@@ -15,7 +15,7 @@ export function EventLayer() {
 			<Layer
 				id="events-date-layer"
 				type="symbol"
-				source="events"
+				source="event"
 				layout={{
 					"text-field": ["get", "date"],
 					"text-font": ["Noto Sans Regular"],
@@ -32,7 +32,7 @@ export function EventLayer() {
 			<Layer
 				id="events-month-layer"
 				type="symbol"
-				source="events"
+				source="event"
 				layout={{
 					"text-field": ["get", "month"],
 					"text-font": ["Noto Sans Regular"],

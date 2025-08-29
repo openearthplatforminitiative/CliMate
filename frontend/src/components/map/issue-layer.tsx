@@ -6,7 +6,7 @@ export function IssueLayer() {
 			<Layer
 				id="issue-labels"
 				type="symbol"
-				source="issues"
+				source="issue"
 				layout={{
 					"icon-image": ["get", "category"],
 					"icon-size": [

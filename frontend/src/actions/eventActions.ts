@@ -73,7 +73,7 @@ export async function getEventsInBounds(
 export const getEvent = async (id: string) => {
 	try {
 		const response = await fetch(`${process.env.NEXT_URL}/api/events/${id}`, {
-			next: { revalidate: 60 },
+			next: { revalidate: 60 * 60, tags: ["event", id] },
 		})
 
 		if (!response.ok) {
