@@ -10,17 +10,17 @@ import { toast } from "sonner"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
 import { Button } from "./ui/button"
-import { useAtomValue } from "jotai"
+import { useAtom } from "jotai"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 import { useRouter } from "next/navigation"
-import { MapPin } from "lucide-react"
+import { MapPin, User } from "lucide-react"
 import { GeocoderClient } from "openepi-client"
 
 export const IssueForm = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [preview, setPreview] = useState<string | null>(null)
 	const [locationString, setLocationString] = useState<string>("Unknown")
-	const coordinates = useAtomValue(createIssueCoordinatesAtom)
+	const [coordinates, setCoordinates] = useAtom(createIssueCoordinatesAtom)
 	const { data: session } = useSession()
 	const router = useRouter()
 
@@ -133,6 +133,17 @@ export const IssueForm = () => {
 		}
 	}
 
+	const handleCurrentLocation = () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				const { latitude, longitude } = position.coords
+				setCoordinates({ lat: latitude, lng: longitude })
+			}, () => {
+				toast("Could not get your location")
+			})
+		}
+	}
+
 	return (
 		<div>
 			<div className="file-upload mt-5">
@@ -178,7 +189,7 @@ export const IssueForm = () => {
 					rows={3}
 				/>
 
-				<div className="flex items-center gap-2 mt-2">
+				<div className="flex items-center gap-2 mt-2 mb-4">
 					<MapPin />
 					<div className="flex flex-col">
 						Current location set to: {locationString}
@@ -187,6 +198,7 @@ export const IssueForm = () => {
 						</div>
 					</div>
 				</div>
+				<Button variant="outline" onClick={handleCurrentLocation}><User />Use current location</Button>
 
 				<Button
 					onClick={handleUpload}

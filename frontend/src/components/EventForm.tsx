@@ -12,9 +12,9 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { CalendarIcon, MapPin } from "lucide-react"
+import { CalendarIcon, MapPin, User } from "lucide-react"
 import { format } from "date-fns"
-import { useAtomValue } from "jotai"
+import { useAtom } from "jotai"
 import { GeocoderClient } from "openepi-client"
 import { useRouter } from "next/navigation"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
@@ -27,7 +27,7 @@ export const EventForm = () => {
 	const [preview, setPreview] = useState<string | null>(null)
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
-	const coordinates = useAtomValue(createIssueCoordinatesAtom)
+	const [coordinates, setCoordinates] = useAtom(createIssueCoordinatesAtom)
 	const [locationString, setLocationString] = useState<string>("Unknown")
 	const router = useRouter()
 
@@ -140,6 +140,17 @@ export const EventForm = () => {
 		}
 	}
 
+	const handleCurrentLocation = () => {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				const { latitude, longitude } = position.coords
+				setCoordinates({ lat: latitude, lng: longitude })
+			}, () => {
+				toast("Could not get your location")
+			})
+		}
+	}
+
 	if (!session) {
 		return <div>You have to be logged in to create an event.</div>
 	}
@@ -219,7 +230,7 @@ export const EventForm = () => {
 
 			<Label className="mt-5">Location</Label>
 
-			<div className="flex items-center gap-2 mt-2">
+			<div className="flex items-center gap-2 mt-2 mb-4">
 				<MapPin />
 				<div className="flex flex-col">
 					Current location set to: {locationString}
@@ -228,6 +239,7 @@ export const EventForm = () => {
 					</div>
 				</div>
 			</div>
+			<Button variant="outline" onClick={handleCurrentLocation}><User />Use current location</Button>
 
 			<Button
 				onClick={handleUpload}
@@ -236,6 +248,6 @@ export const EventForm = () => {
 			>
 				Create Event
 			</Button>
-		</div>
+		</div >
 	)
 }
