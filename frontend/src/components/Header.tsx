@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 export const Header = () => {
-	const session = useSession()
+	const { data: session } = useSession()
 	return (
 		<header className="w-full bg-transparent lg:bg-primary-20">
 			<nav className="mx-auto w-full max-w-[1350px] lg:border-b lg:border-secondary-98 flex justify-between items-center py-5 px-10">
@@ -28,7 +28,7 @@ export const Header = () => {
 					>
 						Report Issue
 					</Link>
-					{session.status == "authenticated" && (
+					{session && (
 						<Link
 							href="/dashboard/events/create"
 							className="hidden lg:block text-secondary-98 hover:text-secondary-80"

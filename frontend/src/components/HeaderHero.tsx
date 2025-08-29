@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 export const HeaderHero = () => {
-	const session = useSession()
+	const { data: session } = useSession()
 	return (
 		<header className="w-full bg-primary-20">
 			<nav className="mx-auto w-full max-w-[1350px] border-b border-secondary-98 flex justify-between items-center py-5 px-10">

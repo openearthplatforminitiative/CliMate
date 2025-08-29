@@ -49,7 +49,7 @@ export const MenuContent = () => {
 					<>
 						<span className="text-sm text-gray-500">Not signed in</span>
 						<Button
-							onClick={() => signIn()}
+							onClick={() => signIn("keycloak")}
 							className="bg-primary-20 hover:bg-primary-10 w-full"
 						>
 							Sign in
