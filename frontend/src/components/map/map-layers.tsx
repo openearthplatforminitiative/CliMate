@@ -9,8 +9,10 @@ import { IssuesLayer } from "./issues-layer"
 import { IssuesSource } from "./issues-source"
 import { MissingImage } from "./missing-image"
 import { EventsSource } from "./events-source"
+import { EventSource } from "./event-source"
 import { EventsLayer } from "./events-layer"
 import { EventsClusterLayer } from "./events-cluster-layer"
+import { EventLayer } from "./event-layer"
 
 export const MapLayers = () => {
 	const pathname = usePathname()
@@ -40,8 +42,8 @@ export const MapLayers = () => {
 			{pathname === "/dashboard/events/create" && <CreateIssueLayer />}
 			{pathname.startsWith("/dashboard/events/") && (
 				<>
-					<EventsSource />
-					<EventsLayer />
+					<EventSource />
+					<EventLayer />
 				</>
 			)}
 			<MissingImage />
