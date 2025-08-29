@@ -1,4 +1,5 @@
 "use client"
+
 import { calculateOffset, useIsMobile } from "@/lib/utils"
 import { Sheet, SheetRef } from "react-modal-sheet"
 import { Button } from "@/components/ui/button"
@@ -9,6 +10,8 @@ import Link from "next/link"
 import { ChevronLeft, X } from "lucide-react"
 import { createIssueCoordinatesAtom } from "@/atoms/issueAtoms"
 import { useAtom } from "jotai"
+import { signIn, useSession } from "next-auth/react"
+import { usePathname } from "next/navigation"
 
 const SNAP_POINTS = [-40, 650, 90]
 
@@ -18,8 +21,15 @@ export default function CreateEventPage() {
 
 	const [coordinates, setCoordinates] = useAtom(createIssueCoordinatesAtom)
 	const map = useMap()
-
 	const isMobile = useIsMobile()
+	const { data: session } = useSession()
+	const currentRoute = usePathname()
+
+	useEffect(() => {
+		if (session?.error === "RefreshAccessTokenError") {
+			signIn("keycloak")
+		}
+	}, [session, currentRoute])
 
 	const handleClose = () => {
 		const sheet = sheetRef.current
