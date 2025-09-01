@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useIsMobile } from "@/lib/utils"
 import { CliMateEvent } from "@/types/event"
+import { useSession } from "next-auth/react"
 import Link from "next/dist/client/link"
 import { useEffect, useRef, useState } from "react"
 import { useMap } from "react-map-gl/maplibre"
@@ -19,6 +20,7 @@ export default function EventsPage() {
 	const [eventsInBounds, setEventsInBounds] = useState<CliMateEvent[]>([])
 	const [numberOfEvents, setNumberOfEvents] = useState<number>()
 
+	const { data: session } = useSession()
 	const isMobile = useIsMobile()
 	const map = useMap()
 
@@ -83,14 +85,16 @@ export default function EventsPage() {
 				className="z-40"
 			>
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
-					<Button asChild className="bg-primary-20">
-						<Link
-							href="/dashboard/issues/create"
-							className="absolute -top-12 right-4 z-50"
-						>
-							Add Report
-						</Link>
-					</Button>
+					{session && (
+						<Button asChild className="bg-primary-20">
+							<Link
+								href="/dashboard/events/create"
+								className="absolute -top-12 right-4 z-50"
+							>
+								Add Event
+							</Link>
+						</Button>
+					)}
 					<Sheet.Header />
 					<Sheet.Content>
 						<Sheet.Scroller>
