@@ -9,7 +9,7 @@ import { useIsMobile } from "@/lib/utils"
 import { Issue } from "@/types/issue"
 import Link from "next/link"
 import { useRef, useState, useEffect } from "react"
-import {} from "react-day-picker"
+import { } from "react-day-picker"
 import { useMap } from "react-map-gl/maplibre"
 import { Sheet, SheetRef } from "react-modal-sheet"
 
@@ -90,7 +90,7 @@ export default function IssuesPage() {
 							href="/dashboard/issues/create"
 							className="absolute -top-12 right-4 z-50"
 						>
-							Add Report
+							Add Issue
 						</Link>
 					</Button>
 					<Sheet.Header />
