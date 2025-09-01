@@ -8,7 +8,7 @@ type MenuItem = {
 
 const MENU_ITEMS: MenuItem[] = [
 	{ title: "Home", path: "/" },
-	{ title: "Map", path: "/dashboard" },
+	{ title: "Dashboard", path: "/dashboard" },
 	{ title: "Report Issue", path: "/dashboard/issues/create" },
 	{ title: "Create Event", path: "/dashboard/events/create" },
 ]
