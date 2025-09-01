@@ -84,7 +84,7 @@ export function IssuesLayer() {
 							className="bg-primary-20 whitespace-nowrap"
 							onClick={handleCreateIssueClick}
 						>
-							Add Report Here
+							Add Issue Here
 						</Button>
 						<RoomIcon />
 					</div>

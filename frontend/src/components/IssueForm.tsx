@@ -213,7 +213,7 @@ export const IssueForm = () => {
 					}
 					className="w-full mt-5 mb-10 bg-primary-20"
 				>
-					Submit report
+					Submit Issue
 				</Button>
 			</div>
 		</div>
