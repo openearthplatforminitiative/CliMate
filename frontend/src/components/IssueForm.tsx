@@ -109,7 +109,7 @@ export const IssueForm = () => {
 				category: issue.category,
 				location: issue.location,
 				user_uuid: session?.user?.id || "",
-				active: false,
+				active: true,
 			}
 
 			const formData = new FormData()
