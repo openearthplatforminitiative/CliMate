@@ -27,7 +27,7 @@ services:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:26.1.0
     volumes:
-      - ./deployment/keycloak:/opt/keycloak/data/import
+      - ./keycloak:/opt/keycloak/data/import
     command: start-dev --import-realm --verbose
     env_file:
       - path: ./.env.docker
