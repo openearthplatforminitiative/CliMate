@@ -56,11 +56,11 @@ const cliMateService = new CliMateService("cli-mate-service", {
 });
 export const cliMateUrl = cliMateService.url;
 
-// const backendService = new BackendService("backend-service", {
-//   ecsClusterArn: ecsCluster.arn,
-//   hostedZoneId: hostedZone.id,
-// });
-// export const backendUrl = backendService.url;
+const backendService = new BackendService("backend-service", {
+  ecsClusterArn: ecsCluster.arn,
+  hostedZoneId: hostedZone.id,
+});
+export const backendUrl = backendService.url;
 
 // GitHub OpenID Connect Provider, see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services
 const oidcProvider = new aws.iam.OpenIdConnectProvider("oidc-provider", {

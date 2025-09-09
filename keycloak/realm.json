@@ -1,6 +1,6 @@
 {
   "id": "adf26124-35fa-4adf-b84e-da02e05fb7ea",
-  "realm": "climate-frontend",
+  "realm": "climate",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,

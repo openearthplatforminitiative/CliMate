@@ -156,12 +156,20 @@ export default class CliMateService extends pulumi.ComponentResource {
                 value: `https://${cliMateConfig.require("domainName")}`,
               },
               {
+                name: "NEXT_URL",
+                value: `https://${cliMateConfig.require("domainName")}`,
+              },
+              {
                 name: "KEYCLOAK_ID",
                 value: this.authClientId,
               },
               {
                 name: "KEYCLOAK_ISSUER",
-                value: pulumi.interpolate`${this.authUrl}/realms/cli-mate`,
+                value: pulumi.interpolate`${this.authUrl}/realms/climate`,
+              },
+              {
+                name: "ENTITY_API_URL",
+                value: `https://api.${cliMateConfig.require("domainName")}/v1`,
               },
             ],
             secrets: [

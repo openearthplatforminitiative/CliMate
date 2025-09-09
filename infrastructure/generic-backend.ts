@@ -116,12 +116,14 @@ export default class BackendService extends pulumi.ComponentResource {
         dbName: "climate",
         identifierPrefix: "cli-mate-backend-",
         engine: "postgres",
+        engineVersion: "16.9", // Ensure PostGIS compatible version.
         instanceClass: "db.t4g.micro",
         allocatedStorage: 5,
         username: databaseUsername,
         password: databasePassword.result,
         skipFinalSnapshot: true,
         vpcSecurityGroupIds: [databaseSecurityGroup.id],
+        // publiclyAccessible: true, // Should be commented out
       },
       childOptions
     );
@@ -130,8 +132,28 @@ export default class BackendService extends pulumi.ComponentResource {
       "database-connection-string-parameter",
       {
         type: aws.ssm.ParameterType.SecureString,
-        name: "/cli-mate/backend/database-connection-string",
-        value: database.endpoint, // TODO: Can we use database.endpoint directly?
+        name: "/cli-mate/backend/database-connection-address",
+        value: database.address,
+      },
+      childOptions
+    );
+
+    const databaseUsernameParameter = new aws.ssm.Parameter(
+      "database-username-parameter",
+      {
+        type: aws.ssm.ParameterType.SecureString,
+        name: "/cli-mate/backend/database-username",
+        value: databaseUsername,
+      },
+      childOptions
+    );
+
+    const databasePasswordParameter = new aws.ssm.Parameter(
+      "database-password-parameter",
+      {
+        type: aws.ssm.ParameterType.SecureString,
+        name: "/cli-mate/backend/database-password",
+        value: databasePassword.result,
       },
       childOptions
     );
@@ -165,14 +187,10 @@ export default class BackendService extends pulumi.ComponentResource {
               },
             ],
             environment: [
-              {
-                name: "IMPORT_ENTITIES",
-                value: "true",
-              },
-              {
-                name: "UPDATE_ENTITIES",
-                value: "true",
-              },
+              // {
+              //   name: "IMPORT_ENTITIES",
+              //   value: "false",
+              // },
               // {
               //   name: "IMPORT_CONFIG",
               //   value: "/entites",
@@ -186,7 +204,11 @@ export default class BackendService extends pulumi.ComponentResource {
               },
               {
                 name: "ENABLE_ADMIN_API",
-                value: "true",
+                value: "false", // Should be false
+              },
+              {
+                name: "API_DOMAIN",
+                value: `api.${cliMateConfig.require("domainName")}`,
               },
               {
                 name: "ENABLE_METRICS",
@@ -208,11 +230,11 @@ export default class BackendService extends pulumi.ComponentResource {
               },
               {
                 name: "POSTGRES_USER",
-                valueFrom: databaseUsername,
+                valueFrom: databaseUsernameParameter.arn,
               },
               {
                 name: "POSTGRES_PASSWORD",
-                valueFrom: databasePassword.result,
+                valueFrom: databasePasswordParameter.arn,
               },
             ],
           },
@@ -228,7 +250,11 @@ export default class BackendService extends pulumi.ComponentResource {
                       {
                         Effect: "Allow",
                         Action: "ssm:GetParameters",
-                        Resource: [databaseConnectionStringParameter.arn],
+                        Resource: [
+                          databaseConnectionStringParameter.arn,
+                          databaseUsernameParameter.arn,
+                          databasePasswordParameter.arn,
+                        ],
                       },
                     ],
                   }),
@@ -316,6 +342,23 @@ export default class BackendService extends pulumi.ComponentResource {
       },
       childOptions
     );
+
+    // Should be commented out
+    // new aws.ec2.SecurityGroupRule(
+    //   "database-public-ingress-rule",
+    //   {
+    //     securityGroupId: databaseSecurityGroup.id,
+    //     type: "ingress",
+    //     description:
+    //       "Allow incoming TCP-traffic from anywhere to the database (for debugging)",
+    //     cidrBlocks: ["0.0.0.0/0"],
+    //     ipv6CidrBlocks: ["::/0"],
+    //     fromPort: database.port,
+    //     toPort: database.port,
+    //     protocol: "tcp",
+    //   },
+    //   childOptions
+    // );
 
     new aws.route53.Record(
       "alias-record",
