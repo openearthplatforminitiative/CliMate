@@ -187,17 +187,6 @@ export default class BackendService extends pulumi.ComponentResource {
               },
             ],
             environment: [
-              // {
-              //   name: "IMPORT_ENTITIES",
-              //   value: "false",
-              // },
-              // {
-              //   name: "IMPORT_CONFIG",
-              //   value: "/entites",
-              //   // TODO: This needs to be imported somehow..
-              //   // Maybe need to be packed with the data in the CliMate Repo and
-              //   // have its own pipeline?
-              // },
               {
                 name: "ENABLE_ASSETS",
                 value: "true",
