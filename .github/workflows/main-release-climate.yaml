@@ -1,4 +1,4 @@
-name: Main Release flood-frontend
+name: Main Release climate-frontend
 on:
   workflow_dispatch:
   push:

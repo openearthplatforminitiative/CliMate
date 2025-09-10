@@ -59,7 +59,6 @@ Then
 
 - comment out the `database-public-ingress-rule` SecurityRule
 - comment out the `publiclyAccessible: true` line
-- set ENABLE_ADMIN_API to false
 
 Finally, run `pulumi up` to remove deploy the changes.
 
