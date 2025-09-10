@@ -86,7 +86,7 @@ export default class CliMateService extends pulumi.ComponentResource {
     const loadBalancer = new awsx.lb.ApplicationLoadBalancer(
       "load-balancer",
       {
-        namePrefix: "ff-lb-",
+        namePrefix: "cm-lb-",
         listener: {
           port: 443,
           protocol: "HTTPS",
@@ -96,7 +96,7 @@ export default class CliMateService extends pulumi.ComponentResource {
         securityGroups: [loadBalancerSecurityGroup.id],
         defaultTargetGroup: {
           port: 3000,
-          namePrefix: "ff-tg-",
+          namePrefix: "cm-tg-",
           protocol: "HTTP",
           deregistrationDelay: 30,
           healthCheck: {
