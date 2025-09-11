@@ -23,8 +23,16 @@ export function IssuesLayer() {
 			if (!mapRef) return
 
 			const clickedFeatures = mapRef.queryRenderedFeatures(event.point, {
-				layers: ["issues-labels", "clusters"],
+				layers: ["issues-labels"],
 			})
+			const clickedClusters = mapRef.queryRenderedFeatures(event.point, {
+				layers: ["issues-clusters"],
+			})
+
+			console.log(clickedClusters)
+			if (clickedClusters && clickedClusters.length > 0) {
+				return setClickedPoint(null)
+			}
 
 			if (clickedFeatures && clickedFeatures.length > 0) {
 				setClickedPoint(null)

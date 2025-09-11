@@ -28,7 +28,7 @@ export function IssuesClusterLayer() {
 			const mapRef = map.current
 			if (!mapRef) return
 			const features = mapRef.queryRenderedFeatures(e.point, {
-				layers: ["issue-clusters"],
+				layers: ["issues-clusters"],
 			})
 
 			if (!features || features.length == 0) return setClickedCluster(null)
@@ -88,7 +88,7 @@ export function IssuesClusterLayer() {
 	return (
 		<>
 			<Layer
-				id="issue-clusters"
+				id="issues-clusters"
 				type="circle"
 				source="issues"
 				filter={["has", "point_count"]}
@@ -98,7 +98,7 @@ export function IssuesClusterLayer() {
 				}}
 			/>
 			<Layer
-				id="issue-cluster-count"
+				id="issues-cluster-count"
 				type="symbol"
 				source="issues"
 				filter={["has", "point_count"]}
