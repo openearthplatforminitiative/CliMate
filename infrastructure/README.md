@@ -64,7 +64,8 @@ Finally, run `pulumi up` to remove deploy the changes.
 
 ## Inserting entities
 
-For the backend, we have to insert entities. The following CURL commands can be ran to do so:
+Before inserting entities, you have to enable the admin API. `ENABLE_ADMIN_API` must be set to `true` in `generic-backend.ts`. Afterwards, run `pulumi up`.
+The following CURL commands can be ran to insert entities for CliMate:
 
 ```bash
 curl -X 'POST' \
@@ -163,8 +164,6 @@ curl -X 'POST' \
   "relatedEntities": []
 }'
 ```
-
-## Disabling the admin API
 
 When you have added the entities, you should disable the Admin API, so nobody can tamper with your system.
 To do so, set `ENABLE_ADMIN_API` environment variable to `false` and run `pulumi up`.
