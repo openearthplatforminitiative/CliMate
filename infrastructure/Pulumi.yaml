@@ -1,0 +1,7 @@
+name: cli-mate
+runtime: nodejs
+description: Infrastucture for the CliMate app.
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-typescript
