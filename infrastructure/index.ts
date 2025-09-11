@@ -69,6 +69,11 @@ const oidcProvider = new aws.iam.OpenIdConnectProvider("oidc-provider", {
   // thumbprintLists: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // https://github.blog/changelog/2022-01-13-github-actions-update-on-oidc-based-deployments-to-aws/
 });
 
+// If oidcProvider already exists, retrieve it instead.
+// const oidcProvider = aws.iam.getOpenIdConnectProviderOutput({
+//   url: "https://token.actions.githubusercontent.com",
+// });
+
 new aws.iam.Role("github-actions", {
   namePrefix: "cli-mate-github-actions-",
   assumeRolePolicy: oidcProvider.arn.apply((providerArn) =>
@@ -87,7 +92,7 @@ new aws.iam.Role("github-actions", {
             },
             StringLike: {
               "token.actions.githubusercontent.com:sub":
-                "repo:openearthplatforminitiative/CliMate:environment:prod",
+                "repo:openearthplatforminitiative/climate:environment:prod",
             },
           },
         },

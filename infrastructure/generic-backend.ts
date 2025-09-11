@@ -94,6 +94,7 @@ export default class BackendService extends pulumi.ComponentResource {
           deregistrationDelay: 30,
           healthCheck: {
             matcher: "200,302",
+            path: "/openapi.json",
           },
         },
       },
