@@ -32,31 +32,6 @@ Use the AWS CLI to authenticate with AWS, and then run `pulumi up` to deploy the
 
 To tear down the infrastructure, use `pulumi down` or `pulumi destroy`.
 
-## Activation PostGIS on RDS
-
-When using RDS you have to activate PostGIS after the database is created.
-To log in to the database, you have to uncomment the SecurityRule in `generic-backend.ts` called `database-public-ingress-rule`. You also need to uncomment `publiclyAccessible: true` on the database definition. Then run `pulumi up`.
-Log in to AWS console, and navigate to Parameter Store.
-Use the parameters you find in Parameter Store to log in with the psql command:
-
-```bash
-# Example host URL
-psql --host="cli-mate-backend-2025090909332648320000000e.cntzlhr0ao2b.eu-central-1.rds.amazonaws.com" --port=5432 --username=climate --password
-```
-
-Then run the following commands to enable postgis:
-
-```SQL
-CREATE EXTENSION postgis;
-```
-
-Then
-
-- comment out the `database-public-ingress-rule` SecurityRule
-- comment out the `publiclyAccessible: true` line
-
-Finally, run `pulumi up` to remove deploy the changes.
-
 ## Inserting entities
 
 Before inserting entities, you have to enable the admin API. `ENABLE_ADMIN_API` must be set to `true` in `generic-backend.ts`. Afterwards, run `pulumi up`.

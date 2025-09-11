@@ -123,7 +123,6 @@ export default class BackendService extends pulumi.ComponentResource {
         password: databasePassword.result,
         skipFinalSnapshot: true,
         vpcSecurityGroupIds: [databaseSecurityGroup.id],
-        // publiclyAccessible: true, // Should be commented out
       },
       childOptions
     );
@@ -331,23 +330,6 @@ export default class BackendService extends pulumi.ComponentResource {
       },
       childOptions
     );
-
-    // Should be commented out
-    // new aws.ec2.SecurityGroupRule(
-    //   "database-public-ingress-rule",
-    //   {
-    //     securityGroupId: databaseSecurityGroup.id,
-    //     type: "ingress",
-    //     description:
-    //       "Allow incoming TCP-traffic from anywhere to the database (for debugging)",
-    //     cidrBlocks: ["0.0.0.0/0"],
-    //     ipv6CidrBlocks: ["::/0"],
-    //     fromPort: database.port,
-    //     toPort: database.port,
-    //     protocol: "tcp",
-    //   },
-    //   childOptions
-    // );
 
     new aws.route53.Record(
       "alias-record",
