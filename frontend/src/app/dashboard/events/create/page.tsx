@@ -79,24 +79,26 @@ export default function CreateEventPage() {
 				initialSnap={1}
 				className="z-40"
 			>
-				<Sheet.Container className="rounded-t-4xl bg-primary-99">
+				<Sheet.Container layoutScroll className="rounded-t-4xl bg-primary-99">
 					<Sheet.Header />
 					<Sheet.Content>
-						<div className="p-4">
-							<div className="flex justify-between mb-4">
-								<h1 className="text-2xl">Create Issue</h1>
-								<Button
-									className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
-									size="icon"
-									asChild
-								>
-									<Link href={"/dashboard/events"}>
-										<X />
-									</Link>
-								</Button>
+						<Sheet.Scroller>
+							<div className="p-4">
+								<div className="flex justify-between mb-4">
+									<h1 className="text-2xl">Create Issue</h1>
+									<Button
+										className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
+										size="icon"
+										asChild
+									>
+										<Link href={"/dashboard/events"}>
+											<X />
+										</Link>
+									</Button>
+								</div>
+								<EventForm />
 							</div>
-							<EventForm />
-						</div>
+						</Sheet.Scroller>
 					</Sheet.Content>
 				</Sheet.Container>
 			</Sheet>

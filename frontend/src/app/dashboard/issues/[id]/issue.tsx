@@ -96,42 +96,44 @@ export const IssueComponent = ({ issue }: { issue: Issue }) => {
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
 					<Sheet.Header />
 					<Sheet.Content>
-						<div className="flex flex-col h-full px-4">
-							<div className="flex justify-between mb-4">
-								<h1 className="text-2xl">{issue.title}</h1>
-								<Button
-									className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
-									size="icon"
-									asChild
-								>
-									<Link href={"/dashboard/issues"}>
-										<X />
-									</Link>
-								</Button>
+						<Sheet.Scroller>
+							<div className="flex flex-col h-full px-4">
+								<div className="flex justify-between mb-4">
+									<h1 className="text-2xl">{issue.title}</h1>
+									<Button
+										className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
+										size="icon"
+										asChild
+									>
+										<Link href={"/dashboard/issues"}>
+											<X />
+										</Link>
+									</Button>
+								</div>
+								<Image
+									src={
+										issue.image_url
+											? `${issue.image_url}`
+											: "/image-placeholder.png"
+									}
+									width={200}
+									height={100}
+									className="aspect-video w-full object-cover"
+									alt="Picture of issue"
+								/>
+								<div className="flex flex-col gap-4 mt-4 h-full">
+									<div>Category: {issue.category}</div>
+									<div>{issue.description}</div>
+									<Button
+										className="bg-neutral-100 hover:bg-neutral-90 text-secondary-20 self-start"
+										onClick={handleClick}
+									>
+										<Check />
+										Set as {issue.active ? "resolved" : "unresolved"}
+									</Button>
+								</div>
 							</div>
-							<Image
-								src={
-									issue.image_url
-										? `${issue.image_url}`
-										: "/image-placeholder.png"
-								}
-								width={200}
-								height={100}
-								className="aspect-video w-full object-cover"
-								alt="Picture of issue"
-							/>
-							<div className="flex flex-col gap-4 mt-4 h-full">
-								<div>Category: {issue.category}</div>
-								<div>{issue.description}</div>
-								<Button
-									className="bg-neutral-100 hover:bg-neutral-90 text-secondary-20 self-start"
-									onClick={handleClick}
-								>
-									<Check />
-									Set as {issue.active ? "resolved" : "unresolved"}
-								</Button>
-							</div>
-						</div>
+						</Sheet.Scroller>
 					</Sheet.Content>
 				</Sheet.Container>
 			</Sheet>

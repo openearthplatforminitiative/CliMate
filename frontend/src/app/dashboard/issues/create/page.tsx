@@ -72,21 +72,23 @@ export default function CreateIssuePage() {
 				<Sheet.Container className="rounded-t-4xl bg-primary-99">
 					<Sheet.Header />
 					<Sheet.Content>
-						<div className="p-4">
-							<div className="flex justify-between mb-4">
-								<h1 className="text-2xl">Create Issue</h1>
-								<Button
-									className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
-									size="icon"
-									asChild
-								>
-									<Link href={"/dashboard/issues"}>
-										<X />
-									</Link>
-								</Button>
+						<Sheet.Scroller>
+							<div className="p-4">
+								<div className="flex justify-between mb-4">
+									<h1 className="text-2xl">Create Issue</h1>
+									<Button
+										className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
+										size="icon"
+										asChild
+									>
+										<Link href={"/dashboard/issues"}>
+											<X />
+										</Link>
+									</Button>
+								</div>
+								<IssueForm />
 							</div>
-							<IssueForm />
-						</div>
+						</Sheet.Scroller>
 					</Sheet.Content>
 				</Sheet.Container>
 			</Sheet>
