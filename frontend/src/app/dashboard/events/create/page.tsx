@@ -84,7 +84,7 @@ export default function CreateEventPage() {
 					<Sheet.Content>
 						<div className="p-4">
 							<div className="flex justify-between mb-4">
-								<h1 className="text-2xl">Create Report</h1>
+								<h1 className="text-2xl">Create Issue</h1>
 								<Button
 									className="bg-neutral-90 hover:bg-neutral-80 text-neutral-0 ml-4"
 									size="icon"
