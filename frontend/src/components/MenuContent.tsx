@@ -1,6 +1,7 @@
 import { Button } from "./ui/button"
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
+import { SheetTrigger } from "./ui/sheet"
 type MenuItem = {
 	title: string
 	path: string
@@ -21,11 +22,13 @@ export const MenuContent = () => {
 			<div className="flex flex-col items-center w-full gap-1">
 				{MENU_ITEMS.map((item) => {
 					return (
-						<Link href={item.path} className="w-full" key={item.title}>
-							<Button className="bg-primary-20 hover:bg-primary-10 w-full">
-								{item.title}
-							</Button>
-						</Link>
+						<SheetTrigger asChild key={item.title}>
+							<Link href={item.path} className="w-full">
+								<Button className="bg-primary-20 hover:bg-primary-10 w-full">
+									{item.title}
+								</Button>
+							</Link>
+						</SheetTrigger>
 					)
 				})}
 			</div>
@@ -37,23 +40,27 @@ export const MenuContent = () => {
 						<span className="text-sm text-gray-500">
 							Signed in as {session.user.name}
 						</span>
-						<Button
-							onClick={() => signOut()}
-							className="bg-primary-20 hover:bg-primary-10 w-full"
-						>
-							Sign out
-						</Button>
+						<SheetTrigger asChild>
+							<Button
+								onClick={() => signOut()}
+								className="bg-primary-20 hover:bg-primary-10 w-full"
+							>
+								Sign out
+							</Button>
+						</SheetTrigger>
 					</>
 				)}
 				{!session && (
 					<>
 						<span className="text-sm text-gray-500">Not signed in</span>
-						<Button
-							onClick={() => signIn("keycloak")}
-							className="bg-primary-20 hover:bg-primary-10 w-full"
-						>
-							Sign in
-						</Button>
+						<SheetTrigger asChild>
+							<Button
+								onClick={() => signIn("keycloak")}
+								className="bg-primary-20 hover:bg-primary-10 w-full"
+							>
+								Sign in
+							</Button>
+						</SheetTrigger>
 					</>
 				)}
 			</div>
